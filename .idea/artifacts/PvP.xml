@@ -1,0 +1,13 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="PvP">
+    <output-path>$PROJECT_DIR$/../#Test-Server/Spigot/plugins</output-path>
+    <root id="archive" name="PvP.jar">
+      <element id="module-output" name="at.lukasberger.bukkit.pvp" />
+      <element id="file-copy" path="$PROJECT_DIR$/src/resources/plugin.yml" />
+      <element id="file-copy" path="$PROJECT_DIR$/src/resources/config.yml" />
+      <element id="file-copy" path="$PROJECT_DIR$/src/resources/playerStats.yml" />
+      <element id="file-copy" path="$PROJECT_DIR$/src/resources/empty.yml" />
+      <element id="file-copy" path="$PROJECT_DIR$/src/resources/lang.yml" />
+    </root>
+  </artifact>
+</component>

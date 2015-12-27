@@ -1,0 +1,11 @@
+lastName: ""
+lastArena: ""
+lastPvPJoin: 0
+
+stats:
+  kills: 0
+  deaths: 0
+
+kits:
+  current: ""
+  bought: []

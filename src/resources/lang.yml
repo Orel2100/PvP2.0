@@ -1,0 +1,74 @@
+commands:
+   error:
+      subcommand: "I don't know this command..."
+      perm: "You are not allowed to do this"
+      no-world: "The world containing this arena does not exist"
+   help:
+      arena:
+         create: "Creates a arena with the given name"
+         delete: "Deletes the given arena"
+         addspawn: "Adds a new spawn for the given arena at the current location"
+         delspawn: "Removes the last defined spawn"
+      kit:
+         create: "Creates a kit with the given name"
+         additem: "Adds the current hold item to the given slot from kit with the given name"
+         delitem: "Removes the item in the given slot from kit with the given name"
+         delete: "Delete the kit with the given name"
+         costs: "Changes the money you need for the given kit"
+      language:
+         set: "Sets the default language"
+      join: "Joining the given arena"
+      leave: "Leaves the current arena"
+      invite: "Invite the player to your current arena"
+      accept: "Accept the invite from the given player"
+      deny: "Deny the invite from the given player"
+
+action:
+   arena:
+      create: "Creating arena..."
+      created: "Arena %1 created, continue setting the spawnpoints!"
+      created-help-addspawn: "You can define spawnpoint with &7/pvp arena %1 addspawn"
+      created-help-delspawn: "For removing the last spawnpoint use &7/pvp arena %1 delspawn"
+      created-help-randspawn: "If no spawnpoint is defined, a random spawnpoint will be calculated"
+      deleted: "The Arena %1 was successfully deleted!"
+      spawn:
+         added: "The spawn #%1 at %2;%3;%4; was successfully added"
+         no-spawn-delete: "There is no spawn left to delete..."
+         deleted: "The spawn #%d was successfully removed"
+   kit:
+      create: "Creating kit..."
+      created: "Kit %1 created, continue with the following commands!"
+      deleted: "Kit %1 deleted!"
+      cost-changed: "The costs of kit %1 was changed to %2"
+      item-added: "The item in your hand was added to the kit %1 on slot %2"
+      item-deleted: "The item on slot %2 was removed form kit %1"
+      not-existing: "The kit %1 does not exists."
+      already-existing: "The kit %1 already exists."
+      slot-used: "The slot %1 in kit %2 is already in use"
+      slot-not-used: "The slot %1 in kit %2 is NOT in use"
+      created-help-additem: "Adding current holding items with &7/pvp kit %1 add [Slot]&b to the kit"
+      created-help-delitem: "Removing the given slot with &7/pvp kit %1 del [Slot]&b to the kit"
+      created-help-setcosts: "Set the needed money for this kit using &7/pvp kit %1 costs [Money]"
+      created-help-delete: "Removing the complete kit using &7/pvp kit %1 remove"
+   language:
+      not-existing: "The given language does not exist"
+      changed: "The default language was set to %1"
+   invite:
+      not-ingame: "You need to be in an arena to invite someone"
+      already-invited: "You already invited the player %1"
+      invited-ingame: "The player %1 is already ingame"
+      other-invited: "The other player already invited you! Accept with /pvp a %1"
+      sent: "You successfully invited %1!"
+      invited: "The player %1 invited you to PvP! Accept with /pvp a %1, deny with /pvp d %1"
+      not-invited: "The player %1 has not sent you any invite..."
+      joining: "You are joining the game of %1"
+      joined: "The player %1 accepted your invite!"
+      denying: "You denied the invite of %1"
+      denied: "The player %1 denied your invite"
+
+ingame:
+   joined: "You joined the arena %1"
+   left: "You left the arena!"
+   not-ingame: "You are not ingame!"
+   already-ingame: "You are already ingame!"
+   no-arena: "This arena does not exists!"

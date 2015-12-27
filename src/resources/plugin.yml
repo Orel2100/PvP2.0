@@ -1,0 +1,13 @@
+name: PvP
+version: '1.0-a2'
+author: Lukas0610
+main: at.lukasberger.bukkit.pvp.PvP
+website: http://lukasberger.at
+description: Completely rewritten - The new PvP-Plugin - Faster, Better, new, better Experience
+
+depend: [ WorldEdit ]
+
+commands:
+  pvp:
+    description: The base command for the PvP-Plugin
+    usage: /pvp [sub-command] [arguments...]
