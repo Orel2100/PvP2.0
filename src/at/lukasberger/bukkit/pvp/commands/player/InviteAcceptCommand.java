@@ -25,7 +25,7 @@ public class InviteAcceptCommand extends AbstractSubCommand
 
         if(args.length == 1)
         {
-            InviteManager.instance.accept((Player)sender, args[1]);
+            InviteManager.instance.accept((Player)sender, args[0]);
         }
         else
         {
