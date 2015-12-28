@@ -1,6 +1,7 @@
 package at.lukasberger.bukkit.pvp.core.objects;
 
 import at.lukasberger.bukkit.pvp.PvP;
+import at.lukasberger.bukkit.pvp.core.InGameManager;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -74,7 +75,8 @@ public class PvPPlayer
     // updates the scoreboard with newest stats
     public PvPPlayer updateScoreboard()
     {
-        List<String> scoreboardLines = PvP.getInstance().getConfig().getStringList("ingame.scoreboard.items");
+        PvP.getInstance().getLogger().info("Updaing scoreboard for " + player.getName() + "...");
+        List<String> scoreboardLines = PvP.getInstance().getConfig().getStringList("ingame.scoreboard.lines");
 
         Scoreboard scoreboard = PvP.getInstance().getServer().getScoreboardManager().getNewScoreboard();
         Objective objective = scoreboard.registerNewObjective("pvp", "dummy");
@@ -100,7 +102,6 @@ public class PvPPlayer
         // player informations
         String compiled = s.replace("{NAME}", player.getName());
         compiled = compiled.replace("{DISPLAYNAME}", player.getDisplayName());
-        compiled = compiled.replace("{CUSTOMNAME}", player.getCustomName());
 
         // player's location infos
         compiled = compiled.replace("{WORLD}", player.getWorld().getName());
@@ -108,8 +109,9 @@ public class PvPPlayer
         // pvp stats
         compiled = compiled.replace("{PVPDEATHS}",  Integer.toString(playerConfig.config.getInt("stats.kills")));
         compiled = compiled.replace("{PVPKILLS}",  Integer.toString(playerConfig.config.getInt("stats.deaths")));
+        compiled = compiled.replace("{PVPARENA}", InGameManager.instance.getArena(player));
 
-        return compiled;
+        return ChatColor.translateAlternateColorCodes('&', compiled);
     }
 
     // resets the statistics for the player

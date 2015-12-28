@@ -5,6 +5,8 @@ ingame:
   fall-damage: false
   enable-invites: true
   enable-parties: true
+  invites:
+    teleport-to-invitor:
   block:
     break: false
     place: false
@@ -18,7 +20,12 @@ ingame:
   scoreboard:
     title: "&bPvP&7 - Stats"
     lines:
-      - ""
+      - ' '
+      - '&9{NAME}'
+      - '&7Arena: &8{PVPARENA}'
+      - ' '
+      - '&7Kills: &a{PVPKILLS}'
+      - '&7Deaths: &c{PVPDEATHS}'
 
 kits:
    default:

@@ -101,6 +101,7 @@ action:
          not-ingame: "You need to be in an arena to invite someone"
          not-online: "The player you want to invite is not online"
          already-invited: "You already invited the player %1"
+         already-in-party: "The player is already in a party!"
          sent: "You successfully invited %1!"
          invited: "The player %1 invited you to his PvP-Party! Accept with /pvp party a %1, deny with /pvp party d %1"
 

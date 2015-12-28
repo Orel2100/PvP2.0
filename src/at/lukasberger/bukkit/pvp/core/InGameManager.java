@@ -186,6 +186,9 @@ public class InGameManager
         playerInventoryBeforeJoin.remove(p.getUniqueId().toString());
         playerLocationBeforeJoin.remove(p.getUniqueId().toString());
 
+        // remove scoreboard
+        p.setScoreboard(PvP.getInstance().getServer().getScoreboardManager().getNewScoreboard());
+
         // Teleport player to last location before joining
         p.teleport(loc);
         p.sendMessage(PvP.successPrefix + MessageManager.instance.get("ingame.left"));
