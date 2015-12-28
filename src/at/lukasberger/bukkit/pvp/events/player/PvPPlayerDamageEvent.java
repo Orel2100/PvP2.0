@@ -23,10 +23,7 @@ public class PvPPlayerDamageEvent implements Listener
 
         // check if damaged AND damager are players
         if(!(e.getEntity() instanceof Player) || !(e.getDamager() instanceof Player))
-        {
-            e.setCancelled(true);
             return;
-        }
 
         Player damaged = (Player)e.getEntity();
         Player damager = (Player)e.getDamager();

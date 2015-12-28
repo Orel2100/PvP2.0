@@ -7,6 +7,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
 
 /**
  * PvP 2.0, Copyright (c) 2015 Lukas Berger, licensed under GPLv3
@@ -34,21 +35,30 @@ public class PvPPlayerDeathEvent implements Listener
         InGameManager.instance.getPlayer(killed).addDeath();
         InGameManager.instance.getPlayer(killer).addKill();
 
-        PvP.getInstance().getServer().getScheduler().scheduleSyncDelayedTask(PvP.getInstance(), new Runnable() {
-
-            @Override
-            public void run() {
-                InGameManager.instance.joinArenaOnDeath(killed);
-            }
-
-        }, 5L);
-
         // set some things
         e.setKeepInventory(false);
         e.setKeepLevel(true);
         e.getDrops().clear();
         e.setDroppedExp(0);
         e.setDeathMessage("");
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST)
+    private void onPlayerRespawn(PlayerRespawnEvent e)
+    {
+        // check if killed is ingame
+        if(!InGameManager.instance.isPlayerIngame(e.getPlayer()))
+            return;
+
+        PvP.getInstance().getServer().getScheduler().scheduleSyncDelayedTask(PvP.getInstance(), new Runnable() {
+
+            @Override
+            public void run()
+            {
+                InGameManager.instance.joinArenaOnDeath(e.getPlayer());
+            }
+
+        }, 10L);
     }
 
 }

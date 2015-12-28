@@ -62,10 +62,15 @@ public class Config
 
     public void saveDefaultConfig(String resourceName)
     {
+        this.saveDefaultConfig(resourceName, false);
+    }
+
+    public void saveDefaultConfig(String resourceName, boolean force)
+    {
         if (this.configFile == null)
             this.configFile = new File(PvP.getInstance().getDataFolder(), this.configFileName);
 
-        if (!this.configFile.exists())
+        if (!this.configFile.exists() || force)
         {
             try
             {

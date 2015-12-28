@@ -8,6 +8,7 @@ import at.lukasberger.bukkit.pvp.core.MessageManager;
 import at.lukasberger.bukkit.pvp.core.objects.Config;
 import at.lukasberger.bukkit.pvp.events.inventory.*;
 import at.lukasberger.bukkit.pvp.events.player.*;
+import at.lukasberger.bukkit.pvp.events.player.items.*;
 import at.lukasberger.bukkit.pvp.events.player.party.*;
 import at.lukasberger.bukkit.pvp.events.world.*;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
@@ -51,17 +52,24 @@ public class PvP extends JavaPlugin
 
         this.getLogger().info("Updating configs...");
         Config currentConfig = new Config("conf-def");
-        currentConfig.saveDefaultConfig("config");
+        currentConfig.saveDefaultConfig("config", true);
 
         Set<String> keys = currentConfig.config.getKeys(true);
         for(String key : keys)
         {
-            if(!this.getConfig().getKeys(true).contains(key))
+            if (!this.getConfig().getKeys(true).contains(key))
             {
                 this.getLogger().info("[Configuration] Updating \"" + key + "\" to value \"" + currentConfig.config.get(key).toString() + "\"");
                 this.getConfig().set(key, currentConfig.config.get(key));
             }
         }
+
+        currentConfig.delete();
+
+        // they need to be fixed
+        this.getConfig().set("gadgets.grenades.item", "EGG");
+        this.getConfig().set("gadgets.machinegun.item", "SNOWBALL");
+
         this.saveConfig();
 
         if(!getConfig().contains("kits.default"))
@@ -116,6 +124,7 @@ public class PvP extends JavaPlugin
         this.getServer().getPluginManager().registerEvents(new PvPPlayerToggleFlightEvent(), this);
         this.getServer().getPluginManager().registerEvents(new PvPPlayerQuitEvent(), this);
         this.getServer().getPluginManager().registerEvents(new PvPPartyPlayerQuitEvent(), this);
+        this.getServer().getPluginManager().registerEvents(new PvPPlayerGrenadeEvents(), this);
 
         // world
         this.getServer().getPluginManager().registerEvents(new PvPBlockBreakEvent(), this);

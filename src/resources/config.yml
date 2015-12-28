@@ -5,8 +5,6 @@ ingame:
   fall-damage: false
   enable-invites: true
   enable-parties: true
-  invites:
-    teleport-to-invitor:
   block:
     break: false
     place: false
@@ -26,7 +24,16 @@ ingame:
       - ' '
       - '&7Kills: &a{PVPKILLS}'
       - '&7Deaths: &c{PVPDEATHS}'
-
+gadgets:
+  grenades:
+    enable: true
+    item: EGG
+    settings:
+      throw-multiplier: 3.0
+      infinity: true
+      power: 10.0
+      fire: false
+      block-destroy: false
 kits:
    default:
       cost: 0
