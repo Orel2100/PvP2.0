@@ -3,7 +3,7 @@ version: '1.0-a3'
 author: Lukas0610
 main: at.lukasberger.bukkit.pvp.PvP
 website: http://lukasberger.at
-description: Completely rewritten - The new PvP-Plugin - Faster, Better, new, better Experience
+description: The new PvP-Plugin - Completely rewritten - Faster, Better and Faster
 
 depend: [ WorldEdit ]
 

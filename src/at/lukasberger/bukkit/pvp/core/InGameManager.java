@@ -151,6 +151,10 @@ public class InGameManager
     // removes the player from the arena and restores inventory/location
     public void leaveArena(Player p)
     {
+        // check if player is null
+        if(p == null)
+            return;
+
         // check if player is in an arena, return if not
         if(!currentPlayerArena.containsKey(p.getUniqueId().toString()))
         {

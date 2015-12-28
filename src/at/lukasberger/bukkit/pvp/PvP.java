@@ -91,7 +91,7 @@ public class PvP extends JavaPlugin
         }
         if(this.getConfig().getBoolean("ingame.enable-parties"))
         {
-            SubCommandManager.instance.registerSubCommand(new InviteCommand(), "party", "p");
+            SubCommandManager.instance.registerSubCommand(new PartyCommand(), "party", "p");
         }
         SubCommandManager.instance.registerSubCommand(new ArenaCommand(), "arena");
         SubCommandManager.instance.registerSubCommand(new KitCommand(), "kit");
@@ -114,6 +114,7 @@ public class PvP extends JavaPlugin
         this.getServer().getPluginManager().registerEvents(new PvPPlayerMoveEvent(), this);
         this.getServer().getPluginManager().registerEvents(new PvPPlayerTeleportEvent(), this);
         this.getServer().getPluginManager().registerEvents(new PvPPlayerToggleFlightEvent(), this);
+        this.getServer().getPluginManager().registerEvents(new PvPPlayerQuitEvent(), this);
         this.getServer().getPluginManager().registerEvents(new PvPPartyPlayerQuitEvent(), this);
 
         // world

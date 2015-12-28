@@ -5,6 +5,7 @@ import at.lukasberger.bukkit.pvp.core.messages.MessageManager;
 import at.lukasberger.bukkit.pvp.utils.MapTuple;
 import at.lukasberger.bukkit.pvp.utils.MapTupleUtils;
 import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.entity.Player;
 
 import java.util.*;
@@ -124,12 +125,6 @@ public class PartyManager
         MapTupleUtils<String, String> tupleUtils = new MapTupleUtils<>();
         Player invited = PvP.getInstance().getServer().getPlayer(invitedName);
 
-        if(!InGameManager.instance.isPlayerIngame(inviter))
-        {
-            inviter.sendMessage(PvP.errorPrefix + MessageManager.instance.get("action.party.invite.not-ingame"));
-            return;
-        }
-
         if(invited == null || !invited.isOnline())
         {
             inviter.sendMessage(PvP.errorPrefix + MessageManager.instance.get("action.party.invite.not-online"));
@@ -145,6 +140,11 @@ public class PartyManager
 
         inviter.sendMessage(PvP.successPrefix + MessageManager.instance.get("action.party.invite.sent", invited.getName()));
         invited.sendMessage(PvP.warningPrefix + MessageManager.instance.get("action.party.invite.invited", inviter.getName()));
+
+        invited.spigot().sendMessage(TextComponent.fromLegacyText("{\"text\":\"" + MessageManager.instance.get("action.click.invite-accept") +
+                "\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"pvp accept " + inviter.getName() + "\"}}"));
+        invited.spigot().sendMessage(TextComponent.fromLegacyText("{\"text\":\"" + MessageManager.instance.get("action.click.invite-deny") +
+                "\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"pvp deny " + inviter.getName() + "\"}}"));
 
         invites.add(new MapTuple<String, String>(inviter.getUniqueId().toString(), invited.getUniqueId().toString()));
     }
@@ -173,6 +173,7 @@ public class PartyManager
 
         membersToParty.put(invited.getUniqueId().toString(), partyID);
         invited.sendMessage(PvP.prefix + MessageManager.instance.get("action.party.accept", inviter.getName()));
+        inviter.sendMessage(PvP.prefix + MessageManager.instance.get("action.party.accept-announce", invited.getName()));
 
         tupleUtils.removeTuple(invites, inviter.getUniqueId().toString(), invited.getUniqueId().toString());
     }
@@ -269,7 +270,7 @@ public class PartyManager
 
     public Long getPartyID(Player p)
     {
-        if(!isPlayerInAnyParty(p))
+        if(!isPlayerInAnyParty(p) && !isPartyLeader(p))
             return -1L;
 
         return membersToParty.get(p.getUniqueId().toString());

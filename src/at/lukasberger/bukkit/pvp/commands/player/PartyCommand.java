@@ -26,13 +26,13 @@ public class PartyCommand extends AbstractSubCommand
 
         if(args.length == 1)
         {
-            if(args[0].equalsIgnoreCase("create"))
+            if(args[0].equalsIgnoreCase("create") || args[0].equalsIgnoreCase("c"))
             {
                 PartyManager.instance.create((Player)sender);
             }
-            else if(args[0].equalsIgnoreCase("delete"))
+            else if(args[0].equalsIgnoreCase("delete") || args[0].equalsIgnoreCase("d"))
             {
-                PartyManager.instance.delete((Player)sender);
+                PartyManager.instance.delete((Player) sender);
             }
             else
             {
@@ -45,6 +45,18 @@ public class PartyCommand extends AbstractSubCommand
             {
                 PartyManager.instance.changeLeader((Player)sender, args[1]);
             }
+            else if(args[0].equalsIgnoreCase("invite") || args[0].equalsIgnoreCase("i"))
+            {
+                PartyManager.instance.invite((Player)sender, args[1]);
+            }
+            else if(args[0].equalsIgnoreCase("accept") || args[0].equalsIgnoreCase("a"))
+            {
+                PartyManager.instance.accept((Player) sender, args[1]);
+            }
+            else if(args[0].equalsIgnoreCase("deny") || args[0].equalsIgnoreCase("d"))
+            {
+                PartyManager.instance.deny((Player)sender, args[1]);
+            }
             else
             {
                 printHelp(sender);
@@ -54,8 +66,6 @@ public class PartyCommand extends AbstractSubCommand
         {
             printHelp(sender);
         }
-
-        InGameManager.instance.leaveArena((Player)sender);
     }
 
     private void printHelp(CommandSender sender)
