@@ -1,4 +1,4 @@
-package at.lukasberger.bukkit.pvp.core.messages;
+package at.lukasberger.bukkit.pvp.core;
 
 import at.lukasberger.bukkit.pvp.PvP;
 import at.lukasberger.bukkit.pvp.core.objects.Config;

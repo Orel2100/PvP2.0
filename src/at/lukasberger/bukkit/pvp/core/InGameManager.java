@@ -1,7 +1,6 @@
 package at.lukasberger.bukkit.pvp.core;
 
 import at.lukasberger.bukkit.pvp.PvP;
-import at.lukasberger.bukkit.pvp.core.messages.MessageManager;
 import at.lukasberger.bukkit.pvp.core.objects.Arena;
 import at.lukasberger.bukkit.pvp.core.objects.PvPPlayer;
 import org.bukkit.Bukkit;

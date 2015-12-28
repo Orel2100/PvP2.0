@@ -1,10 +1,10 @@
 package at.lukasberger.bukkit.pvp.core;
 
 import at.lukasberger.bukkit.pvp.PvP;
-import at.lukasberger.bukkit.pvp.core.messages.MessageManager;
 import at.lukasberger.bukkit.pvp.utils.MapTuple;
 import at.lukasberger.bukkit.pvp.utils.MapTupleUtils;
 import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.entity.Player;
 
@@ -141,10 +141,20 @@ public class PartyManager
         inviter.sendMessage(PvP.successPrefix + MessageManager.instance.get("action.party.invite.sent", invited.getName()));
         invited.sendMessage(PvP.warningPrefix + MessageManager.instance.get("action.party.invite.invited", inviter.getName()));
 
-        invited.spigot().sendMessage(TextComponent.fromLegacyText("{\"text\":\"" + MessageManager.instance.get("action.click.invite-accept") +
-                "\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"pvp accept " + inviter.getName() + "\"}}"));
-        invited.spigot().sendMessage(TextComponent.fromLegacyText("{\"text\":\"" + MessageManager.instance.get("action.click.invite-deny") +
-                "\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"pvp deny " + inviter.getName() + "\"}}"));
+        TextComponent inviteAcceptComponent = new TextComponent();
+        inviteAcceptComponent.setText("/pvp accept " + inviter.getName());
+        inviteAcceptComponent.setColor(ChatColor.GREEN);
+        inviteAcceptComponent.setBold(true);
+        inviteAcceptComponent.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/pvp accept " + inviter.getName()));
+
+        TextComponent inviteDenyComponent = new TextComponent();
+        inviteDenyComponent.setText("/pvp deny " + inviter.getName());
+        inviteDenyComponent.setColor(ChatColor.RED);
+        inviteDenyComponent.setBold(true);
+        inviteDenyComponent.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/pvp deny " + inviter.getName()));
+
+        invited.spigot().sendMessage(inviteAcceptComponent);
+        invited.spigot().sendMessage(inviteDenyComponent);
 
         invites.add(new MapTuple<String, String>(inviter.getUniqueId().toString(), invited.getUniqueId().toString()));
     }

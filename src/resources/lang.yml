@@ -74,9 +74,6 @@ action:
       joined: "The player %1 accepted your invite!"
       denying: "You denied the invite of %1"
       denied: "The player %1 denied your invite"
-      click:
-         invite-accept: "&aClick &6here&a to accept the invite"
-         invite-deny: "&cClick &6here&c to deny the invite"
    party:
       created: "Your party was successfully created!"
       created-help-follow: "Your party will follow you in every game you join"
@@ -106,9 +103,6 @@ action:
          already-invited: "You already invited the player %1"
          sent: "You successfully invited %1!"
          invited: "The player %1 invited you to his PvP-Party! Accept with /pvp party a %1, deny with /pvp party d %1"
-      click:
-         invite-accept: "&aClick &6here&a to accept the invite to %1's party"
-         invite-deny: "&cClick &6here&c to deny the invite to %1's party"
 
 ingame:
    joined: "You joined the arena %1"

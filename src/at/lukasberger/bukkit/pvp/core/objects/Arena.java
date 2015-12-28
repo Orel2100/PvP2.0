@@ -3,7 +3,7 @@ package at.lukasberger.bukkit.pvp.core.objects;
 import at.lukasberger.bukkit.pvp.PvP;
 import at.lukasberger.bukkit.pvp.core.ArenaManager;
 import at.lukasberger.bukkit.pvp.core.InGameManager;
-import at.lukasberger.bukkit.pvp.core.messages.MessageManager;
+import at.lukasberger.bukkit.pvp.core.MessageManager;
 import com.sk89q.worldedit.bukkit.selections.Selection;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;

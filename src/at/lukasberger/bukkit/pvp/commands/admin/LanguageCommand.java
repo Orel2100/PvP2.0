@@ -2,7 +2,7 @@ package at.lukasberger.bukkit.pvp.commands.admin;
 
 import at.lukasberger.bukkit.pvp.PvP;
 import at.lukasberger.bukkit.pvp.commands.AbstractSubCommand;
-import at.lukasberger.bukkit.pvp.core.messages.MessageManager;
+import at.lukasberger.bukkit.pvp.core.MessageManager;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 

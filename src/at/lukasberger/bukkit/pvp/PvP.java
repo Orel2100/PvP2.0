@@ -4,7 +4,7 @@ import at.lukasberger.bukkit.pvp.commands.SubCommandManager;
 import at.lukasberger.bukkit.pvp.commands.admin.*;
 import at.lukasberger.bukkit.pvp.commands.player.*;
 import at.lukasberger.bukkit.pvp.core.InGameManager;
-import at.lukasberger.bukkit.pvp.core.messages.MessageManager;
+import at.lukasberger.bukkit.pvp.core.MessageManager;
 import at.lukasberger.bukkit.pvp.core.objects.Config;
 import at.lukasberger.bukkit.pvp.events.inventory.*;
 import at.lukasberger.bukkit.pvp.events.player.*;

@@ -1,7 +1,7 @@
 package at.lukasberger.bukkit.pvp.commands;
 
 import at.lukasberger.bukkit.pvp.PvP;
-import at.lukasberger.bukkit.pvp.core.messages.MessageManager;
+import at.lukasberger.bukkit.pvp.core.MessageManager;
 import org.bukkit.command.CommandSender;
 
 import java.util.*;
