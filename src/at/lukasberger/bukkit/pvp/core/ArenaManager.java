@@ -11,7 +11,7 @@ public class ArenaManager
 {
 
     // lists
-    private static HashMap<String, Arena> arenas = new HashMap<>();
+    private HashMap<String, Arena> arenas = new HashMap<>();
 
     // instance
     public static ArenaManager instance = new ArenaManager();

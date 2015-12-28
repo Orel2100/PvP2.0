@@ -24,11 +24,11 @@ public class InGameManager
 {
 
     // lists
-    private static HashMap<String, String> currentPlayerArena = new HashMap<>();
-    private static HashMap<String, ItemStack[]> playerInventoryBeforeJoin = new HashMap<>();
-    private static HashMap<String, Location> playerLocationBeforeJoin = new HashMap<>();
-    private static HashMap<String, GameMode> playerGamemodeBeforeJoin = new HashMap<>();
-    private static List<String> playerTeleportStatus = new ArrayList<>();
+    private HashMap<String, String> currentPlayerArena = new HashMap<>();
+    private HashMap<String, ItemStack[]> playerInventoryBeforeJoin = new HashMap<>();
+    private HashMap<String, Location> playerLocationBeforeJoin = new HashMap<>();
+    private HashMap<String, GameMode> playerGamemodeBeforeJoin = new HashMap<>();
+    private List<String> playerTeleportStatus = new ArrayList<>();
 
     // instance
     public static InGameManager instance = new InGameManager();
@@ -66,6 +66,13 @@ public class InGameManager
         {
             p.sendMessage(PvP.successPrefix + MessageManager.instance.get("ingame.already-ingame", arenaName));
             return false;
+        }
+
+        // check if parties enabled
+        if(PvP.getInstance().getConfig().getBoolean("ingame.enable-parties"))
+        {
+            if(PartyManager.instance.isPartyLeader(p)) // teleport party-members to arena if leader joined
+                PartyManager.instance.memberMassJoin(p, arenaName);
         }
 
         // Load arena configuration and teleport player
@@ -144,10 +151,18 @@ public class InGameManager
     // removes the player from the arena and restores inventory/location
     public void leaveArena(Player p)
     {
+        // check if player is in an arena, return if not
         if(!currentPlayerArena.containsKey(p.getUniqueId().toString()))
         {
             p.sendMessage(PvP.successPrefix + MessageManager.instance.get("ingame.not-ingame"));
             return;
+        }
+
+        // check if parties enabled
+        if(PvP.getInstance().getConfig().getBoolean("ingame.enable-parties"))
+        {
+            if(PartyManager.instance.isPartyLeader(p)) // remove party-members from arena if leader left
+                PartyManager.instance.memberMassLeave(p);
         }
 
         // Retrieve inventory and location from lists

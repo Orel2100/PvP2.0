@@ -8,6 +8,7 @@ import at.lukasberger.bukkit.pvp.core.messages.MessageManager;
 import at.lukasberger.bukkit.pvp.core.objects.Config;
 import at.lukasberger.bukkit.pvp.events.inventory.*;
 import at.lukasberger.bukkit.pvp.events.player.*;
+import at.lukasberger.bukkit.pvp.events.player.party.*;
 import at.lukasberger.bukkit.pvp.events.world.*;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import org.bukkit.Bukkit;
@@ -88,6 +89,10 @@ public class PvP extends JavaPlugin
             SubCommandManager.instance.registerSubCommand(new InviteAcceptCommand(), "accept", "a");
             SubCommandManager.instance.registerSubCommand(new InviteDenyCommand(), "deny", "d");
         }
+        if(this.getConfig().getBoolean("ingame.enable-parties"))
+        {
+            SubCommandManager.instance.registerSubCommand(new InviteCommand(), "party", "p");
+        }
         SubCommandManager.instance.registerSubCommand(new ArenaCommand(), "arena");
         SubCommandManager.instance.registerSubCommand(new KitCommand(), "kit");
         SubCommandManager.instance.registerSubCommand(new LanguageCommand(), "lang", "language");
@@ -109,6 +114,7 @@ public class PvP extends JavaPlugin
         this.getServer().getPluginManager().registerEvents(new PvPPlayerMoveEvent(), this);
         this.getServer().getPluginManager().registerEvents(new PvPPlayerTeleportEvent(), this);
         this.getServer().getPluginManager().registerEvents(new PvPPlayerToggleFlightEvent(), this);
+        this.getServer().getPluginManager().registerEvents(new PvPPartyPlayerQuitEvent(), this);
 
         // world
         this.getServer().getPluginManager().registerEvents(new PvPBlockBreakEvent(), this);
@@ -143,7 +149,7 @@ public class PvP extends JavaPlugin
         {
             if(args.length == 0)
             {
-                sender.sendMessage(ChatColor.AQUA.toString() + ChatColor.AQUA + "PvP 2.0 v" + getDescription().getVersion() + " - The new PvP experience");
+                sender.sendMessage(ChatColor.AQUA.toString() + ChatColor.AQUA + "PvP 2.0 v" + getDescription().getVersion() + " - The new PvP-Plugin");
             }
             else
             {

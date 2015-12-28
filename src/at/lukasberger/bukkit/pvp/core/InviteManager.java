@@ -17,7 +17,7 @@ public class InviteManager
 {
 
     // lists
-    private static List<MapTuple<String, String>> invites = new ArrayList<>();
+    private List<MapTuple<String, String>> invites = new ArrayList<>();
 
     // instance
     public static InviteManager instance = new InviteManager();
@@ -33,6 +33,12 @@ public class InviteManager
         if(!InGameManager.instance.isPlayerIngame(inviter))
         {
             inviter.sendMessage(PvP.errorPrefix + MessageManager.instance.get("action.invite.not-ingame"));
+            return;
+        }
+
+        if(invited == null || !invited.isOnline())
+        {
+            inviter.sendMessage(PvP.errorPrefix + MessageManager.instance.get("action.invite.not-online"));
             return;
         }
 
@@ -67,6 +73,12 @@ public class InviteManager
         MapTupleUtils<String, String> tupleUtils = new MapTupleUtils<>();
         Player inviter = PvP.getInstance().getServer().getPlayer(inviterName);
 
+        if(inviter == null || !inviter.isOnline())
+        {
+            inviter.sendMessage(PvP.errorPrefix + MessageManager.instance.get("action.party.invite.not-online-anymore"));
+            return;
+        }
+
         if(!tupleUtils.containsKey(invites, inviter.getUniqueId().toString()) || !tupleUtils.containsTuple(invites, inviter.getUniqueId().toString(), invited.getUniqueId().toString()))
         {
             inviter.sendMessage(PvP.errorPrefix + MessageManager.instance.get("action.invite.not-invited", inviter.getName()));
@@ -86,6 +98,12 @@ public class InviteManager
     {
         MapTupleUtils<String, String> tupleUtils = new MapTupleUtils<>();
         Player inviter = PvP.getInstance().getServer().getPlayer(inviterName);
+
+        if(inviter == null || !inviter.isOnline())
+        {
+            inviter.sendMessage(PvP.errorPrefix + MessageManager.instance.get("action.party.invite.not-online-anymore"));
+            return;
+        }
 
         if(!tupleUtils.containsKey(invites, inviter.getUniqueId().toString()) || !tupleUtils.containsTuple(invites, inviter.getUniqueId().toString(), invited.getUniqueId().toString()))
         {

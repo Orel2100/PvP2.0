@@ -4,6 +4,7 @@ ingame:
   show-death-screen: false
   fall-damage: false
   enable-invites: true
+  enable-parties: true
   block:
     break: false
     place: false

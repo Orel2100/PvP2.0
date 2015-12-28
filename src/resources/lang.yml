@@ -15,6 +15,13 @@ commands:
          delitem: "Removes the item in the given slot from kit with the given name"
          delete: "Delete the kit with the given name"
          costs: "Changes the money you need for the given kit"
+      party:
+         create: "Creates your party"
+         delete: "Deletes your party"
+         invite: "Invites the player to your party"
+         accept: "Accepts the invitation of the player to the party"
+         deny: "Denies the invitation of the player to the party"
+         leader: "Sets the given player to the new party-leader"
       language:
          set: "Sets the default language"
       join: "Joining the given arena"
@@ -55,6 +62,8 @@ action:
       changed: "The default language was set to %1"
    invite:
       not-ingame: "You need to be in an arena to invite someone"
+      not-online: "The player you want to invite is not online"
+      not-online-anymore: "The player which invited you is not online anymore"
       already-invited: "You already invited the player %1"
       invited-ingame: "The player %1 is already ingame"
       other-invited: "The other player already invited you! Accept with /pvp a %1"
@@ -65,6 +74,35 @@ action:
       joined: "The player %1 accepted your invite!"
       denying: "You denied the invite of %1"
       denied: "The player %1 denied your invite"
+   party:
+      created: "Your party was successfully created!"
+      created-help-follow: "Your party will follow you in every game you join"
+      created-help-invite: "Invite a player using &7/pvp party invite [Player]"
+      created-help-leader: "Set a new party-leader using &7/pvp party leader [Player]"
+      invited: "You invited %1 to your party!"
+      invitation: "%1 invites you to the party, accept with &7/pvp party accept"
+      accept: "&7You join the party of&6 %1"
+      accept-announce: "&6%1&7 joined the party"
+      denied: "&7You denied the invitation to the party of &6%1"
+      denied-leader: "&6%1&7 denied the invitation to your party"
+      leave: "&7You left the party"
+      leave-announce: "&6%1&7 left the party"
+      leader-old: "%1 is the new leader to the party"
+      leader-new: "You are now leader of %1's party"
+      deleted-member: "%1 deleted the party. You can join any other party now!"
+      deleted-leader: "You deleted your party!"
+      joined-game: "Your party joined the arena %1"
+      left-game: "Your party left the arena"
+      error:
+         not-in-party: "You are not in a party"
+         player-not-in-party: "%1 is not in the party"
+         not-leader: "You are not the leader of your current party"
+      invite:
+         not-ingame: "You need to be in an arena to invite someone"
+         not-online: "The player you want to invite is not online"
+         already-invited: "You already invited the player %1"
+         sent: "You successfully invited %1!"
+         invited: "The player %1 invited you to his PvP-Party! Accept with /pvp party a %1, deny with /pvp party d %1"
 
 ingame:
    joined: "You joined the arena %1"

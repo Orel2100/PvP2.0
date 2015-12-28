@@ -16,7 +16,7 @@ public class PlayerManager
 {
 
     // lists
-    private static HashMap<String, PvPPlayer> players = new HashMap<>();
+    private HashMap<String, PvPPlayer> players = new HashMap<>();
 
     // instance
     public static PlayerManager instance = new PlayerManager();
