@@ -3,7 +3,6 @@ package at.lukasberger.bukkit.pvp.commands.player;
 import at.lukasberger.bukkit.pvp.commands.AbstractSubCommand;
 import at.lukasberger.bukkit.pvp.core.InGameManager;
 import at.lukasberger.bukkit.pvp.core.messages.MessageManager;
-import at.lukasberger.bukkit.pvp.core.objects.Arena;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;

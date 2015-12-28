@@ -7,7 +7,6 @@ import at.lukasberger.bukkit.pvp.core.messages.MessageManager;
 import com.sk89q.worldedit.bukkit.selections.Selection;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 

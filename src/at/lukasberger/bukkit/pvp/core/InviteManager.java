@@ -2,12 +2,9 @@ package at.lukasberger.bukkit.pvp.core;
 
 import at.lukasberger.bukkit.pvp.PvP;
 import at.lukasberger.bukkit.pvp.core.messages.MessageManager;
-import at.lukasberger.bukkit.pvp.core.objects.PvPPlayer;
 import at.lukasberger.bukkit.pvp.utils.MapTuple;
 import at.lukasberger.bukkit.pvp.utils.MapTupleUtils;
 import net.md_5.bungee.api.chat.TextComponent;
-import net.md_5.bungee.chat.TextComponentSerializer;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;

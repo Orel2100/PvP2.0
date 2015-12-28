@@ -1,10 +1,8 @@
 package at.lukasberger.bukkit.pvp.core;
 
-import at.lukasberger.bukkit.pvp.core.objects.Arena;
 import at.lukasberger.bukkit.pvp.core.objects.PvPPlayer;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.HashMap;
