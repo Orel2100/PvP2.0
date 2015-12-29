@@ -32,6 +32,10 @@ public class PartyCommand extends AbstractSubCommand
             {
                 PartyManager.instance.delete((Player) sender);
             }
+            else if(args[0].equalsIgnoreCase("leave") || args[0].equalsIgnoreCase("l"))
+            {
+                PartyManager.instance.leave((Player) sender);
+            }
             else
             {
                 printHelp(sender);

@@ -24,6 +24,17 @@ ingame:
       - ' '
       - '&7Kills: &a{PVPKILLS}'
       - '&7Deaths: &c{PVPDEATHS}'
+  commands:
+    block: true
+    override:
+      op: true
+      perm: true
+    whitelist:
+      - 'pvp'
+      - 'help'
+      - 'msg'
+      - 'w'
+      - 'whisper'
 gadgets:
   grenades:
     enable: true

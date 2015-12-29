@@ -89,18 +89,22 @@ public class PvP extends JavaPlugin
         }
 
         this.getLogger().info("Loading sub-commands...");
+
+        // Player-Commands
         SubCommandManager.instance.registerSubCommand(new JoinCommand(), "join", "j");
         SubCommandManager.instance.registerSubCommand(new LeaveCommand(), "leave", "l");
+
         if(this.getConfig().getBoolean("ingame.enable-invites"))
         {
             SubCommandManager.instance.registerSubCommand(new InviteCommand(), "invite", "i");
             SubCommandManager.instance.registerSubCommand(new InviteAcceptCommand(), "accept", "a");
             SubCommandManager.instance.registerSubCommand(new InviteDenyCommand(), "deny", "d");
         }
+
         if(this.getConfig().getBoolean("ingame.enable-parties"))
-        {
             SubCommandManager.instance.registerSubCommand(new PartyCommand(), "party", "p");
-        }
+
+        // Admins-Commands
         SubCommandManager.instance.registerSubCommand(new ArenaCommand(), "arena");
         SubCommandManager.instance.registerSubCommand(new KitCommand(), "kit");
         SubCommandManager.instance.registerSubCommand(new LanguageCommand(), "lang", "language");
