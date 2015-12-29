@@ -199,9 +199,7 @@ public class InGameManager
     public void leaveArenaAll()
     {
         for(String pl : currentPlayerArena.keySet())
-        {
             leaveArena(Bukkit.getPlayer(UUID.fromString(pl)));
-        }
     }
 
 }

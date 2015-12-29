@@ -50,10 +50,13 @@ public class PlayerManager
     public void unloadAllPlayers()
     {
         for(String key : players.keySet())
+        {
+            getPlayer(key).save();
             players.remove(key);
+        }
     }
 
-    // completely deletes the player(-statistiks)
+    // completely deletes the player(-statistics)
     public void deletePlayer(String pl)
     {
         PvPPlayer a = players.get(pl);

@@ -378,4 +378,22 @@ public class PartyManager
         return membersToParty.containsKey(p.getUniqueId().toString()) && membersToParty.get(p.getUniqueId().toString()) == id;
     }
 
+    // removes all parties, invites etc.
+    public void removeAll()
+    {
+        for(String playerName : membersToParty.keySet())
+            leave(PvP.getInstance().getServer().getPlayer(UUID.fromString(playerName)));
+
+        for(String playerName : leaderToParty.keySet())
+            leave(PvP.getInstance().getServer().getPlayer(UUID.fromString(playerName)));
+
+        membersToParty.clear();
+        leaderToParty.clear();
+        partyToLeader.clear();
+        partyIds.clear();
+        invites.clear();
+
+        staticCounter = 0L;
+    }
+
 }

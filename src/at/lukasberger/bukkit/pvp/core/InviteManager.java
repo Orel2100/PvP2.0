@@ -26,6 +26,12 @@ public class InviteManager
     // disallow creation of other instances
     private InviteManager() { }
 
+    // removes all invites
+    public void removeAll()
+    {
+        invites.clear();
+    }
+
     // sends an invitation
     public void invite(Player inviter, String invitedName)
     {

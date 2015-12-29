@@ -108,6 +108,8 @@ public class PvP extends JavaPlugin
         SubCommandManager.instance.registerSubCommand(new ArenaCommand(), "arena");
         SubCommandManager.instance.registerSubCommand(new KitCommand(), "kit");
         SubCommandManager.instance.registerSubCommand(new LanguageCommand(), "lang", "language");
+        SubCommandManager.instance.registerSubCommand(new ReloadCommand(), "reload");
+        SubCommandManager.instance.registerSubCommand(new FullReloadCommand(), "fullreload");
 
         this.getLogger().info("Registering events...");
 
