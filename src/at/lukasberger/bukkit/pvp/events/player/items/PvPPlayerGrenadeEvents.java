@@ -2,6 +2,7 @@ package at.lukasberger.bukkit.pvp.events.player.items;
 
 import at.lukasberger.bukkit.pvp.PvP;
 import at.lukasberger.bukkit.pvp.core.InGameManager;
+import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -36,6 +37,10 @@ public class PvPPlayerGrenadeEvents implements Listener
 
         // checks if a item is available
         if(!e.hasItem())
+            return;
+
+        // checks if a item is grenade-item
+        if(e.getItem().getType() != Material.EGG)
             return;
 
         ItemStack item = e.getItem();

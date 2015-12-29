@@ -127,6 +127,7 @@ public class PvP extends JavaPlugin
         this.getServer().getPluginManager().registerEvents(new PvPPlayerTeleportEvent(), this);
         this.getServer().getPluginManager().registerEvents(new PvPPlayerToggleFlightEvent(), this);
         this.getServer().getPluginManager().registerEvents(new PvPPlayerQuitEvent(), this);
+        this.getServer().getPluginManager().registerEvents(new PvPPlayerCommandPreprocessEvent(), this);
         this.getServer().getPluginManager().registerEvents(new PvPPartyPlayerQuitEvent(), this);
         this.getServer().getPluginManager().registerEvents(new PvPPlayerGrenadeEvents(), this);
 

@@ -33,8 +33,7 @@ ingame:
       - 'pvp'
       - 'help'
       - 'msg'
-      - 'w'
-      - 'whisper'
+      - 'w*'
 gadgets:
   grenades:
     enable: true
