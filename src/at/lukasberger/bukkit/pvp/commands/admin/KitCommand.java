@@ -178,12 +178,12 @@ public class KitCommand extends AbstractSubCommand
 
     private void printHelp(CommandSender sender)
     {
-        sender.sendMessage(ChatColor.AQUA + "~~~ PvP-Admin: Arena ~~~");
-        sender.sendMessage(ChatColor.GRAY + "/pvp kit {Name} create\n" + ChatColor.GREEN + MessageManager.instance.get("commands.help.kit.create"));
-        sender.sendMessage(ChatColor.GRAY + "/pvp kit {Name} add\n" + ChatColor.GREEN + MessageManager.instance.get("commands.help.kit.additem"));
-        sender.sendMessage(ChatColor.GRAY + "/pvp kit {Name} del\n" + ChatColor.GREEN + MessageManager.instance.get("commands.help.kit.delitem"));
-        sender.sendMessage(ChatColor.GRAY + "/pvp kit {Name} delete\n" + ChatColor.GREEN + MessageManager.instance.get("commands.help.kit.delete"));
-        sender.sendMessage(ChatColor.GRAY + "/pvp kit {Name} costs\n" + ChatColor.GREEN + MessageManager.instance.get("commands.help.kit.costs"));
+        sender.sendMessage(ChatColor.AQUA + "~~~ PvP-Admin: Kits-Admin ~~~");
+        sender.sendMessage(ChatColor.GRAY + "/pvp kita {Name} create\n" + ChatColor.GREEN + MessageManager.instance.get("commands.help.kit.create"));
+        sender.sendMessage(ChatColor.GRAY + "/pvp kita {Name} add\n" + ChatColor.GREEN + MessageManager.instance.get("commands.help.kit.additem"));
+        sender.sendMessage(ChatColor.GRAY + "/pvp kita {Name} del\n" + ChatColor.GREEN + MessageManager.instance.get("commands.help.kit.delitem"));
+        sender.sendMessage(ChatColor.GRAY + "/pvp kita {Name} delete\n" + ChatColor.GREEN + MessageManager.instance.get("commands.help.kit.delete"));
+        sender.sendMessage(ChatColor.GRAY + "/pvp kita {Name} costs\n" + ChatColor.GREEN + MessageManager.instance.get("commands.help.kit.costs"));
     }
 
     @Override

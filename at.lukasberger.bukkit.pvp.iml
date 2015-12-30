@@ -9,5 +9,6 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="Spigot-Server" level="project" />
     <orderEntry type="library" name="worldedit-bukkit-6.0" level="project" />
+    <orderEntry type="library" name="Vault" level="project" />
   </component>
 </module>

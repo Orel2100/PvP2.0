@@ -170,7 +170,7 @@ public class PvPPlayer
     {
         return player;
     }
-    
+
     // changes the current kit in the configuration
     public PvPPlayer changeKit(String newKit)
     {
@@ -189,17 +189,14 @@ public class PvPPlayer
 
     public PvPPlayer giveCurrentKit()
     {
-
         String kit = playerConfig.config.getString("kits.current", "default");
 
         if(kit.equalsIgnoreCase(""))
             kit = "default";
 
-        PvP.getInstance().getLogger().info("Kit for " + player.getName() + ": " + "kits." + kit);
-
         if(!PvP.getInstance().getConfig().contains("kits." + kit))
         {
-            playerConfig.config.set("kits.current", "default"); // set kit to default
+            changeKit("default"); // set kit to default
             this.save();
 
             return giveCurrentKit();

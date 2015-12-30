@@ -12,10 +12,12 @@ import at.lukasberger.bukkit.pvp.events.player.items.*;
 import at.lukasberger.bukkit.pvp.events.player.party.*;
 import at.lukasberger.bukkit.pvp.events.world.*;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
+import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Arrays;
@@ -42,6 +44,7 @@ public class PvP extends JavaPlugin
 
     // Instances from dependencies
     public static WorldEditPlugin worldEdit = (WorldEditPlugin)Bukkit.getPluginManager().getPlugin("WorldEdit");
+    public static Economy economy = null;
 
     @Override
     public void onEnable()
@@ -65,6 +68,18 @@ public class PvP extends JavaPlugin
         }
 
         currentConfig.delete();
+
+        // vault
+        RegisteredServiceProvider<Economy> economyProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.economy.Economy.class);
+        if (economyProvider != null)
+            economy = economyProvider.getProvider();
+
+        if(economy == null)
+        {
+            this.getServer().getLogger().severe("FAILED TO LOAD VAULT-ECONOMY, DISABLING PLUGIN...!");
+            this.getPluginLoader().disablePlugin(this);
+        }
+
 
         // they need to be fixed
         this.getConfig().set("gadgets.grenades.item", "EGG");
@@ -106,7 +121,7 @@ public class PvP extends JavaPlugin
 
         // Admins-Commands
         SubCommandManager.instance.registerSubCommand(new ArenaCommand(), "arena");
-        SubCommandManager.instance.registerSubCommand(new KitCommand(), "kit");
+        SubCommandManager.instance.registerSubCommand(new KitCommand(), "kita");
         SubCommandManager.instance.registerSubCommand(new LanguageCommand(), "lang", "language");
         SubCommandManager.instance.registerSubCommand(new ReloadCommand(), "reload");
         SubCommandManager.instance.registerSubCommand(new FullReloadCommand(), "fullreload");

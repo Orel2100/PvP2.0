@@ -15,6 +15,7 @@ commands:
          delitem: "Removes the item in the given slot from kit with the given name"
          delete: "Delete the kit with the given name"
          costs: "Changes the money you need for the given kit"
+         buy: "Buys the given kit (\"default\" for the default kit)"
       party:
          create: "Creates your party"
          delete: "Deletes your party"
@@ -57,6 +58,17 @@ action:
       created-help-delitem: "Removing the given slot with &7/pvp kit %1 del [Slot]&b to the kit"
       created-help-setcosts: "Set the needed money for this kit using &7/pvp kit %1 costs [Money]"
       created-help-delete: "Removing the complete kit using &7/pvp kit %1 remove"
+      player:
+         default: "You got the default kit"
+         changed: "You bought the kit %1. You can change to this kit without paying for it!"
+         failed-take: "Something failed while buying the kit. Be sure that you can afford the kit..."
+         failed-give: "Something failed while buying the kit. "
+         not-existing: "The kit %1 does not exists."
+         economy:
+            money-take: "%1 %2 were withdrawn from your account for buying the kit %1"
+            money-give: "%1 %2 were deposited to your account for buying the kit %1"
+            no-account: "You don't have an economy-account on this server."
+            not-enough-money: "You don't have enough money to buy this kit."
    language:
       not-existing: "The given language does not exist"
       changed: "The default language was set to %1"
