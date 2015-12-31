@@ -1,4 +1,5 @@
 language: 'en'
+player-language: true
 
 ingame:
   show-death-screen: false

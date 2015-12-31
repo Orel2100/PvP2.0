@@ -39,10 +39,10 @@ public class PartyManager
         partyToLeader.put(staticCounter, leader.getUniqueId().toString());
 
         // send messages
-        leader.sendMessage(PvP.successPrefix + MessageManager.instance.get("action.party.created"));
-        leader.sendMessage(ChatColor.GREEN + MessageManager.instance.get("action.party.created-help-follow"));
-        leader.sendMessage(ChatColor.GREEN + MessageManager.instance.get("action.party.created-help-invite"));
-        leader.sendMessage(ChatColor.GREEN + MessageManager.instance.get("action.party.created-help-leader"));
+        leader.sendMessage(PvP.successPrefix + MessageManager.instance.get(leader, "action.party.created"));
+        leader.sendMessage(ChatColor.GREEN + MessageManager.instance.get(leader, "action.party.created-help-follow"));
+        leader.sendMessage(ChatColor.GREEN + MessageManager.instance.get(leader, "action.party.created-help-invite"));
+        leader.sendMessage(ChatColor.GREEN + MessageManager.instance.get(leader, "action.party.created-help-leader"));
 
         // non-decrementing id-counter
         staticCounter++;
@@ -57,14 +57,14 @@ public class PartyManager
         // check if the player is in a party
         if(leaderPartyID == -1)
         {
-            leader.sendMessage(PvP.errorPrefix + MessageManager.instance.get("action.party.error.not-in-party"));
+            leader.sendMessage(PvP.errorPrefix + MessageManager.instance.get(leader, "action.party.error.not-in-party"));
             return;
         }
 
         // check if the player is the leader
         if(!isPartyLeader(leader))
         {
-            leader.sendMessage(PvP.errorPrefix + MessageManager.instance.get("action.party.error.not-leader"));
+            leader.sendMessage(PvP.errorPrefix + MessageManager.instance.get(leader, "action.party.error.not-leader"));
             return;
         }
 
@@ -79,7 +79,7 @@ public class PartyManager
                 // remove player from party
                 membersToParty.remove(memberEntry.getKey());
                 // send message
-                member.sendMessage(PvP.warningPrefix + MessageManager.instance.get("action.party.deleted-member", leader.getName()));
+                member.sendMessage(PvP.warningPrefix + MessageManager.instance.get(member, "action.party.deleted-member", leader.getName()));
             }
         }
 
@@ -88,7 +88,7 @@ public class PartyManager
         leaderToParty.remove(leader.getUniqueId().toString());
         partyToLeader.remove(leaderPartyID);
 
-        leader.sendMessage(PvP.successPrefix + MessageManager.instance.get("action.party.deleted-leader"));
+        leader.sendMessage(PvP.successPrefix + MessageManager.instance.get(leader, "action.party.deleted-leader"));
     }
 
     // changes the leader of the party of the given player
@@ -103,21 +103,21 @@ public class PartyManager
         // check if the player is in a party
         if(currLeaderPartyID == -1)
         {
-            currLeader.sendMessage(PvP.errorPrefix + MessageManager.instance.get("action.party.error.not-in-party"));
+            currLeader.sendMessage(PvP.errorPrefix + MessageManager.instance.get(currLeader, "action.party.error.not-in-party"));
             return;
         }
 
         // check if the player is the leader
         if(!isPartyLeader(currLeader))
         {
-            currLeader.sendMessage(PvP.errorPrefix + MessageManager.instance.get("action.party.error.not-leader"));
+            currLeader.sendMessage(PvP.errorPrefix + MessageManager.instance.get(currLeader, "action.party.error.not-leader"));
             return;
         }
 
         // check if the new leader is in the same party
         if(newLeaderPartyID == -1 || newLeaderPartyID != currLeaderPartyID)
         {
-            currLeader.sendMessage(PvP.errorPrefix + MessageManager.instance.get("action.party.error.player-not-in-party", newLeader.getName()));
+            currLeader.sendMessage(PvP.errorPrefix + MessageManager.instance.get(currLeader, "action.party.error.player-not-in-party", newLeader.getName()));
             return;
         }
 
@@ -133,13 +133,13 @@ public class PartyManager
         partyToLeader.put(currLeaderPartyID, newLeader.getUniqueId().toString());
 
         // send info-messages to old leader
-        currLeader.sendMessage(PvP.successPrefix + MessageManager.instance.get("action.party.leader-old", newLeader.getName()));
+        currLeader.sendMessage(PvP.successPrefix + MessageManager.instance.get(currLeader, "action.party.leader-old", newLeader.getName()));
 
         // send info-messages to new leader
-        newLeader.sendMessage(PvP.successPrefix + MessageManager.instance.get("action.party.leader-new", currLeader.getName()));
-        newLeader.sendMessage(ChatColor.GREEN + MessageManager.instance.get("action.party.created-help-follow"));
-        newLeader.sendMessage(ChatColor.GREEN + MessageManager.instance.get("action.party.created-help-invite"));
-        newLeader.sendMessage(ChatColor.GREEN + MessageManager.instance.get("action.party.created-help-leader"));
+        newLeader.sendMessage(PvP.successPrefix + MessageManager.instance.get(newLeader, "action.party.leader-new", currLeader.getName()));
+        newLeader.sendMessage(ChatColor.GREEN + MessageManager.instance.get(newLeader, "action.party.created-help-follow"));
+        newLeader.sendMessage(ChatColor.GREEN + MessageManager.instance.get(newLeader, "action.party.created-help-invite"));
+        newLeader.sendMessage(ChatColor.GREEN + MessageManager.instance.get(newLeader, "action.party.created-help-leader"));
     }
 
     // invites the given player to the party of the leader
@@ -151,7 +151,7 @@ public class PartyManager
         // check if the player is online
         if(invited == null || !invited.isOnline())
         {
-            inviter.sendMessage(PvP.errorPrefix + MessageManager.instance.get("action.party.invite.not-online"));
+            inviter.sendMessage(PvP.errorPrefix + MessageManager.instance.get(inviter, "action.party.invite.not-online"));
             return;
         }
 
@@ -159,20 +159,20 @@ public class PartyManager
         if(tupleUtils.containsKey(invites, inviter.getUniqueId().toString()) &&
                 tupleUtils.containsTuple(invites, inviter.getUniqueId().toString(), invited.getUniqueId().toString()))
         {
-            inviter.sendMessage(PvP.errorPrefix + MessageManager.instance.get("action.party.invite.already-invited", invited.getName()));
+            inviter.sendMessage(PvP.errorPrefix + MessageManager.instance.get(inviter, "action.party.invite.already-invited", invited.getName()));
             return;
         }
 
         // checks if the player is already in a party
         if(membersToParty.containsKey(invited.getUniqueId().toString()))
         {
-            inviter.sendMessage(PvP.errorPrefix + MessageManager.instance.get("action.party.invite.already-in-party", invited.getName()));
+            inviter.sendMessage(PvP.errorPrefix + MessageManager.instance.get(inviter, "action.party.invite.already-in-party", invited.getName()));
             return;
         }
 
         // send basic messages
-        inviter.sendMessage(PvP.successPrefix + MessageManager.instance.get("action.party.invite.sent", invited.getName()));
-        invited.sendMessage(PvP.warningPrefix + MessageManager.instance.get("action.party.invite.invited", inviter.getName()));
+        inviter.sendMessage(PvP.successPrefix + MessageManager.instance.get(inviter, "action.party.invite.sent", invited.getName()));
+        invited.sendMessage(PvP.warningPrefix + MessageManager.instance.get(invited, "action.party.invite.invited", inviter.getName()));
 
         // create interactive messages using Spigot Chat Components
         TextComponent inviteAcceptComponent = new TextComponent();
@@ -204,7 +204,7 @@ public class PartyManager
         // check if the player is invited
         if(!tupleUtils.containsKey(invites, inviter.getUniqueId().toString()) || !tupleUtils.containsTuple(invites, inviter.getUniqueId().toString(), invited.getUniqueId().toString()))
         {
-            inviter.sendMessage(PvP.errorPrefix + MessageManager.instance.get("action.party.invite.not-invited", inviter.getName()));
+            inviter.sendMessage(PvP.errorPrefix + MessageManager.instance.get(inviter, "action.party.invite.not-invited", inviter.getName()));
             return;
         }
 
@@ -219,13 +219,13 @@ public class PartyManager
                 Player member_ = PvP.getInstance().getServer().getPlayer(UUID.fromString(memberEntry.getKey()));
 
                 // notify members about the new player
-                member_.sendMessage(PvP.prefix + MessageManager.instance.get("action.party.accept-announce", invited.getName()));
+                member_.sendMessage(PvP.prefix + MessageManager.instance.get(member_, "action.party.accept-announce", invited.getName()));
             }
         }
 
         // send basic messages
-        invited.sendMessage(PvP.prefix + MessageManager.instance.get("action.party.accept", inviter.getName()));
-        inviter.sendMessage(PvP.prefix + MessageManager.instance.get("action.party.accept-announce", invited.getName()));
+        invited.sendMessage(PvP.prefix + MessageManager.instance.get(invited, "action.party.accept", inviter.getName()));
+        inviter.sendMessage(PvP.prefix + MessageManager.instance.get(inviter, "action.party.accept-announce", invited.getName()));
 
         // update lists
         membersToParty.put(invited.getUniqueId().toString(), partyID);
@@ -240,13 +240,13 @@ public class PartyManager
 
         if(!tupleUtils.containsKey(invites, inviter.getUniqueId().toString()) || !tupleUtils.containsTuple(invites, inviter.getUniqueId().toString(), invited.getUniqueId().toString()))
         {
-            inviter.sendMessage(PvP.errorPrefix + MessageManager.instance.get("action.party.invite.not-invited", inviter.getName()));
+            inviter.sendMessage(PvP.errorPrefix + MessageManager.instance.get(inviter, "action.party.invite.not-invited", inviter.getName()));
             return;
         }
 
         // send basic messages
-        invited.sendMessage(PvP.prefix + MessageManager.instance.get("action.party.denied", inviter.getName()));
-        inviter.sendMessage(PvP.prefix + MessageManager.instance.get("action.party.denied-leader", invited.getName()));
+        invited.sendMessage(PvP.prefix + MessageManager.instance.get(invited, "action.party.denied", inviter.getName()));
+        inviter.sendMessage(PvP.prefix + MessageManager.instance.get(inviter, "action.party.denied-leader", invited.getName()));
 
         // update lists
         tupleUtils.removeTuple(invites, inviter.getUniqueId().toString(), invited.getUniqueId().toString());
@@ -267,12 +267,12 @@ public class PartyManager
                 Player member_ = PvP.getInstance().getServer().getPlayer(UUID.fromString(memberEntry.getKey()));
 
                 // notify members about leaving of the member
-                member_.sendMessage(PvP.prefix + MessageManager.instance.get("action.party.leave-announce", member.getName()));
+                member_.sendMessage(PvP.prefix + MessageManager.instance.get(member_, "action.party.leave-announce", member.getName()));
             }
         }
 
         // send basic messages
-        member.sendMessage(PvP.prefix + MessageManager.instance.get("action.party.leave"));
+        member.sendMessage(PvP.prefix + MessageManager.instance.get(member, "action.party.leave"));
 
         // update lists
         membersToParty.remove(member.getUniqueId().toString());
@@ -287,14 +287,14 @@ public class PartyManager
         // check if the player is in a party
         if(partyID == -1)
         {
-            leader.sendMessage(PvP.errorPrefix + MessageManager.instance.get("action.party.error.not-in-party"));
+            leader.sendMessage(PvP.errorPrefix + MessageManager.instance.get(leader, "action.party.error.not-in-party"));
             return;
         }
 
         // check if the player is the leader
         if(!isPartyLeader(leader))
         {
-            leader.sendMessage(PvP.errorPrefix + MessageManager.instance.get("action.party.error.not-leader"));
+            leader.sendMessage(PvP.errorPrefix + MessageManager.instance.get(leader, "action.party.error.not-leader"));
             return;
         }
 
@@ -308,7 +308,7 @@ public class PartyManager
 
                 // send the player to the arena
                 InGameManager.instance.joinArena(member, arena);
-                member.sendMessage(PvP.prefix + MessageManager.instance.get("action.party.joined-game", arena));
+                member.sendMessage(PvP.prefix + MessageManager.instance.get(member, "action.party.joined-game", arena));
             }
         }
     }
@@ -322,14 +322,14 @@ public class PartyManager
         // check if the player is in a party
         if(partyID == -1)
         {
-            leader.sendMessage(PvP.errorPrefix + MessageManager.instance.get("action.party.error.not-in-party"));
+            leader.sendMessage(PvP.errorPrefix + MessageManager.instance.get(leader, "action.party.error.not-in-party"));
             return;
         }
 
         // check if the player is the leader
         if(!isPartyLeader(leader))
         {
-            leader.sendMessage(PvP.errorPrefix + MessageManager.instance.get("action.party.error.not-leader"));
+            leader.sendMessage(PvP.errorPrefix + MessageManager.instance.get(leader, "action.party.error.not-leader"));
             return;
         }
 
@@ -343,7 +343,7 @@ public class PartyManager
 
                 // throw player out of the arena
                 InGameManager.instance.leaveArena(member);
-                member.sendMessage(PvP.prefix + MessageManager.instance.get("action.party.left-game"));
+                member.sendMessage(PvP.prefix + MessageManager.instance.get(member, "action.party.left-game"));
             }
         }
     }

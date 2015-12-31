@@ -29,7 +29,7 @@ public class JoinCommand extends AbstractSubCommand
         else
         {
             sender.sendMessage(ChatColor.AQUA + "~~~ PvP: Join ~~~");
-            sender.sendMessage(ChatColor.GRAY + "/pvp join/j {Arena}\n" + ChatColor.GREEN + MessageManager.instance.get("commands.help.join"));
+            sender.sendMessage(ChatColor.GRAY + "/pvp join/j {Arena}\n" + ChatColor.GREEN + MessageManager.instance.get(sender, "commands.help.join"));
         }
     }
 

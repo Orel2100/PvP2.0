@@ -32,7 +32,7 @@ public class PlayerKitCommand extends AbstractSubCommand
 
             if(kit.equalsIgnoreCase("default"))
             {
-                sender.sendMessage(PvP.successPrefix + MessageManager.instance.get("action.kit.player.default"));
+                sender.sendMessage(PvP.successPrefix + MessageManager.instance.get(sender, "action.kit.player.default"));
                 InGameManager.instance.getPlayer((Player)sender).changeKit("default");
             }
             else
@@ -41,7 +41,7 @@ public class PlayerKitCommand extends AbstractSubCommand
 
                 if(!existsingKits.contains(kit))
                 {
-                    sender.sendMessage(PvP.errorPrefix + MessageManager.instance.get("action.kit.player.not-existing", kit));
+                    sender.sendMessage(PvP.errorPrefix + MessageManager.instance.get(sender, "action.kit.player.not-existing", kit));
                     return;
                 }
 
@@ -56,32 +56,32 @@ public class PlayerKitCommand extends AbstractSubCommand
                 {
                     if(!PvP.economy.hasAccount(p))
                     {
-                        sender.sendMessage(PvP.warningPrefix + MessageManager.instance.get("action.kit.player.economy.no-account"));
+                        sender.sendMessage(PvP.warningPrefix + MessageManager.instance.get(sender, "action.kit.player.economy.no-account"));
                         transactionSuccessfully = false;
                     }
 
                     PvP.economy.depositPlayer(p, costs);
 
-                    sender.sendMessage(PvP.warningPrefix + MessageManager.instance.get("action.kit.player.economy.money-give", costs, currenyName, kit));
+                    sender.sendMessage(PvP.warningPrefix + MessageManager.instance.get(sender, "action.kit.player.economy.money-give", costs, currenyName, kit));
                     transactionSuccessfully = true;
                 }
                 else if(costs > 0) // postive amounts: take money from player
                 {
                     if(!PvP.economy.hasAccount(p))
                     {
-                        sender.sendMessage(PvP.warningPrefix + MessageManager.instance.get("action.kit.player.economy.no-account"));
+                        sender.sendMessage(PvP.warningPrefix + MessageManager.instance.get(sender, "action.kit.player.economy.no-account"));
                         transactionSuccessfully = false;
                     }
 
                     if(!PvP.economy.has(p, costs))
                     {
-                        sender.sendMessage(PvP.warningPrefix + MessageManager.instance.get("action.kit.player.economy.not-enough-money"));
+                        sender.sendMessage(PvP.warningPrefix + MessageManager.instance.get(sender, "action.kit.player.economy.not-enough-money"));
                         transactionSuccessfully = false;
                     }
 
                     PvP.economy.withdrawPlayer(p, costs);
 
-                    sender.sendMessage(PvP.warningPrefix + MessageManager.instance.get("action.kit.player.economy.money-take", costs, currenyName, kit));
+                    sender.sendMessage(PvP.warningPrefix + MessageManager.instance.get(sender, "action.kit.player.economy.money-take", costs, currenyName, kit));
                     transactionSuccessfully = true;
                 }
                 else
@@ -90,14 +90,14 @@ public class PlayerKitCommand extends AbstractSubCommand
                 if(transactionSuccessfully)
                 {
                     InGameManager.instance.getPlayer(p).changeKit(kit);
-                    sender.sendMessage(PvP.successPrefix + MessageManager.instance.get("action.kit.player.changed", kit));
+                    sender.sendMessage(PvP.successPrefix + MessageManager.instance.get(sender, "action.kit.player.changed", kit));
                 }
                 else
                 {
                     if(costs < 0)
-                        sender.sendMessage(PvP.errorPrefix + MessageManager.instance.get("action.kit.player.failed-give", kit));
+                        sender.sendMessage(PvP.errorPrefix + MessageManager.instance.get(sender, "action.kit.player.failed-give", kit));
                     else if(costs > 0)
-                        sender.sendMessage(PvP.errorPrefix + MessageManager.instance.get("action.kit.player.failed-take", kit));
+                        sender.sendMessage(PvP.errorPrefix + MessageManager.instance.get(sender, "action.kit.player.failed-take", kit));
                 }
             }
         }
@@ -110,7 +110,7 @@ public class PlayerKitCommand extends AbstractSubCommand
     private void printHelp(CommandSender sender)
     {
         sender.sendMessage(ChatColor.AQUA + "~~~ PvP-Admin: Kits ~~~");
-        sender.sendMessage(ChatColor.GRAY + "/pvp kit {Name}\n" + ChatColor.GREEN + MessageManager.instance.get("commands.help.kit.buy"));
+        sender.sendMessage(ChatColor.GRAY + "/pvp kit {Name}\n" + ChatColor.GREEN + MessageManager.instance.get(sender, "commands.help.kit.buy"));
     }
 
     @Override

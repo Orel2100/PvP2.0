@@ -30,33 +30,33 @@ public class ArenaCommand extends AbstractSubCommand
         {
             if(args[1].equalsIgnoreCase("create"))
             {
-                sender.sendMessage(PvP.prefix + MessageManager.instance.get("action.arena.create"));
+                sender.sendMessage(PvP.prefix + MessageManager.instance.get(sender, "action.arena.create"));
                 Selection sel = PvP.worldEdit.getSelection((Player)sender);
                 Arena.createArena(sel, args[0]);
-                sender.sendMessage(PvP.successPrefix + MessageManager.instance.get("action.arena.created", args[0]));
+                sender.sendMessage(PvP.successPrefix + MessageManager.instance.get(sender, "action.arena.created", args[0]));
 
-                sender.sendMessage(ChatColor.AQUA + MessageManager.instance.get("action.arena.created-help-addspawn", args[0]));
-                sender.sendMessage(ChatColor.AQUA + MessageManager.instance.get("action.arena.created-help-delspawn", args[0]));
-                sender.sendMessage(ChatColor.AQUA + MessageManager.instance.get("action.arena.created-help-randspawn"));
+                sender.sendMessage(ChatColor.AQUA + MessageManager.instance.get(sender, "action.arena.created-help-addspawn", args[0]));
+                sender.sendMessage(ChatColor.AQUA + MessageManager.instance.get(sender, "action.arena.created-help-delspawn", args[0]));
+                sender.sendMessage(ChatColor.AQUA + MessageManager.instance.get(sender, "action.arena.created-help-randspawn"));
             }
             else if(args[1].equalsIgnoreCase("delete"))
             {
                 new Arena(args[0]).delete();
-                sender.sendMessage(PvP.successPrefix + MessageManager.instance.get("action.arena.deleted", args[0]));
+                sender.sendMessage(PvP.successPrefix + MessageManager.instance.get(sender, "action.arena.deleted", args[0]));
             }
             else if(args[1].equalsIgnoreCase("addspawn"))
             {
                 Location loc = ((Player)sender).getLocation();
                 int id = new Arena(args[0]).addSpawn(loc);
-                sender.sendMessage(PvP.successPrefix + MessageManager.instance.get("action.arena.spawn.added", id, loc.getBlockX(), loc.getBlockY(), loc.getBlockZ()));
+                sender.sendMessage(PvP.successPrefix + MessageManager.instance.get(sender, "action.arena.spawn.added", id, loc.getBlockX(), loc.getBlockY(), loc.getBlockZ()));
             }
             else if(args[1].equalsIgnoreCase("delspawn"))
             {
                 int id = new Arena(args[0]).removeLastSpawn();
                 if(id == -1)
-                    sender.sendMessage(PvP.successPrefix + MessageManager.instance.get("action.arena.spawn.no-spawn-delete", id));
+                    sender.sendMessage(PvP.successPrefix + MessageManager.instance.get(sender, "action.arena.spawn.no-spawn-delete", id));
                 else
-                    sender.sendMessage(PvP.successPrefix + MessageManager.instance.get("action.arena.spawn.deleted", id));
+                    sender.sendMessage(PvP.successPrefix + MessageManager.instance.get(sender, "action.arena.spawn.deleted", id));
             }
             else
             {
@@ -72,10 +72,10 @@ public class ArenaCommand extends AbstractSubCommand
     private void printHelp(CommandSender sender)
     {
         sender.sendMessage(ChatColor.AQUA + "~~~ PvP-Admin: Arena ~~~");
-        sender.sendMessage(ChatColor.GRAY + "/pvp arena {Name} create\n" + ChatColor.GREEN + MessageManager.instance.get("commands.help.arena.create"));
-        sender.sendMessage(ChatColor.GRAY + "/pvp arena {Name} delete\n" + ChatColor.GREEN + MessageManager.instance.get("commands.help.arena.delete"));
-        sender.sendMessage(ChatColor.GRAY + "/pvp arena {Name} addspawn\n" + ChatColor.GREEN + MessageManager.instance.get("commands.help.arena.addspawn"));
-        sender.sendMessage(ChatColor.GRAY + "/pvp arena {Name} delspawn\n" + ChatColor.GREEN + MessageManager.instance.get("commands.help.arena.delspawn"));
+        sender.sendMessage(ChatColor.GRAY + "/pvp arena {Name} create\n" + ChatColor.GREEN + MessageManager.instance.get(sender, "commands.help.arena.create"));
+        sender.sendMessage(ChatColor.GRAY + "/pvp arena {Name} delete\n" + ChatColor.GREEN + MessageManager.instance.get(sender, "commands.help.arena.delete"));
+        sender.sendMessage(ChatColor.GRAY + "/pvp arena {Name} addspawn\n" + ChatColor.GREEN + MessageManager.instance.get(sender, "commands.help.arena.addspawn"));
+        sender.sendMessage(ChatColor.GRAY + "/pvp arena {Name} delspawn\n" + ChatColor.GREEN + MessageManager.instance.get(sender, "commands.help.arena.delspawn"));
 }
 
     @Override

@@ -41,21 +41,21 @@ public class InviteManager
         // check if inviting player is ingame
         if(!InGameManager.instance.isPlayerIngame(inviter))
         {
-            inviter.sendMessage(PvP.errorPrefix + MessageManager.instance.get("action.invite.not-ingame"));
+            inviter.sendMessage(PvP.errorPrefix + MessageManager.instance.get(inviter, "action.invite.not-ingame"));
             return;
         }
 
         // check if invited player is online
         if(invited == null || !invited.isOnline())
         {
-            inviter.sendMessage(PvP.errorPrefix + MessageManager.instance.get("action.invite.not-online"));
+            inviter.sendMessage(PvP.errorPrefix + MessageManager.instance.get(inviter, "action.invite.not-online"));
             return;
         }
 
         // check if invited player is ingame
         if(InGameManager.instance.isPlayerIngame(invited))
         {
-            inviter.sendMessage(PvP.errorPrefix + MessageManager.instance.get("action.invite.invited-ingame"));
+            inviter.sendMessage(PvP.errorPrefix + MessageManager.instance.get(inviter, "action.invite.invited-ingame"));
             return;
         }
 
@@ -63,7 +63,7 @@ public class InviteManager
         if(tupleUtils.containsKey(invites, inviter.getUniqueId().toString()) &&
                tupleUtils.containsTuple(invites, inviter.getUniqueId().toString(), invited.getUniqueId().toString()))
         {
-            inviter.sendMessage(PvP.errorPrefix + MessageManager.instance.get("action.invite.already-invited", invited.getName()));
+            inviter.sendMessage(PvP.errorPrefix + MessageManager.instance.get(inviter, "action.invite.already-invited", invited.getName()));
             return;
         }
 
@@ -71,13 +71,13 @@ public class InviteManager
         if(tupleUtils.containsKey(invites, invited.getUniqueId().toString()) &&
                 tupleUtils.containsTuple(invites, invited.getUniqueId().toString(), inviter.getUniqueId().toString()))
         {
-            inviter.sendMessage(PvP.errorPrefix + MessageManager.instance.get("action.invite.other-invited", invited.getName()));
+            inviter.sendMessage(PvP.errorPrefix + MessageManager.instance.get(inviter, "action.invite.other-invited", invited.getName()));
             return;
         }
 
         // send basic messages
-        inviter.sendMessage(PvP.successPrefix + MessageManager.instance.get("action.invite.sent", invited.getName()));
-        invited.sendMessage(PvP.warningPrefix + MessageManager.instance.get("action.invite.invited", inviter.getName()));
+        inviter.sendMessage(PvP.successPrefix + MessageManager.instance.get(inviter, "action.invite.sent", invited.getName()));
+        invited.sendMessage(PvP.warningPrefix + MessageManager.instance.get(invited, "action.invite.invited", inviter.getName()));
 
         // create interactive messages using Spigot Chat Components
         TextComponent inviteAcceptComponent = new TextComponent();
@@ -109,14 +109,14 @@ public class InviteManager
         // check if inviter is still online
         if(inviter == null || !inviter.isOnline())
         {
-            invited.sendMessage(PvP.errorPrefix + MessageManager.instance.get("action.party.invite.not-online-anymore"));
+            invited.sendMessage(PvP.errorPrefix + MessageManager.instance.get(invited, "action.party.invite.not-online-anymore"));
             return;
         }
 
         // check if invited player was invited
         if(!tupleUtils.containsKey(invites, inviter.getUniqueId().toString()) || !tupleUtils.containsTuple(invites, inviter.getUniqueId().toString(), invited.getUniqueId().toString()))
         {
-            invited.sendMessage(PvP.errorPrefix + MessageManager.instance.get("action.invite.not-invited", inviter.getName()));
+            invited.sendMessage(PvP.errorPrefix + MessageManager.instance.get(invited, "action.invite.not-invited", inviter.getName()));
             return;
         }
 
@@ -128,8 +128,8 @@ public class InviteManager
         invites = tupleUtils.removeTuple(invites, inviter.getUniqueId().toString(), invited.getUniqueId().toString());
 
         // send messages
-        invited.sendMessage(PvP.successPrefix + MessageManager.instance.get("action.invite.joining", inviter.getName()));
-        inviter.sendMessage(PvP.successPrefix + MessageManager.instance.get("action.invite.joined", invited.getName()));
+        invited.sendMessage(PvP.successPrefix + MessageManager.instance.get(invited, "action.invite.joining", inviter.getName()));
+        inviter.sendMessage(PvP.successPrefix + MessageManager.instance.get(inviter, "action.invite.joined", invited.getName()));
     }
 
     // denies the invitation
@@ -141,14 +141,14 @@ public class InviteManager
         // check if inviter is still online
         if(inviter == null || !inviter.isOnline())
         {
-            invited.sendMessage(PvP.errorPrefix + MessageManager.instance.get("action.party.invite.not-online-anymore"));
+            invited.sendMessage(PvP.errorPrefix + MessageManager.instance.get(invited, "action.party.invite.not-online-anymore"));
             return;
         }
 
         // check if invited player was invited
         if(!tupleUtils.containsKey(invites, inviter.getUniqueId().toString()) || !tupleUtils.containsTuple(invites, inviter.getUniqueId().toString(), invited.getUniqueId().toString()))
         {
-            invited.sendMessage(PvP.errorPrefix + MessageManager.instance.get("action.invite.not-invited", inviter.getName()));
+            invited.sendMessage(PvP.errorPrefix + MessageManager.instance.get(invited, "action.invite.not-invited", inviter.getName()));
             return;
         }
 
@@ -156,8 +156,8 @@ public class InviteManager
         invites = tupleUtils.removeTuple(invites, inviter.getUniqueId().toString(), invited.getUniqueId().toString());
 
         // send messages
-        invited.sendMessage(PvP.successPrefix + MessageManager.instance.get("action.invite.denying", inviter.getName()));
-        inviter.sendMessage(PvP.errorPrefix + MessageManager.instance.get("action.invite.denied", invited.getName()));
+        invited.sendMessage(PvP.successPrefix + MessageManager.instance.get(invited, "action.invite.denying", inviter.getName()));
+        inviter.sendMessage(PvP.errorPrefix + MessageManager.instance.get(inviter, "action.invite.denied", invited.getName()));
     }
 
 }

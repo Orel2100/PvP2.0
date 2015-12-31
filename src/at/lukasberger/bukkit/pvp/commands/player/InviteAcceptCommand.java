@@ -30,9 +30,9 @@ public class InviteAcceptCommand extends AbstractSubCommand
         else
         {
             sender.sendMessage(ChatColor.AQUA + "~~~ PvP: Invite ~~~");
-            sender.sendMessage(ChatColor.GRAY + "/pvp invite/i {Name}\n" + ChatColor.GREEN + MessageManager.instance.get("commands.help.invite"));
-            sender.sendMessage(ChatColor.GRAY + "/pvp accept/a {Name}\n" + ChatColor.GREEN + MessageManager.instance.get("commands.help.accept"));
-            sender.sendMessage(ChatColor.GRAY + "/pvp deny/d {Name}\n" + ChatColor.GREEN + MessageManager.instance.get("commands.help.deny"));
+            sender.sendMessage(ChatColor.GRAY + "/pvp invite/i {Name}\n" + ChatColor.GREEN + MessageManager.instance.get(sender, "commands.help.invite"));
+            sender.sendMessage(ChatColor.GRAY + "/pvp accept/a {Name}\n" + ChatColor.GREEN + MessageManager.instance.get(sender, "commands.help.accept"));
+            sender.sendMessage(ChatColor.GRAY + "/pvp deny/d {Name}\n" + ChatColor.GREEN + MessageManager.instance.get(sender, "commands.help.deny"));
         }
     }
 

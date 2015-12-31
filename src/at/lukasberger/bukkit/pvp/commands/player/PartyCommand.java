@@ -73,12 +73,12 @@ public class PartyCommand extends AbstractSubCommand
     private void printHelp(CommandSender sender)
     {
         sender.sendMessage(ChatColor.AQUA + "~~~ PvP: Party ~~~");
-        sender.sendMessage(ChatColor.GRAY + "/pvp party/p create\n" + ChatColor.GREEN + MessageManager.instance.get("commands.help.party.create"));
-        sender.sendMessage(ChatColor.GRAY + "/pvp party/p delete\n" + ChatColor.GREEN + MessageManager.instance.get("commands.help.party.delete"));
-        sender.sendMessage(ChatColor.GRAY + "/pvp party/p invite [Player]\n" + ChatColor.GREEN + MessageManager.instance.get("commands.help.party.invite"));
-        sender.sendMessage(ChatColor.GRAY + "/pvp party/p accept [Player]\n" + ChatColor.GREEN + MessageManager.instance.get("commands.help.party.accept"));
-        sender.sendMessage(ChatColor.GRAY + "/pvp party/p deny [Player]\n" + ChatColor.GREEN + MessageManager.instance.get("commands.help.party.deny"));
-        sender.sendMessage(ChatColor.GRAY + "/pvp party/p leader [Player]\n" + ChatColor.GREEN + MessageManager.instance.get("commands.help.party.leader"));
+        sender.sendMessage(ChatColor.GRAY + "/pvp party/p create\n" + ChatColor.GREEN + MessageManager.instance.get(sender, "commands.help.party.create"));
+        sender.sendMessage(ChatColor.GRAY + "/pvp party/p delete\n" + ChatColor.GREEN + MessageManager.instance.get(sender, "commands.help.party.delete"));
+        sender.sendMessage(ChatColor.GRAY + "/pvp party/p invite [Player]\n" + ChatColor.GREEN + MessageManager.instance.get(sender, "commands.help.party.invite"));
+        sender.sendMessage(ChatColor.GRAY + "/pvp party/p accept [Player]\n" + ChatColor.GREEN + MessageManager.instance.get(sender, "commands.help.party.accept"));
+        sender.sendMessage(ChatColor.GRAY + "/pvp party/p deny [Player]\n" + ChatColor.GREEN + MessageManager.instance.get(sender, "commands.help.party.deny"));
+        sender.sendMessage(ChatColor.GRAY + "/pvp party/p leader [Player]\n" + ChatColor.GREEN + MessageManager.instance.get(sender, "commands.help.party.leader"));
     }
 
     @Override

@@ -54,6 +54,22 @@ public class PvPPlayer
         this.save();
     }
 
+    // returns the player's language (fallback is the default language)
+    public String getLanguage()
+    {
+        if(playerConfig.config.contains("language"))
+            return playerConfig.config.getString("language");
+        else
+            return PvP.getInstance().getConfig().getString("language");
+    }
+
+    // updates player's language
+    public void setLanguage(String newLang)
+    {
+        playerConfig.config.set("language", newLang);
+        this.save();
+    }
+
     // adds a kill to the statistics
     public PvPPlayer addKill()
     {

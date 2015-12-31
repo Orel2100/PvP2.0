@@ -31,14 +31,14 @@ public class LanguageCommand extends AbstractSubCommand
 
                 if(!new File(PvP.getInstance().getDataFolder().getAbsolutePath(), new File("langs", langName + ".yml").getAbsolutePath()).exists())
                 {
-                    sender.sendMessage(PvP.errorPrefix + MessageManager.instance.get("action.language.not-existing"));
+                    sender.sendMessage(PvP.errorPrefix + MessageManager.instance.get(sender, "action.language.not-existing"));
                 }
                 else
                 {
                     PvP.getInstance().getConfig().set("language", langName);
                     PvP.getInstance().saveConfig();
 
-                    sender.sendMessage(PvP.errorPrefix + MessageManager.instance.get("action.language.changed", langName));
+                    sender.sendMessage(PvP.errorPrefix + MessageManager.instance.get(sender, "action.language.changed", langName));
                 }
             }
             else
@@ -54,8 +54,8 @@ public class LanguageCommand extends AbstractSubCommand
 
     private void printHelp(CommandSender sender)
     {
-        sender.sendMessage(ChatColor.AQUA + "~~~ PvP-Admin: Language ~~~");
-        sender.sendMessage(ChatColor.GRAY + "/pvp lang set {Name}\n" + ChatColor.GREEN + MessageManager.instance.get("commands.help.language.set"));
+        sender.sendMessage(ChatColor.AQUA + "~~~ PvP-Admin: Language-Admin ~~~");
+        sender.sendMessage(ChatColor.GRAY + "/pvp langa set {Name}\n" + ChatColor.GREEN + MessageManager.instance.get(sender, "commands.help.language.set"));
     }
 
     @Override

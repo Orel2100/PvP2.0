@@ -62,7 +62,7 @@ public class InGameManager
         // if player already is in arena, do not join
         if(currentPlayerArena.containsKey(p.getUniqueId().toString()))
         {
-            p.sendMessage(PvP.successPrefix + MessageManager.instance.get("ingame.already-ingame", arenaName));
+            p.sendMessage(PvP.successPrefix + MessageManager.instance.get(p, "ingame.already-ingame", arenaName));
             return false;
         }
 
@@ -91,7 +91,7 @@ public class InGameManager
             arena.teleportPlayer(p);
             getPlayer(p).giveCurrentKit();
 
-            p.sendMessage(PvP.successPrefix + MessageManager.instance.get("ingame.joined", arenaName));
+            p.sendMessage(PvP.successPrefix + MessageManager.instance.get(p, "ingame.joined", arenaName));
 
             // update the scoreboard
             getPlayer(p).updateScoreboard();
@@ -100,7 +100,7 @@ public class InGameManager
         }
         else
         {
-            p.sendMessage(PvP.successPrefix + MessageManager.instance.get("ingame.no-arena", arenaName));
+            p.sendMessage(PvP.successPrefix + MessageManager.instance.get(p, "ingame.no-arena", arenaName));
             return false;
         }
     }
@@ -156,7 +156,7 @@ public class InGameManager
         // check if player is in an arena, return if not
         if(!currentPlayerArena.containsKey(p.getUniqueId().toString()))
         {
-            p.sendMessage(PvP.successPrefix + MessageManager.instance.get("ingame.not-ingame"));
+            p.sendMessage(PvP.successPrefix + MessageManager.instance.get(p, "ingame.not-ingame"));
             return;
         }
 
@@ -192,7 +192,7 @@ public class InGameManager
 
         // Teleport player to last location before joining
         p.teleport(loc);
-        p.sendMessage(PvP.successPrefix + MessageManager.instance.get("ingame.left"));
+        p.sendMessage(PvP.successPrefix + MessageManager.instance.get(p, "ingame.left"));
     }
 
     // throws out all player from all arenas (reload etc.)

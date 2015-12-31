@@ -80,8 +80,7 @@ public class PvP extends JavaPlugin
             this.getPluginLoader().disablePlugin(this);
         }
 
-
-        // they need to be fixed
+        // they need to be fix
         this.getConfig().set("gadgets.grenades.item", "EGG");
         this.getConfig().set("gadgets.machinegun.item", "SNOWBALL");
 
@@ -119,10 +118,13 @@ public class PvP extends JavaPlugin
         if(this.getConfig().getBoolean("ingame.enable-parties"))
             SubCommandManager.instance.registerSubCommand(new PartyCommand(), "party", "p");
 
+        if(this.getConfig().getBoolean("player-language"))
+            SubCommandManager.instance.registerSubCommand(new PlayerLanguageCommand(), "lang", "language");
+
         // Admins-Commands
         SubCommandManager.instance.registerSubCommand(new ArenaCommand(), "arena");
         SubCommandManager.instance.registerSubCommand(new KitCommand(), "kita");
-        SubCommandManager.instance.registerSubCommand(new LanguageCommand(), "lang", "language");
+        SubCommandManager.instance.registerSubCommand(new LanguageCommand(), "langa", "languagea");
         SubCommandManager.instance.registerSubCommand(new ReloadCommand(), "reload");
         SubCommandManager.instance.registerSubCommand(new FullReloadCommand(), "fullreload");
 
@@ -187,7 +189,7 @@ public class PvP extends JavaPlugin
             {
                 if(!SubCommandManager.instance.executeSubCommand(sender, args))
                 {
-                    sender.sendMessage(errorPrefix + MessageManager.instance.get("commands.error.subcommand"));
+                    sender.sendMessage(errorPrefix + MessageManager.instance.get(sender, "commands.error.subcommand"));
                 }
             }
             return true;

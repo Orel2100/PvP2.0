@@ -32,11 +32,11 @@ public class KitCommand extends AbstractSubCommand
             {
                 if(PvP.getInstance().getConfig().contains("kits." + args[0]))
                 {
-                    sender.sendMessage(PvP.successPrefix + MessageManager.instance.get("action.kit.already-existing", args[0]));
+                    sender.sendMessage(PvP.successPrefix + MessageManager.instance.get(sender, "action.kit.already-existing", args[0]));
                     return;
                 }
 
-                sender.sendMessage(PvP.successPrefix + MessageManager.instance.get("action.kit.create", args[0]));
+                sender.sendMessage(PvP.successPrefix + MessageManager.instance.get(sender, "action.kit.create", args[0]));
 
                 PvP.getInstance().getConfig().set("kits." + args[0], null);
                 PvP.getInstance().getConfig().set("kits." + args[0] + ".costs", 0);
@@ -44,24 +44,24 @@ public class KitCommand extends AbstractSubCommand
 
                 PvP.getInstance().saveConfig();
 
-                sender.sendMessage(PvP.successPrefix + MessageManager.instance.get("action.kit.created", args[0]));
-                sender.sendMessage(ChatColor.AQUA + MessageManager.instance.get("action.kit.created-help-additem", args[0]));
-                sender.sendMessage(ChatColor.AQUA + MessageManager.instance.get("action.kit.created-help-delitem", args[0]));
-                sender.sendMessage(ChatColor.AQUA + MessageManager.instance.get("action.kit.created-help-setcosts", args[0]));
-                sender.sendMessage(ChatColor.AQUA + MessageManager.instance.get("action.kit.created-help-delete", args[0]));
+                sender.sendMessage(PvP.successPrefix + MessageManager.instance.get(sender, "action.kit.created", args[0]));
+                sender.sendMessage(ChatColor.AQUA + MessageManager.instance.get(sender, "action.kit.created-help-additem", args[0]));
+                sender.sendMessage(ChatColor.AQUA + MessageManager.instance.get(sender, "action.kit.created-help-delitem", args[0]));
+                sender.sendMessage(ChatColor.AQUA + MessageManager.instance.get(sender, "action.kit.created-help-setcosts", args[0]));
+                sender.sendMessage(ChatColor.AQUA + MessageManager.instance.get(sender, "action.kit.created-help-delete", args[0]));
             }
             else if(args[1].equalsIgnoreCase("delete"))
             {
                 if(!PvP.getInstance().getConfig().contains("kits." + args[0]))
                 {
-                    sender.sendMessage(PvP.successPrefix + MessageManager.instance.get("action.kit.not-existing", args[0]));
+                    sender.sendMessage(PvP.successPrefix + MessageManager.instance.get(sender, "action.kit.not-existing", args[0]));
                     return;
                 }
 
                 PvP.getInstance().getConfig().set("kits." + args[0], null);
                 PvP.getInstance().saveConfig();
 
-                sender.sendMessage(PvP.successPrefix + MessageManager.instance.get("action.kit.deleted", args[0]));
+                sender.sendMessage(PvP.successPrefix + MessageManager.instance.get(sender, "action.kit.deleted", args[0]));
             }
             else
             {
@@ -74,20 +74,20 @@ public class KitCommand extends AbstractSubCommand
             {
                 if(!PvP.getInstance().getConfig().contains("kits." + args[0]))
                 {
-                    sender.sendMessage(PvP.successPrefix + MessageManager.instance.get("action.kit.not-existing", args[0]));
+                    sender.sendMessage(PvP.successPrefix + MessageManager.instance.get(sender, "action.kit.not-existing", args[0]));
                     return;
                 }
 
                 PvP.getInstance().getConfig().set("kits." + args[0] + ".costs", Integer.parseInt(args[2]));
                 PvP.getInstance().saveConfig();
 
-                sender.sendMessage(PvP.successPrefix + MessageManager.instance.get("action.kit.cost-changed", args[0], args[2]));
+                sender.sendMessage(PvP.successPrefix + MessageManager.instance.get(sender, "action.kit.cost-changed", args[0], args[2]));
             }
             else if(args[1].equalsIgnoreCase("add"))
             {
                 if(!PvP.getInstance().getConfig().contains("kits." + args[0]))
                 {
-                    sender.sendMessage(PvP.successPrefix + MessageManager.instance.get("action.kit.not-existing", args[0]));
+                    sender.sendMessage(PvP.successPrefix + MessageManager.instance.get(sender, "action.kit.not-existing", args[0]));
                     return;
                 }
 
@@ -101,7 +101,7 @@ public class KitCommand extends AbstractSubCommand
 
                 if(slotsUsed)
                 {
-                    sender.sendMessage(PvP.successPrefix + MessageManager.instance.get("action.kit.slot-used", args[2], args[0]));
+                    sender.sendMessage(PvP.successPrefix + MessageManager.instance.get(sender, "action.kit.slot-used", args[2], args[0]));
                     return;
                 }
 
@@ -131,13 +131,13 @@ public class KitCommand extends AbstractSubCommand
                 PvP.getInstance().getConfig().set("kits." + args[0] + ".items", items);
                 PvP.getInstance().saveConfig();
 
-                sender.sendMessage(PvP.successPrefix + MessageManager.instance.get("action.kit.item-added", args[0], args[2]));
+                sender.sendMessage(PvP.successPrefix + MessageManager.instance.get(sender, "action.kit.item-added", args[0], args[2]));
             }
             else if(args[1].equalsIgnoreCase("del"))
             {
                 if(!PvP.getInstance().getConfig().contains("kits." + args[0]))
                 {
-                    sender.sendMessage(PvP.successPrefix + MessageManager.instance.get("action.kit.not-existing", args[0]));
+                    sender.sendMessage(PvP.successPrefix + MessageManager.instance.get(sender, "action.kit.not-existing", args[0]));
                     return;
                 }
 
@@ -161,9 +161,9 @@ public class KitCommand extends AbstractSubCommand
                 PvP.getInstance().saveConfig();
 
                 if(slotDeleted)
-                    sender.sendMessage(PvP.successPrefix + MessageManager.instance.get("action.kit.item-deleted", args[2], args[0]));
+                    sender.sendMessage(PvP.successPrefix + MessageManager.instance.get(sender, "action.kit.item-deleted", args[2], args[0]));
                 else
-                    sender.sendMessage(PvP.successPrefix + MessageManager.instance.get("action.kit.slot-not-used", args[2], args[0]));
+                    sender.sendMessage(PvP.successPrefix + MessageManager.instance.get(sender, "action.kit.slot-not-used", args[2], args[0]));
             }
             else
             {
@@ -179,11 +179,11 @@ public class KitCommand extends AbstractSubCommand
     private void printHelp(CommandSender sender)
     {
         sender.sendMessage(ChatColor.AQUA + "~~~ PvP-Admin: Kits-Admin ~~~");
-        sender.sendMessage(ChatColor.GRAY + "/pvp kita {Name} create\n" + ChatColor.GREEN + MessageManager.instance.get("commands.help.kit.create"));
-        sender.sendMessage(ChatColor.GRAY + "/pvp kita {Name} add\n" + ChatColor.GREEN + MessageManager.instance.get("commands.help.kit.additem"));
-        sender.sendMessage(ChatColor.GRAY + "/pvp kita {Name} del\n" + ChatColor.GREEN + MessageManager.instance.get("commands.help.kit.delitem"));
-        sender.sendMessage(ChatColor.GRAY + "/pvp kita {Name} delete\n" + ChatColor.GREEN + MessageManager.instance.get("commands.help.kit.delete"));
-        sender.sendMessage(ChatColor.GRAY + "/pvp kita {Name} costs\n" + ChatColor.GREEN + MessageManager.instance.get("commands.help.kit.costs"));
+        sender.sendMessage(ChatColor.GRAY + "/pvp kita {Name} create\n" + ChatColor.GREEN + MessageManager.instance.get(sender, "commands.help.kit.create"));
+        sender.sendMessage(ChatColor.GRAY + "/pvp kita {Name} add\n" + ChatColor.GREEN + MessageManager.instance.get(sender, "commands.help.kit.additem"));
+        sender.sendMessage(ChatColor.GRAY + "/pvp kita {Name} del\n" + ChatColor.GREEN + MessageManager.instance.get(sender, "commands.help.kit.delitem"));
+        sender.sendMessage(ChatColor.GRAY + "/pvp kita {Name} delete\n" + ChatColor.GREEN + MessageManager.instance.get(sender, "commands.help.kit.delete"));
+        sender.sendMessage(ChatColor.GRAY + "/pvp kita {Name} costs\n" + ChatColor.GREEN + MessageManager.instance.get(sender, "commands.help.kit.costs"));
     }
 
     @Override

@@ -25,6 +25,7 @@ commands:
          leader: "Sets the given player to the new party-leader"
       language:
          set: "Sets the default language"
+         player: "Changes your own language for PvP"
       join: "Joining the given arena"
       leave: "Leaves the current arena"
       invite: "Invite the player to your current arena"
@@ -72,6 +73,9 @@ action:
    language:
       not-existing: "The given language does not exist"
       changed: "The default language was set to %1"
+      player:
+         set: "Your language was changed!"
+         not-existing: "The language you want does not exist..."
    invite:
       not-ingame: "You need to be in an arena to invite someone"
       not-online: "The player you want to invite is not online"

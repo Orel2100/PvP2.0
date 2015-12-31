@@ -189,7 +189,7 @@ public class Arena
         else
         {
             // world does not exists
-            p.sendMessage(PvP.errorPrefix + MessageManager.instance.get("commands.error.no-world", arenaConfig.config.getString("arena.world")));
+            p.sendMessage(PvP.errorPrefix + MessageManager.instance.get(p, "commands.error.no-world", arenaConfig.config.getString("arena.world")));
         }
     }
 

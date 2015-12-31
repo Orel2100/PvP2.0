@@ -65,7 +65,7 @@ public class SubCommandManager
                 }
                 else
                 {
-                    sender.sendMessage(PvP.errorPrefix + MessageManager.instance.get("commands.error.perm"));
+                    sender.sendMessage(PvP.errorPrefix + MessageManager.instance.get(sender, "commands.error.perm"));
                 }
             }
         }
