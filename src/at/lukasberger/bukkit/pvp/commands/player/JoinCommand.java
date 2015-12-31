@@ -1,5 +1,6 @@
 package at.lukasberger.bukkit.pvp.commands.player;
 
+import at.lukasberger.bukkit.pvp.PvP;
 import at.lukasberger.bukkit.pvp.commands.AbstractSubCommand;
 import at.lukasberger.bukkit.pvp.core.InGameManager;
 import at.lukasberger.bukkit.pvp.core.MessageManager;
@@ -20,7 +21,10 @@ public class JoinCommand extends AbstractSubCommand
     public void execute(CommandSender sender, String[] args)
     {
         if(!(sender instanceof Player))
+        {
+            sender.sendMessage(PvP.errorPrefix + "Player-only command!");
             return;
+        }
 
         if(args.length == 1)
         {

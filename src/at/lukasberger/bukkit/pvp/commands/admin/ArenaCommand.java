@@ -22,6 +22,12 @@ public class ArenaCommand extends AbstractSubCommand
     @Override
     public void execute(CommandSender sender, String[] args)
     {
+        if(!(sender instanceof Player))
+        {
+            sender.sendMessage(PvP.errorPrefix + "Player-only command!");
+            return;
+        }
+
         if(args.length == 0)
         {
             printHelp(sender);
