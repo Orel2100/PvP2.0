@@ -38,13 +38,6 @@ public class PvPSpectatorMoveEvent implements Listener
         Location v1 = a.getMinLocation();
         Location v2 = a.getMaxLocation();
 
-        PvP.getInstance().getLogger().info("Moving: " + loc.getBlockX() + "; " + loc.getBlockY() + "; " + loc.getBlockZ());
-
-        /* if(loc.getBlockX() > v1.getBlockX())
-            e.getPlayer().teleport(new Location(loc.getWorld(), v1.getBlockX() - 1, loc.getBlockY(), loc.getBlockZ()));
-        else if(loc.getBlockX() < v2.getBlockX())
-            e.getPlayer().teleport(new Location(loc.getWorld(), v2.getBlockX() + 1, loc.getBlockY(), loc.getBlockZ())); */
-
         // X-Limiting
         if(loc.getBlockX() < v1.getBlockX())
         {
@@ -80,11 +73,6 @@ public class PvPSpectatorMoveEvent implements Listener
             e.setFrom(new Location(loc.getWorld(), loc.getBlockX(), loc.getBlockY(), v2.getBlockZ() + 1));
             e.setCancelled(true);
         }
-
-        /* else if(loc.getBlockZ() > v1.getBlockZ())
-            e.getPlayer().teleport(new Location(loc.getWorld(), loc.getBlockX(), loc.getBlockY(), v1.getBlockZ() - 1));
-        else if(loc.getBlockZ() < v2.getBlockZ())
-            e.getPlayer().teleport(new Location(loc.getWorld(), loc.getBlockX(), loc.getBlockY(), v2.getBlockZ() + 1)); */
     }
 
 }
