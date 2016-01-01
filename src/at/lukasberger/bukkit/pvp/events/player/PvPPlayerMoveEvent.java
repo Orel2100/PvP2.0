@@ -24,10 +24,6 @@ public class PvPPlayerMoveEvent implements Listener
         if(!InGameManager.instance.isPlayerIngame(e.getPlayer()))
             return;
 
-        // check if player really moved
-        if(e.getFrom().getBlockX() == e.getTo().getBlockX() && e.getFrom().getBlockY() == e.getTo().getBlockY() && e.getFrom().getBlockZ() == e.getTo().getBlockZ())
-            return;
-
         if(!PvP.getInstance().getConfig().getBoolean("ingame.player.allow-hunger", false))
             e.getPlayer().setSaturation(20.0F);
     }

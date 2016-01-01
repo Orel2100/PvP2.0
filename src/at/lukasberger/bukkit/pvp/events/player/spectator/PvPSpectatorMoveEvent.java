@@ -4,11 +4,13 @@ import at.lukasberger.bukkit.pvp.PvP;
 import at.lukasberger.bukkit.pvp.core.ArenaManager;
 import at.lukasberger.bukkit.pvp.core.InGameManager;
 import at.lukasberger.bukkit.pvp.core.objects.Arena;
+import at.lukasberger.bukkit.pvp.utils.MapTuple;
 import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.util.Vector;
 
 /**
  * PvP 2.0, Copyright (c) 2015-2016 Lukas Berger, licensed under GPLv3
@@ -30,34 +32,59 @@ public class PvPSpectatorMoveEvent implements Listener
         // check if player is ingame
         if(!InGameManager.instance.isPlayerSpectating(e.getPlayer()))
             return;
-
-        // check if player really moved
-        if(e.getFrom().getBlockX() == e.getTo().getBlockX() && e.getFrom().getBlockY() == e.getTo().getBlockY() && e.getFrom().getBlockZ() == e.getTo().getBlockZ())
-            return;
-
         Arena a = ArenaManager.instance.getArena(InGameManager.instance.getArena(e.getPlayer()));
 
-        // check if spectator is still in arena, if not, cancel move event
-        if(locationIsInCuboid(e.getPlayer().getLocation(), a.getMinLocation(), a.getMaxLocation()))
-            return;
+        Location loc = e.getTo();
+        Location v1 = a.getMinLocation();
+        Location v2 = a.getMaxLocation();
 
-        e.setCancelled(true);
-    }
+        PvP.getInstance().getLogger().info("Moving: " + loc.getBlockX() + "; " + loc.getBlockY() + "; " + loc.getBlockZ());
 
-    // original code: https://bukkit.org/threads/detect-when-players-are-inside-inbetween-two-coordinates.171004/#post-1826170
-    public boolean locationIsInCuboid(Location playerLocation, Location min, Location max)
-    {
-        boolean trueOrNot = false;
+        /* if(loc.getBlockX() > v1.getBlockX())
+            e.getPlayer().teleport(new Location(loc.getWorld(), v1.getBlockX() - 1, loc.getBlockY(), loc.getBlockZ()));
+        else if(loc.getBlockX() < v2.getBlockX())
+            e.getPlayer().teleport(new Location(loc.getWorld(), v2.getBlockX() + 1, loc.getBlockY(), loc.getBlockZ())); */
 
-        if (playerLocation.getWorld() == min.getWorld() && playerLocation.getWorld() == max.getWorld())
+        // X-Limiting
+        if(loc.getBlockX() < v1.getBlockX())
         {
-            if (playerLocation.getX() >= min.getX() && playerLocation.getX() <= max.getX())
-                if (playerLocation.getY() >= min.getY() && playerLocation.getY() <= max.getY())
-                    if (playerLocation.getZ() >= min.getZ() && playerLocation.getZ() <= max.getZ())
-                        trueOrNot = true;
+            e.setFrom(new Location(loc.getWorld(), v1.getBlockX() - 1, loc.getBlockY(), loc.getBlockZ()));
+            e.setCancelled(true);
+        }
+        else if (loc.getBlockX() > v2.getBlockX())
+        {
+            e.setFrom(new Location(loc.getWorld(), v2.getBlockX() + 1, loc.getBlockY(), loc.getBlockZ()));
+            e.setCancelled(true);
         }
 
-        return trueOrNot;
+        // Y-Limiting
+        if(loc.getBlockY() < v1.getBlockY())
+        {
+            e.setFrom(new Location(loc.getWorld(), loc.getBlockX(), v1.getBlockY() - 1, loc.getBlockZ()));
+            e.setCancelled(true);
+        }
+        else if (loc.getBlockY() > v2.getBlockY())
+        {
+            e.setFrom(new Location(loc.getWorld(), loc.getBlockX(), v2.getBlockY() + 1, loc.getBlockZ()));
+            e.setCancelled(true);
+        }
+
+        // Z-Limiting
+        if(loc.getBlockZ() < v1.getBlockZ())
+        {
+            e.setFrom(new Location(loc.getWorld(), loc.getBlockX(), loc.getBlockY(), v1.getBlockZ() - 1));
+            e.setCancelled(true);
+        }
+        else if (loc.getBlockZ() > v2.getBlockZ())
+        {
+            e.setFrom(new Location(loc.getWorld(), loc.getBlockX(), loc.getBlockY(), v2.getBlockZ() + 1));
+            e.setCancelled(true);
+        }
+
+        /* else if(loc.getBlockZ() > v1.getBlockZ())
+            e.getPlayer().teleport(new Location(loc.getWorld(), loc.getBlockX(), loc.getBlockY(), v1.getBlockZ() - 1));
+        else if(loc.getBlockZ() < v2.getBlockZ())
+            e.getPlayer().teleport(new Location(loc.getWorld(), loc.getBlockX(), loc.getBlockY(), v2.getBlockZ() + 1)); */
     }
 
 }
