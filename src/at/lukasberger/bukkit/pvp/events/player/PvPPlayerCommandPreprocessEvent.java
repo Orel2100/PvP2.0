@@ -2,6 +2,7 @@ package at.lukasberger.bukkit.pvp.events.player;
 
 import at.lukasberger.bukkit.pvp.PvP;
 import at.lukasberger.bukkit.pvp.core.InGameManager;
+import at.lukasberger.bukkit.pvp.core.MessageManager;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -80,6 +81,9 @@ public class PvPPlayerCommandPreprocessEvent implements Listener
                 }
             }
         }
+
+        if(cancel)
+            e.getPlayer().sendMessage(PvP.errorPrefix + MessageManager.instance.get(e.getPlayer(), "ingame.command-blocked"));
 
         e.setCancelled(cancel);
     }

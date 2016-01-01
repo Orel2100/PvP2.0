@@ -2,6 +2,7 @@ package at.lukasberger.bukkit.pvp.events.player;
 
 import at.lukasberger.bukkit.pvp.PvP;
 import at.lukasberger.bukkit.pvp.core.InGameManager;
+import at.lukasberger.bukkit.pvp.core.MessageManager;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -29,7 +30,10 @@ public class PvPPlayerTeleportEvent implements Listener
             return;
 
         if(!PvP.getInstance().getConfig().getBoolean("ingame.teleport.allow", false))
+        {
             e.setCancelled(true);
+            e.getPlayer().sendMessage(PvP.warningPrefix + MessageManager.instance.get(e.getPlayer(), "ingame.teleport.denied"));
+        }
         else
         {
             if(PvP.getInstance().getConfig().getBoolean("ingame.teleport.leave-on-tp", true))

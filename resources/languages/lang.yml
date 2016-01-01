@@ -59,7 +59,7 @@ action:
       created-help-additem: "Adding current holding items with &7/pvp kit %1 add [Slot]&b to the kit"
       created-help-delitem: "Removing the given slot with &7/pvp kit %1 del [Slot]&b to the kit"
       created-help-setcosts: "Set the needed money for this kit using &7/pvp kit %1 costs [Money]"
-      created-help-delete: "Removing the complete kit using &7/pvp kit %1 remove"
+      created-help-delete: "Removing the complete kit using &7/pvp kit %1 delete"
       player:
          default: "You got the default kit"
          changed: "You bought the kit %1. You can change to this kit without paying for it!"
@@ -96,8 +96,6 @@ action:
       created-help-follow: "Your party will follow you in every game you join"
       created-help-invite: "Invite a player using &7/pvp party invite [Player]"
       created-help-leader: "Set a new party-leader using &7/pvp party leader [Player]"
-      invited: "You invited %1 to your party!"
-      invitation: "%1 invites you to the party, accept with &7/pvp party accept"
       accept: "&7You join the party of&6 %1"
       accept-announce: "&6%1&7 joined the party"
       denied: "&7You denied the invitation to the party of &6%1"
@@ -115,7 +113,6 @@ action:
          player-not-in-party: "%1 is not in the party"
          not-leader: "You are not the leader of your current party"
       invite:
-         not-ingame: "You need to be in an arena to invite someone"
          not-online: "The player you want to invite is not online"
          already-invited: "You already invited the player %1"
          already-in-party: "The player is already in a party!"
@@ -131,7 +128,10 @@ ingame:
    no-arena: "This arena does not exists!"
    spectating: "You are now spectating in %1"
    already-spectating: "You are already spectating!"
+   command-blocked: "You are not allowed to use this command!"
    afk:
       marked: "You are marked as AFK now!"
       unmarked: "You are no longer marked as AFK..."
       damager-notify: "%1 is AFK, you can't damage him"
+   teleport:
+      denied: "You are not allowed to teleport. Use /pvp l to leave the arena"

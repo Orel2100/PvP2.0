@@ -34,7 +34,7 @@ public class PlayerLanguageCommand extends AbstractSubCommand
         else if(args.length == 1)
         {
             String language = args[0];
-            Config langConfig = new Config(language);
+            Config langConfig = new Config("langs/" + language);
 
             if(langConfig.exists())
             {

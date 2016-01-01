@@ -123,13 +123,12 @@ public class PvP extends JavaPlugin
             @Override
             public void run()
             {
-                getLogger().info("Deleting default language...");
-                Config defaultMessages = new Config("langs/default");
-                if(defaultMessages.exists())
-                    defaultMessages.delete();
+                getLogger().info("Saving included languages...");
+                new Config("langs/de").saveDefaultConfig("lang_de");
 
-                getLogger().info("Loading language...");
+                getLogger().info("Loading default language...");
                 MessageManager.instance.loadLanguage(getConfig().getString("language"));
+
                 getLogger().info("Language loaded!");
             }
 
@@ -238,7 +237,8 @@ public class PvP extends JavaPlugin
         {
             if(args.length == 0)
             {
-                sender.sendMessage(ChatColor.AQUA.toString() + ChatColor.AQUA + "PvP 2.0 v" + getDescription().getVersion() + " - The new PvP-Plugin");
+                // DO NOT REMOVE THIS COPYRIGHT
+                sender.sendMessage(ChatColor.AQUA.toString() + ChatColor.AQUA + "PvP 2.0 v" + getDescription().getVersion() + " - The new PvP-Plugin by Lukas0610");
             }
             else
             {

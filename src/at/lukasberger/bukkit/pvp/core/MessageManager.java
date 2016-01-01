@@ -7,6 +7,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
+import java.util.Set;
 
 /**
  * PvP 2.0, Copyright (c) 2015-2016 Lukas Berger, licensed under GPLv3
@@ -15,7 +16,6 @@ public class MessageManager
 {
 
     private HashMap<String, Config> messagesFiles = new HashMap<>();
-    private Config defaultMessages;
 
     public static MessageManager instance = new MessageManager();
 
@@ -27,10 +27,24 @@ public class MessageManager
         Config tmp = new Config("langs/" + langName);
         tmp.saveDefaultConfig("lang");
 
-        messagesFiles.put(langName, tmp);
-
-        defaultMessages = new Config("langs/default");
+        Config defaultMessages = new Config("langs/default");
         defaultMessages.saveDefaultConfig("lang", true);
+
+        // updating variables from language which should be loaded
+        Set<String> keys = defaultMessages.config.getKeys(true);
+        for(String key : keys)
+        {
+            if (!tmp.config.getKeys(true).contains(key))
+            {
+                PvP.getInstance().getLogger().info("[Language][" + langName.toUpperCase() + "] Updating \"" + key + "\" to value \"" + defaultMessages.config.get(key).toString() + "\"");
+                tmp.config.set(key, defaultMessages.config.get(key));
+            }
+        }
+
+        defaultMessages.delete();
+        tmp.saveConfig();
+
+        messagesFiles.put(langName, tmp);
     }
 
     public String get(CommandSender p, String name, Object... params)
@@ -47,24 +61,7 @@ public class MessageManager
             this.loadLanguage(lang);
 
         Config messagesFile = messagesFiles.get(lang);
-
-        if(!messagesFile.config.contains(name))
-        {
-            if(!defaultMessages.config.contains(name))
-            {
-                PvP.getInstance().getLogger().severe("The language-variable \"" + name + "\" does not exists");
-            }
-            else
-            {
-                value = defaultMessages.config.getString(name);
-                PvP.getInstance().getLogger().info("Adding missing language variable from default to current language file: " + name);
-
-                messagesFile.config.set(name, value);
-                messagesFile.saveConfig();
-            }
-        }
-        else
-            value = messagesFile.config.getString(name);
+        value = messagesFile.config.getString(name);
 
         if(params == null || params.length == 0)
             return ChatColor.translateAlternateColorCodes('&', value);

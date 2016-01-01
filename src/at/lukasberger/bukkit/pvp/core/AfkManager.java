@@ -42,7 +42,7 @@ public class AfkManager
                         continue;
 
                     Player p = PvP.getInstance().getServer().getPlayer(UUID.fromString(uuid));
-                    p.sendMessage(ChatColor.RED + MessageManager.instance.get(p, "ingame.afk.marked"));
+                    p.sendMessage(PvP.warningPrefix + MessageManager.instance.get(p, "ingame.afk.marked"));
                 }
             }
 
@@ -80,7 +80,7 @@ public class AfkManager
     public void unafk(Player p)
     {
         if(isPlayerAfk(p))
-            p.sendMessage(ChatColor.RED + MessageManager.instance.get(p, "ingame.afk.unmarked"));
+            p.sendMessage(PvP.warningPrefix + MessageManager.instance.get(p, "ingame.afk.unmarked"));
 
         if(afk.containsKey(p.getUniqueId().toString()))
             afk.remove(p.getUniqueId().toString());

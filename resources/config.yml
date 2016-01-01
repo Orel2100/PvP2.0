@@ -27,6 +27,8 @@ ingame:
       - ' '
       - '&7Kills: &a{PVPKILLS}'
       - '&7Deaths: &c{PVPDEATHS}'
+      - ' '
+      -
   commands:
     block: true
     override:
@@ -37,6 +39,9 @@ ingame:
       - 'help'
       - 'msg'
       - 'w*'
+      - 'tell'
+      - 'hub'
+      - 'spawn'
   spectating:
     gamemode: SPECTATOR
     allow-fly: true

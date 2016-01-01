@@ -5,6 +5,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.*;
+import java.nio.charset.Charset;
 
 /**
  * PvP 2.0, Copyright (c) 2015-2016 Lukas Berger, licensed under GPLv3
@@ -73,35 +74,28 @@ public class Config
 
         if (!this.configFile.exists() || force)
         {
+            Reader defConfigStream = new InputStreamReader(PvP.getInstance().getResource(resourceName + ".yml"), Charset.forName("UTF-8"));
+            OutputStream defConfigOutStream;
+
             try
             {
-                Reader defConfigStream = new InputStreamReader(PvP.getInstance().getResource(resourceName + ".yml"), "UTF8");
-                OutputStream defConfigOutStream;
+                defConfigOutStream = new FileOutputStream(this.configFile);
 
-                try
+                int data = defConfigStream.read();
+                while(data != -1)
                 {
-                    defConfigOutStream = new FileOutputStream(this.configFile);
-
-                    int data = defConfigStream.read();
-                    while(data != -1)
-                    {
-                        defConfigOutStream.write(data);
-                        data = defConfigStream.read();
-                    }
-                }
-                catch (IOException ex)
-                {
-                    PvP.getInstance().getLogger().severe(ex.getMessage());
-                }
-                finally
-                {
-                    defConfigStream = null;
-                    defConfigOutStream = null;
+                    defConfigOutStream.write(data);
+                    data = defConfigStream.read();
                 }
             }
-            catch (UnsupportedEncodingException ex)
+            catch (IOException ex)
             {
                 PvP.getInstance().getLogger().severe(ex.getMessage());
+            }
+            finally
+            {
+                defConfigStream = null;
+                defConfigOutStream = null;
             }
         }
 

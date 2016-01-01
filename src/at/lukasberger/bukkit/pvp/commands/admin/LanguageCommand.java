@@ -3,6 +3,7 @@ package at.lukasberger.bukkit.pvp.commands.admin;
 import at.lukasberger.bukkit.pvp.PvP;
 import at.lukasberger.bukkit.pvp.commands.AbstractSubCommand;
 import at.lukasberger.bukkit.pvp.core.MessageManager;
+import at.lukasberger.bukkit.pvp.core.objects.Config;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
@@ -28,8 +29,9 @@ public class LanguageCommand extends AbstractSubCommand
             if(args[0].equalsIgnoreCase("set"))
             {
                 String langName = args[1];
+                Config langConfig = new Config("langs/" + langName);
 
-                if(!new File(PvP.getInstance().getDataFolder().getAbsolutePath(), new File("langs", langName + ".yml").getAbsolutePath()).exists())
+                if(!langConfig.exists())
                 {
                     sender.sendMessage(PvP.errorPrefix + MessageManager.instance.get(sender, "action.language.not-existing"));
                 }
