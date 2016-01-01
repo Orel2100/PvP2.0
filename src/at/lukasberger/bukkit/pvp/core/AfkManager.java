@@ -1,9 +1,11 @@
 package at.lukasberger.bukkit.pvp.core;
 
 import at.lukasberger.bukkit.pvp.PvP;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import java.time.Clock;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
@@ -29,24 +31,7 @@ public class AfkManager
     // starts the tasks
     public void startTasks()
     {
-        checkTask = PvP.getInstance().getServer().getScheduler().scheduleSyncRepeatingTask(PvP.getInstance(), new Runnable() {
-
-            @Override
-            public void run()
-            {
-                for(String player : afk.keySet())
-                {
-                    LocalDateTime playerTime = afk.get(player).plusSeconds(1);
-
-                    afk.remove(player);
-                    afk.put(player, playerTime);
-                }
-            }
-
-        }, 0L, 20L);
-
-        // TODO: Check if everything is threading-safe
-        notifyTask = PvP.getInstance().getServer().getScheduler().runTaskTimerAsynchronously(PvP.getInstance(), new Runnable() {
+        notifyTask = PvP.getInstance().getServer().getScheduler().scheduleSyncRepeatingTask(PvP.getInstance(), new Runnable() {
 
             @Override
             public void run()
@@ -57,11 +42,11 @@ public class AfkManager
                         continue;
 
                     Player p = PvP.getInstance().getServer().getPlayer(UUID.fromString(uuid));
-                    p.sendMessage(MessageManager.instance.get(p, "ingame.afk.marked"));
+                    p.sendMessage(ChatColor.RED + MessageManager.instance.get(p, "ingame.afk.marked"));
                 }
             }
 
-        }, 0L, 20L).getTaskId();
+        }, 0L, 20L);
     }
 
     // stops the tasks
@@ -94,6 +79,9 @@ public class AfkManager
     // marks a player as active/un-AFK
     public void unafk(Player p)
     {
+        if(isPlayerAfk(p))
+            p.sendMessage(ChatColor.RED + MessageManager.instance.get(p, "ingame.afk.unmarked"));
+
         if(afk.containsKey(p.getUniqueId().toString()))
             afk.remove(p.getUniqueId().toString());
     }

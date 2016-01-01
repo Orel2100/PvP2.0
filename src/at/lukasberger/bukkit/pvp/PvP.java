@@ -123,6 +123,11 @@ public class PvP extends JavaPlugin
             @Override
             public void run()
             {
+                getLogger().info("Deleting default language...");
+                Config defaultMessages = new Config("langs/default");
+                if(defaultMessages.exists())
+                    defaultMessages.delete();
+
                 getLogger().info("Loading language...");
                 MessageManager.instance.loadLanguage(getConfig().getString("language"));
                 getLogger().info("Language loaded!");

@@ -30,7 +30,6 @@ public class MessageManager
         messagesFiles.put(langName, tmp);
 
         defaultMessages = new Config("langs/default");
-        defaultMessages.delete();
         defaultMessages.saveDefaultConfig("lang", true);
     }
 

@@ -2,6 +2,7 @@ package at.lukasberger.bukkit.pvp.commands.admin;
 
 import at.lukasberger.bukkit.pvp.PvP;
 import at.lukasberger.bukkit.pvp.commands.AbstractSubCommand;
+import at.lukasberger.bukkit.pvp.core.ArenaManager;
 import at.lukasberger.bukkit.pvp.core.MessageManager;
 import at.lukasberger.bukkit.pvp.core.objects.Arena;
 import com.sk89q.worldedit.bukkit.selections.Selection;
@@ -45,20 +46,27 @@ public class ArenaCommand extends AbstractSubCommand
                 sender.sendMessage(ChatColor.AQUA + MessageManager.instance.get(sender, "action.arena.created-help-delspawn", args[0]));
                 sender.sendMessage(ChatColor.AQUA + MessageManager.instance.get(sender, "action.arena.created-help-randspawn"));
             }
+            else if(args[1].equalsIgnoreCase("change"))
+            {
+                Selection sel = PvP.worldEdit.getSelection((Player)sender);
+                ArenaManager.instance.getArena(args[0]).changeSelection(sel);
+
+                sender.sendMessage(PvP.successPrefix + MessageManager.instance.get(sender, "action.arena.changed", args[0]));
+            }
             else if(args[1].equalsIgnoreCase("delete"))
             {
-                new Arena(args[0]).delete();
+                ArenaManager.instance.deleteArena(args[0]);
                 sender.sendMessage(PvP.successPrefix + MessageManager.instance.get(sender, "action.arena.deleted", args[0]));
             }
             else if(args[1].equalsIgnoreCase("addspawn"))
             {
                 Location loc = ((Player)sender).getLocation();
-                int id = new Arena(args[0]).addSpawn(loc);
+                int id = ArenaManager.instance.getArena(args[0]).addSpawn(loc);
                 sender.sendMessage(PvP.successPrefix + MessageManager.instance.get(sender, "action.arena.spawn.added", id, loc.getBlockX(), loc.getBlockY(), loc.getBlockZ()));
             }
             else if(args[1].equalsIgnoreCase("delspawn"))
             {
-                int id = new Arena(args[0]).removeLastSpawn();
+                int id = ArenaManager.instance.getArena(args[0]).removeLastSpawn();
                 if(id == -1)
                     sender.sendMessage(PvP.successPrefix + MessageManager.instance.get(sender, "action.arena.spawn.no-spawn-delete", id));
                 else
@@ -67,7 +75,7 @@ public class ArenaCommand extends AbstractSubCommand
             else if(args[1].equalsIgnoreCase("spec"))
             {
                 Location loc = ((Player)sender).getLocation();
-                int id = new Arena(args[0]).addSpawn(loc);
+                int id = ArenaManager.instance.getArena(args[0]).addSpawn(loc);
                 sender.sendMessage(PvP.successPrefix + MessageManager.instance.get(sender, "action.arena.spawn.added", id, loc.getBlockX(), loc.getBlockY(), loc.getBlockZ()));
             }
             else

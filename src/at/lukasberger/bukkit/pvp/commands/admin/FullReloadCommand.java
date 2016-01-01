@@ -4,6 +4,7 @@ import at.lukasberger.bukkit.pvp.PvP;
 import at.lukasberger.bukkit.pvp.commands.AbstractSubCommand;
 import at.lukasberger.bukkit.pvp.commands.SubCommandManager;
 import at.lukasberger.bukkit.pvp.core.*;
+import at.lukasberger.bukkit.pvp.core.objects.Config;
 import org.bukkit.command.CommandSender;
 import org.bukkit.event.HandlerList;
 
@@ -52,6 +53,11 @@ public class FullReloadCommand extends AbstractSubCommand
 
             PvP.getInstance().getLogger().fine("Reloading commands...");
             PvP.getInstance().loadSubCommands();
+
+            PvP.getInstance().getLogger().info("Deleting default language...");
+            Config defaultMessages = new Config("langs/default");
+            if(defaultMessages.exists())
+                defaultMessages.delete();
 
             PvP.getInstance().getLogger().fine("Reloading default language...");
             MessageManager.instance.loadLanguage(PvP.getInstance().getConfig().getString("language"));

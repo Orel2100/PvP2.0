@@ -27,7 +27,7 @@ public class InGameManager
 
     private HashMap<String, ItemStack[]> playerInventoryBeforeJoin = new HashMap<>();
     private HashMap<String, Location> playerLocationBeforeJoin = new HashMap<>();
-    private HashMap<String, GameMode> playerGamemodeBeforeJoin = new HashMap<>();
+    private HashMap<String, String> playerGamemodeBeforeJoin = new HashMap<>();
     private List<String> playerTeleportStatus = new ArrayList<>();
 
     // instance
@@ -91,7 +91,7 @@ public class InGameManager
             playerInventoryBeforeJoin.put(p.getUniqueId().toString() + "-inv", p.getInventory().getContents());
             playerInventoryBeforeJoin.put(p.getUniqueId().toString() + "-armor", p.getInventory().getArmorContents());
             playerLocationBeforeJoin.put(p.getUniqueId().toString(), p.getLocation());
-            playerGamemodeBeforeJoin.put(p.getUniqueId().toString(), p.getGameMode());
+            playerGamemodeBeforeJoin.put(p.getUniqueId().toString(), p.getGameMode().toString());
 
             p.getInventory().clear();
             p.setGameMode(GameMode.SURVIVAL);
@@ -103,6 +103,9 @@ public class InGameManager
 
             // update the scoreboard
             getPlayer(p).updateScoreboard();
+
+            // set player afk at joining
+            AfkManager.instance.afk(p);
 
             return true;
         }
@@ -133,7 +136,7 @@ public class InGameManager
             playerInventoryBeforeJoin.put(p.getUniqueId().toString() + "-inv", p.getInventory().getContents());
             playerInventoryBeforeJoin.put(p.getUniqueId().toString() + "-armor", p.getInventory().getArmorContents());
             playerLocationBeforeJoin.put(p.getUniqueId().toString(), p.getLocation());
-            playerGamemodeBeforeJoin.put(p.getUniqueId().toString(), p.getGameMode());
+            playerGamemodeBeforeJoin.put(p.getUniqueId().toString(), p.getGameMode().toString());
 
             p.getInventory().clear();
             p.setGameMode(GameMode.valueOf(PvP.getInstance().getConfig().getString("ingame.spectating.gamemode").toUpperCase()));
@@ -223,9 +226,17 @@ public class InGameManager
         ItemStack[] inv = playerInventoryBeforeJoin.get(p.getUniqueId().toString() + "-inv");
         ItemStack[] armor = playerInventoryBeforeJoin.get(p.getUniqueId().toString() + "-armor");
         Location loc = playerLocationBeforeJoin.get(p.getUniqueId().toString());
+        String gamemode = playerGamemodeBeforeJoin.get(p.getUniqueId().toString());
+
+        // remove from lists
+        currentPlayerArena.remove(p.getUniqueId().toString());
+        playerInventoryBeforeJoin.remove(p.getUniqueId().toString());
+        playerLocationBeforeJoin.remove(p.getUniqueId().toString());
+        playerGamemodeBeforeJoin.remove(p.getUniqueId().toString());
+        AfkManager.instance.unafk(p);
 
         // Restore player settings
-        p.setGameMode(playerGamemodeBeforeJoin.get(p.getUniqueId().toString()));
+        p.setGameMode(GameMode.valueOf(gamemode));
 
         // Restore the inventory which is saved before joining
         p.getInventory().clear();
@@ -233,11 +244,6 @@ public class InGameManager
 
         p.getInventory().setArmorContents(armor);
         p.getInventory().setContents(inv);
-
-        // remove from lists
-        currentPlayerArena.remove(p.getUniqueId().toString());
-        playerInventoryBeforeJoin.remove(p.getUniqueId().toString());
-        playerLocationBeforeJoin.remove(p.getUniqueId().toString());
 
         // remove scoreboard
         p.setScoreboard(PvP.getInstance().getServer().getScoreboardManager().getNewScoreboard());
@@ -265,9 +271,16 @@ public class InGameManager
         ItemStack[] inv = playerInventoryBeforeJoin.get(p.getUniqueId().toString() + "-inv");
         ItemStack[] armor = playerInventoryBeforeJoin.get(p.getUniqueId().toString() + "-armor");
         Location loc = playerLocationBeforeJoin.get(p.getUniqueId().toString());
+        String gamemode = playerGamemodeBeforeJoin.get(p.getUniqueId().toString());
+
+        // remove from lists
+        currentSpectatorArena.remove(p.getUniqueId().toString());
+        playerInventoryBeforeJoin.remove(p.getUniqueId().toString());
+        playerLocationBeforeJoin.remove(p.getUniqueId().toString());
+        playerGamemodeBeforeJoin.remove(p.getUniqueId().toString());
 
         // Restore player settings
-        p.setGameMode(playerGamemodeBeforeJoin.get(p.getUniqueId().toString()));
+        p.setGameMode(GameMode.valueOf(gamemode));
 
         // Restore the inventory which is saved before joining
         p.getInventory().clear();
@@ -275,11 +288,6 @@ public class InGameManager
 
         p.getInventory().setArmorContents(armor);
         p.getInventory().setContents(inv);
-
-        // remove from lists
-        currentSpectatorArena.remove(p.getUniqueId().toString());
-        playerInventoryBeforeJoin.remove(p.getUniqueId().toString());
-        playerLocationBeforeJoin.remove(p.getUniqueId().toString());
 
         // remove scoreboard
         p.setScoreboard(PvP.getInstance().getServer().getScoreboardManager().getNewScoreboard());

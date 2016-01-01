@@ -35,6 +35,7 @@ public class Config
     public void delete()
     {
         configFile.delete();
+        this.reloadConfig();
     }
 
     public void reloadConfig()

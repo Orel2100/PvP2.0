@@ -56,6 +56,9 @@ public class ArenaManager
     // completely deletes the arena
     public void deleteArena(String arena)
     {
+        if(!isArenaLoaded(arena))
+            loadArena(arena);
+
         Arena a = arenas.get(arena);
         a.delete();
         arenas.remove(arena);

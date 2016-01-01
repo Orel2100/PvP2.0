@@ -39,6 +39,7 @@ action:
       created-help-addspawn: "You can define spawnpoint with &7/pvp arena %1 addspawn"
       created-help-delspawn: "For removing the last spawnpoint use &7/pvp arena %1 delspawn"
       created-help-randspawn: "If no spawnpoint is defined, a random spawnpoint will be calculated"
+      changed: "The selection of arena %1 was changed!"
       deleted: "The Arena %1 was successfully deleted!"
       spawn:
          added: "The spawn #%1 at %2;%3;%4; was successfully added"
@@ -132,4 +133,5 @@ ingame:
    already-spectating: "You are already spectating!"
    afk:
       marked: "You are marked as AFK now!"
+      unmarked: "You are no longer marked as AFK..."
       damager-notify: "%1 is AFK, you can't damage him"
