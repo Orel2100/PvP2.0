@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * PvP 2.0, Copyright (c) 2015 Lukas Berger, licensed under GPLv3
+ * PvP 2.0, Copyright (c) 2015-2016 Lukas Berger, licensed under GPLv3
  */
 public class MapTupleUtils<A, B>
 {

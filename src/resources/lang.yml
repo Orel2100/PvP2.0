@@ -125,5 +125,8 @@ ingame:
    joined: "You joined the arena %1"
    left: "You left the arena!"
    not-ingame: "You are not ingame!"
+   not-spectating: "You are not spectating!"
    already-ingame: "You are already ingame!"
    no-arena: "This arena does not exists!"
+   spectating: "You are now spectating in %1"
+   already-spectating: "You are already spectating!"

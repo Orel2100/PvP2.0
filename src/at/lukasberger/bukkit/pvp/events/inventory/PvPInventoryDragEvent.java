@@ -8,7 +8,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryDragEvent;
 
 /**
- * PvP 2.0, Copyright (c) 2015 Lukas Berger, licensed under GPLv3
+ * PvP 2.0, Copyright (c) 2015-2016 Lukas Berger, licensed under GPLv3
  */
 public class PvPInventoryDragEvent implements Listener
 {

@@ -7,7 +7,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 /**
- * Created by Lukas on 28.12.2015.
+ * PvP 2.0, Copyright (c) 2015-2016 Lukas Berger, licensed under GPLv3
  */
 public class PvPPlayerQuitEvent implements Listener
 {
@@ -17,6 +17,9 @@ public class PvPPlayerQuitEvent implements Listener
     {
         if(InGameManager.instance.isPlayerIngame(e.getPlayer()))
             InGameManager.instance.leaveArena(e.getPlayer());
+
+        if(InGameManager.instance.isPlayerSpectating(e.getPlayer()))
+            InGameManager.instance.leaveArenaSpectating(e.getPlayer());
     }
 
 }

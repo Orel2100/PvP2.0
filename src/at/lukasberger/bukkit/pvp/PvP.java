@@ -10,6 +10,9 @@ import at.lukasberger.bukkit.pvp.events.inventory.*;
 import at.lukasberger.bukkit.pvp.events.player.*;
 import at.lukasberger.bukkit.pvp.events.player.items.*;
 import at.lukasberger.bukkit.pvp.events.player.party.*;
+import at.lukasberger.bukkit.pvp.events.player.spectator.PvPSpectatorDamageEvent;
+import at.lukasberger.bukkit.pvp.events.player.spectator.PvPSpectatorGameModeChangeEvent;
+import at.lukasberger.bukkit.pvp.events.player.spectator.PvPSpectatorMoveEvent;
 import at.lukasberger.bukkit.pvp.events.world.*;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import net.milkbowl.vault.economy.Economy;
@@ -24,7 +27,7 @@ import java.util.Arrays;
 import java.util.Set;
 
 /**
- * PvP 2.0, Copyright (c) 2015 Lukas Berger, licensed under GPLv3
+ * PvP 2.0, Copyright (c) 2015-2016 Lukas Berger, licensed under GPLv3
  */
 public class PvP extends JavaPlugin
 {
@@ -118,6 +121,9 @@ public class PvP extends JavaPlugin
         if(this.getConfig().getBoolean("ingame.enable-parties"))
             SubCommandManager.instance.registerSubCommand(new PartyCommand(), "party", "p");
 
+        if(this.getConfig().getBoolean("ingame.enable-spectating"))
+            SubCommandManager.instance.registerSubCommand(new SpectateCommand(), "spec", "s");
+
         if(this.getConfig().getBoolean("player-language"))
             SubCommandManager.instance.registerSubCommand(new PlayerLanguageCommand(), "lang", "language");
 
@@ -147,8 +153,14 @@ public class PvP extends JavaPlugin
         this.getServer().getPluginManager().registerEvents(new PvPPlayerToggleFlightEvent(), this);
         this.getServer().getPluginManager().registerEvents(new PvPPlayerQuitEvent(), this);
         this.getServer().getPluginManager().registerEvents(new PvPPlayerCommandPreprocessEvent(), this);
+        // party
         this.getServer().getPluginManager().registerEvents(new PvPPartyPlayerQuitEvent(), this);
+        // items
         this.getServer().getPluginManager().registerEvents(new PvPPlayerGrenadeEvents(), this);
+        // spectating
+        this.getServer().getPluginManager().registerEvents(new PvPSpectatorDamageEvent(), this);
+        this.getServer().getPluginManager().registerEvents(new PvPSpectatorGameModeChangeEvent(), this);
+        this.getServer().getPluginManager().registerEvents(new PvPSpectatorMoveEvent(), this);
 
         // world
         this.getServer().getPluginManager().registerEvents(new PvPBlockBreakEvent(), this);

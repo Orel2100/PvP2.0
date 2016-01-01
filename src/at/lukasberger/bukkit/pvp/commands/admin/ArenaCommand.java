@@ -14,7 +14,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * PvP 2.0, Copyright (c) 2015 Lukas Berger, licensed under GPLv3
+ * PvP 2.0, Copyright (c) 2015-2016 Lukas Berger, licensed under GPLv3
  */
 public class ArenaCommand extends AbstractSubCommand
 {
@@ -63,6 +63,12 @@ public class ArenaCommand extends AbstractSubCommand
                     sender.sendMessage(PvP.successPrefix + MessageManager.instance.get(sender, "action.arena.spawn.no-spawn-delete", id));
                 else
                     sender.sendMessage(PvP.successPrefix + MessageManager.instance.get(sender, "action.arena.spawn.deleted", id));
+            }
+            else if(args[1].equalsIgnoreCase("spec"))
+            {
+                Location loc = ((Player)sender).getLocation();
+                int id = new Arena(args[0]).addSpawn(loc);
+                sender.sendMessage(PvP.successPrefix + MessageManager.instance.get(sender, "action.arena.spawn.added", id, loc.getBlockX(), loc.getBlockY(), loc.getBlockZ()));
             }
             else
             {

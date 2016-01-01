@@ -2,7 +2,7 @@ package at.lukasberger.bukkit.pvp.commands.player;
 
 import at.lukasberger.bukkit.pvp.PvP;
 import at.lukasberger.bukkit.pvp.commands.AbstractSubCommand;
-import at.lukasberger.bukkit.pvp.core.InviteManager;
+import at.lukasberger.bukkit.pvp.core.InGameManager;
 import at.lukasberger.bukkit.pvp.core.MessageManager;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -11,11 +11,10 @@ import org.bukkit.entity.Player;
 import java.util.Arrays;
 import java.util.List;
 
-
 /**
  * PvP 2.0, Copyright (c) 2015-2016 Lukas Berger, licensed under GPLv3
  */
-public class InviteDenyCommand extends AbstractSubCommand
+public class SpectateCommand extends AbstractSubCommand
 {
 
     @Override
@@ -29,21 +28,19 @@ public class InviteDenyCommand extends AbstractSubCommand
 
         if(args.length == 1)
         {
-            InviteManager.instance.deny((Player)sender, args[0]);
+            InGameManager.instance.joinArenaSpectating((Player)sender, args[0]);
         }
         else
         {
-            sender.sendMessage(ChatColor.AQUA + "~~~ PvP: Invite ~~~");
-            sender.sendMessage(ChatColor.GRAY + "/pvp invite/i {Name}\n" + ChatColor.GREEN + MessageManager.instance.get(sender, "commands.help.invite"));
-            sender.sendMessage(ChatColor.GRAY + "/pvp accept/a {Name}\n" + ChatColor.GREEN + MessageManager.instance.get(sender, "commands.help.accept"));
-            sender.sendMessage(ChatColor.GRAY + "/pvp deny/d {Name}\n" + ChatColor.GREEN + MessageManager.instance.get(sender, "commands.help.deny"));
+            sender.sendMessage(ChatColor.AQUA + "~~~ PvP: Spectate ~~~");
+            sender.sendMessage(ChatColor.GRAY + "/pvp spec/s {Arena}\n" + ChatColor.GREEN + MessageManager.instance.get(sender, "commands.help.spectate"));
         }
     }
 
     @Override
     public List<String> getPermissions()
     {
-        return Arrays.asList("pvp.player.invite", "pvp.player", "pvp.player.*", "pvp.*");
+        return Arrays.asList("pvp.player.spectate", "pvp.player", "pvp.player.*", "pvp.*");
     }
 
 }

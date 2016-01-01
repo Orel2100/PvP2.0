@@ -13,7 +13,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Created by Lukas on 31.12.2015.
+ * PvP 2.0, Copyright (c) 2015-2016 Lukas Berger, licensed under GPLv3
  */
 public class PlayerLanguageCommand extends AbstractSubCommand
 {
@@ -59,7 +59,7 @@ public class PlayerLanguageCommand extends AbstractSubCommand
     @Override
     public List<String> getPermissions()
     {
-        return Arrays.asList("pvp.player.lamguage", "pvp.player", "pvp.player.*", "pvp.*");
+        return Arrays.asList("pvp.player.language", "pvp.player", "pvp.player.*", "pvp.*");
     }
 
 }

@@ -8,7 +8,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 
 /**
- * PvP 2.0, Copyright (c) 2015 Lukas Berger, licensed under GPLv3
+ * PvP 2.0, Copyright (c) 2015-2016 Lukas Berger, licensed under GPLv3
  */
 public class PvPPlayerMoveEvent implements Listener
 {
@@ -20,7 +20,12 @@ public class PvPPlayerMoveEvent implements Listener
         if(e.getPlayer() == null)
             return;
 
+        // check if player is ingame
         if(!InGameManager.instance.isPlayerIngame(e.getPlayer()))
+            return;
+
+        // check if player really moved
+        if(e.getFrom().getBlockX() == e.getTo().getBlockX() && e.getFrom().getBlockY() == e.getTo().getBlockY() && e.getFrom().getBlockZ() == e.getTo().getBlockZ())
             return;
 
         if(!PvP.getInstance().getConfig().getBoolean("ingame.player.allow-hunger", false))

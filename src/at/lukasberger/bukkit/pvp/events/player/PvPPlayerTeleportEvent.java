@@ -8,7 +8,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerTeleportEvent;
 
 /**
- * PvP 2.0, Copyright (c) 2015 Lukas Berger, licensed under GPLv3
+ * PvP 2.0, Copyright (c) 2015-2016 Lukas Berger, licensed under GPLv3
  */
 public class PvPPlayerTeleportEvent implements Listener
 {
@@ -21,7 +21,7 @@ public class PvPPlayerTeleportEvent implements Listener
             return;
 
         // check if player is ingame
-        if(!InGameManager.instance.isPlayerIngame(e.getPlayer()))
+        if(!InGameManager.instance.isPlayerIngame(e.getPlayer()) && !InGameManager.instance.isPlayerSpectating(e.getPlayer()))
             return;
 
         // check if the player is allowed to teleport (eg. arena-teleport, ...)

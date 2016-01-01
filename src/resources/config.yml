@@ -6,6 +6,7 @@ ingame:
   fall-damage: false
   enable-invites: true
   enable-parties: true
+  enable-spectating: true
   block:
     break: false
     place: false
@@ -35,6 +36,9 @@ ingame:
       - 'help'
       - 'msg'
       - 'w*'
+  spectating:
+    gamemode: SPECTATOR
+    allow-fly: true
 gadgets:
   grenades:
     enable: true

@@ -16,13 +16,15 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * PvP 2.0, Copyright (c) 2015 Lukas Berger, licensed under GPLv3
+ * PvP 2.0, Copyright (c) 2015-2016 Lukas Berger, licensed under GPLv3
  */
 public class InGameManager
 {
 
     // lists
     private HashMap<String, String> currentPlayerArena = new HashMap<>();
+    private HashMap<String, String> currentSpectatorArena = new HashMap<>();
+
     private HashMap<String, ItemStack[]> playerInventoryBeforeJoin = new HashMap<>();
     private HashMap<String, Location> playerLocationBeforeJoin = new HashMap<>();
     private HashMap<String, GameMode> playerGamemodeBeforeJoin = new HashMap<>();
@@ -56,7 +58,13 @@ public class InGameManager
         return currentPlayerArena.containsKey(p.getUniqueId().toString());
     }
 
-    // joins the arena for the first time
+    // checks if a player is spectating
+    public boolean isPlayerSpectating(Player p)
+    {
+        return currentSpectatorArena.containsKey(p.getUniqueId().toString());
+    }
+
+    // join the arena
     public boolean joinArena(Player p, String arenaName)
     {
         // if player already is in arena, do not join
@@ -78,7 +86,7 @@ public class InGameManager
 
         if(arena.doesArenaExists())
         {
-            // Put play to lists
+            // Put player to lists
             currentPlayerArena.put(p.getUniqueId().toString(), arenaName);
             playerInventoryBeforeJoin.put(p.getUniqueId().toString() + "-inv", p.getInventory().getContents());
             playerInventoryBeforeJoin.put(p.getUniqueId().toString() + "-armor", p.getInventory().getArmorContents());
@@ -92,6 +100,48 @@ public class InGameManager
             getPlayer(p).giveCurrentKit();
 
             p.sendMessage(PvP.successPrefix + MessageManager.instance.get(p, "ingame.joined", arenaName));
+
+            // update the scoreboard
+            getPlayer(p).updateScoreboard();
+
+            return true;
+        }
+        else
+        {
+            p.sendMessage(PvP.successPrefix + MessageManager.instance.get(p, "ingame.no-arena", arenaName));
+            return false;
+        }
+    }
+
+    // join the arena in spectate-mode
+    public boolean joinArenaSpectating(Player p, String arenaName)
+    {
+        // if player already is in arena, do not join
+        if(currentSpectatorArena.containsKey(p.getUniqueId().toString()))
+        {
+            p.sendMessage(PvP.successPrefix + MessageManager.instance.get(p, "ingame.already-spectating", arenaName));
+            return false;
+        }
+
+        // Load arena configuration and teleport player
+        Arena arena = ArenaManager.instance.getArena(arenaName);
+
+        if(arena.doesArenaExists())
+        {
+            // Put player to lists
+            currentSpectatorArena.put(p.getUniqueId().toString(), arenaName);
+            playerInventoryBeforeJoin.put(p.getUniqueId().toString() + "-inv", p.getInventory().getContents());
+            playerInventoryBeforeJoin.put(p.getUniqueId().toString() + "-armor", p.getInventory().getArmorContents());
+            playerLocationBeforeJoin.put(p.getUniqueId().toString(), p.getLocation());
+            playerGamemodeBeforeJoin.put(p.getUniqueId().toString(), p.getGameMode());
+
+            p.getInventory().clear();
+            p.setGameMode(GameMode.valueOf(PvP.getInstance().getConfig().getString("ingame.spectating.gamemode").toUpperCase()));
+            p.setFlying(PvP.getInstance().getConfig().getBoolean("ingame.spectating.allow-fly"));
+            p.setAllowFlight(PvP.getInstance().getConfig().getBoolean("ingame.spectating.allow-fly"));
+
+            arena.spectate(p);
+            p.sendMessage(PvP.successPrefix + MessageManager.instance.get(p, "ingame.spectating", arenaName));
 
             // update the scoreboard
             getPlayer(p).updateScoreboard();
@@ -140,10 +190,12 @@ public class InGameManager
 
     public String getArena(Player p)
     {
-        if(!isPlayerIngame(p))
+        if(isPlayerIngame(p))
+            return currentPlayerArena.get(p.getUniqueId().toString());
+        else if(isPlayerSpectating(p))
+            return currentSpectatorArena.get(p.getUniqueId().toString());
+        else
             return null;
-
-        return currentPlayerArena.get(p.getUniqueId().toString());
     }
 
     // removes the player from the arena and restores inventory/location
@@ -195,11 +247,56 @@ public class InGameManager
         p.sendMessage(PvP.successPrefix + MessageManager.instance.get(p, "ingame.left"));
     }
 
+    // removes the player from the arena and restores inventory/location
+    public void leaveArenaSpectating(Player p)
+    {
+        // check if player is null
+        if(p == null)
+            return;
+
+        // check if player is in an arena, return if not
+        if(!currentSpectatorArena.containsKey(p.getUniqueId().toString()))
+        {
+            p.sendMessage(PvP.successPrefix + MessageManager.instance.get(p, "ingame.not-spectating"));
+            return;
+        }
+
+        // Retrieve inventory and location from lists
+        ItemStack[] inv = playerInventoryBeforeJoin.get(p.getUniqueId().toString() + "-inv");
+        ItemStack[] armor = playerInventoryBeforeJoin.get(p.getUniqueId().toString() + "-armor");
+        Location loc = playerLocationBeforeJoin.get(p.getUniqueId().toString());
+
+        // Restore player settings
+        p.setGameMode(playerGamemodeBeforeJoin.get(p.getUniqueId().toString()));
+
+        // Restore the inventory which is saved before joining
+        p.getInventory().clear();
+        p.getInventory().setArmorContents(new ItemStack[] { });
+
+        p.getInventory().setArmorContents(armor);
+        p.getInventory().setContents(inv);
+
+        // remove from lists
+        currentSpectatorArena.remove(p.getUniqueId().toString());
+        playerInventoryBeforeJoin.remove(p.getUniqueId().toString());
+        playerLocationBeforeJoin.remove(p.getUniqueId().toString());
+
+        // remove scoreboard
+        p.setScoreboard(PvP.getInstance().getServer().getScoreboardManager().getNewScoreboard());
+
+        // Teleport player to last location before joining
+        p.teleport(loc);
+        p.sendMessage(PvP.successPrefix + MessageManager.instance.get(p, "ingame.left"));
+    }
+
     // throws out all player from all arenas (reload etc.)
     public void leaveArenaAll()
     {
         for(String pl : currentPlayerArena.keySet())
             leaveArena(Bukkit.getPlayer(UUID.fromString(pl)));
+
+        for(String pl : currentSpectatorArena.keySet())
+            leaveArenaSpectating(Bukkit.getPlayer(UUID.fromString(pl)));
     }
 
 }

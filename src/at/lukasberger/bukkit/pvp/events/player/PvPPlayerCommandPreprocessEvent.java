@@ -11,7 +11,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import java.util.List;
 
 /**
- * Created by Lukas on 29.12.2015.
+ * PvP 2.0, Copyright (c) 2015-2016 Lukas Berger, licensed under GPLv3
  */
 public class PvPPlayerCommandPreprocessEvent implements Listener
 {
@@ -28,7 +28,7 @@ public class PvPPlayerCommandPreprocessEvent implements Listener
             return;
 
         // check if player is ingame
-        if (!InGameManager.instance.isPlayerIngame(e.getPlayer()))
+        if (!InGameManager.instance.isPlayerIngame(e.getPlayer()) && !InGameManager.instance.isPlayerSpectating(e.getPlayer()))
             return;
 
         // check if player is op and op-overriding is enabled

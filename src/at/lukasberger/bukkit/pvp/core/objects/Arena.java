@@ -13,7 +13,7 @@ import org.bukkit.entity.Player;
 import java.util.List;
 
 /**
- * PvP 2.0, Copyright (c) 2015 Lukas Berger, licensed under GPLv3
+ * PvP 2.0, Copyright (c) 2015-2016 Lukas Berger, licensed under GPLv3
  */
 public class Arena
 {
@@ -132,17 +132,19 @@ public class Arena
         return spawns.size() + 1;
     }
 
+    // set a new spawn for spectators
+    public void setSpecSpawn(Location loc)
+    {
+        arenaConfig.config.set("arena.spectator.x", loc.getX());
+        arenaConfig.config.set("arena.spectator.y", loc.getY());
+        arenaConfig.config.set("arena.spectator.z", loc.getZ());
+        arenaConfig.saveConfig();
+    }
+
     public void teleportPlayer(Player p)
     {
         // Load world
         World arenaworld = Bukkit.getServer().getWorld(arenaConfig.config.getString("arena.world"));
-
-        // load points of arena
-        double minX = arenaConfig.config.getDouble("arena.min.x");
-        double minZ = arenaConfig.config.getDouble("arena.max.z");
-
-        double maxX = arenaConfig.config.getDouble("arena.min.x");
-        double maxZ = arenaConfig.config.getDouble("arena.max.z");
 
         // do not teleport a player to a non-existing world
         if(arenaworld != null)
@@ -170,6 +172,13 @@ public class Arena
             }
             else
             {
+                // load points of arena
+                double minX = arenaConfig.config.getDouble("arena.min.x");
+                double minZ = arenaConfig.config.getDouble("arena.max.z");
+
+                double maxX = arenaConfig.config.getDouble("arena.min.x");
+                double maxZ = arenaConfig.config.getDouble("arena.max.z");
+
                 // choose random spawn location
                 // calculate the random spawn-point
                 double x = Math.min(minX, maxX) + (double)Math.round(-0.5f + (1 + Math.abs(minX - maxX)) * Math.random());
@@ -190,6 +199,93 @@ public class Arena
         {
             // world does not exists
             p.sendMessage(PvP.errorPrefix + MessageManager.instance.get(p, "commands.error.no-world", arenaConfig.config.getString("arena.world")));
+        }
+    }
+
+    // returns the lower location
+    public Location getMinLocation()
+    {
+        World arenaworld = Bukkit.getServer().getWorld(arenaConfig.config.getString("arena.world"));
+
+        if(arenaworld == null)
+            return null;
+
+        return new Location(arenaworld, arenaConfig.config.getDouble("arena.min.x"),
+                arenaConfig.config.getDouble("arena.min.y"), arenaConfig.config.getDouble("arena.min.z"));
+    }
+
+    // returns the higher location
+    public Location getMaxLocation()
+    {
+        World arenaworld = Bukkit.getServer().getWorld(arenaConfig.config.getString("arena.world"));
+
+        if(arenaworld == null)
+            return null;
+
+        return new Location(arenaworld, arenaConfig.config.getDouble("arena.max.x"),
+                arenaConfig.config.getDouble("arena.max.y"), arenaConfig.config.getDouble("arena.max.z"));
+    }
+
+    // spectate in the arena
+    public void spectate(Player p)
+    {
+        World arenaworld = Bukkit.getServer().getWorld(arenaConfig.config.getString("arena.world"));
+
+        // check if spectator-spawn is set
+        if(arenaConfig.config.contains("arena.spectator"))
+        {
+            Location loc = new Location(arenaworld, arenaConfig.config.getDouble("arena.spectator.x"),
+                    arenaConfig.config.getDouble("arena.spectator.y"), arenaConfig.config.getDouble("arena.spectator.z"));
+
+            p.teleport(loc);
+        }
+        else
+        {
+            // check if any predefined spawn is available
+            if(arenaConfig.config.getStringList("spawns") != null && arenaConfig.config.getStringList("spawns").size() != 0)
+            {
+                // choose a random spawn point
+                List<String> locations = arenaConfig.config.getStringList("spawns");
+                int randLoc = Math.min(0, locations.size() - 1) + (int)Math.round((1 + Math.abs(0 - locations.size() - 1)) * Math.random());
+
+                while(randLoc >= locations.size())
+                    randLoc = Math.min(0, locations.size() - 1) + (int)Math.round((1 + Math.abs(0 - locations.size() - 1)) * Math.random());
+
+                String[] locationParts = locations.get(randLoc).split(";");
+
+                // activating teleportation for player
+                InGameManager.instance.changeTeleportStatus(p, true);
+
+                // teleport the player
+                p.teleport(new Location(arenaworld, Double.parseDouble(locationParts[0]), Double.parseDouble(locationParts[1]), Double.parseDouble(locationParts[2])));
+
+                // deactivating teleportation for player
+                InGameManager.instance.changeTeleportStatus(p, false);
+            }
+            else
+            {
+                // load points of arena
+                double minX = arenaConfig.config.getDouble("arena.min.x");
+                double minZ = arenaConfig.config.getDouble("arena.max.z");
+
+                double maxX = arenaConfig.config.getDouble("arena.min.x");
+                double maxZ = arenaConfig.config.getDouble("arena.max.z");
+
+                // choose random spawn location
+                // calculate the random spawn-point
+                double x = Math.min(minX, maxX) + (double)Math.round(-0.5f + (1 + Math.abs(minX - maxX)) * Math.random());
+                double z = Math.min(minZ, maxZ) + (double)Math.round(-0.5f + (1 + Math.abs(minZ - maxZ)) * Math.random());
+                int y = arenaworld.getHighestBlockYAt((int)x, (int)z);
+
+                // activating teleportation for player
+                InGameManager.instance.changeTeleportStatus(p, true);
+
+                // teleport the player
+                p.teleport(new Location(arenaworld, x, y, z));
+
+                // deactivating teleportation for player
+                InGameManager.instance.changeTeleportStatus(p, false);
+            }
         }
     }
 

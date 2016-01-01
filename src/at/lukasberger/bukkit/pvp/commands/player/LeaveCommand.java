@@ -10,7 +10,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * PvP 2.0, Copyright (c) 2015 Lukas Berger, licensed under GPLv3
+ * PvP 2.0, Copyright (c) 2015-2016 Lukas Berger, licensed under GPLv3
  */
 public class LeaveCommand extends AbstractSubCommand
 {
@@ -22,9 +22,15 @@ public class LeaveCommand extends AbstractSubCommand
         {
             sender.sendMessage(PvP.errorPrefix + "Player-only command!");
             return;
+
         }
 
-        InGameManager.instance.leaveArena((Player)sender);
+        Player p = (Player)sender;
+
+        if(InGameManager.instance.isPlayerIngame(p))
+            InGameManager.instance.leaveArena(p);
+        else if(InGameManager.instance.isPlayerSpectating(p))
+            InGameManager.instance.leaveArenaSpectating(p);
     }
 
     @Override

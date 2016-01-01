@@ -8,7 +8,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerToggleFlightEvent;
 
 /**
- * PvP 2.0, Copyright (c) 2015 Lukas Berger, licensed under GPLv3
+ * PvP 2.0, Copyright (c) 2015-2016 Lukas Berger, licensed under GPLv3
  */
 public class PvPPlayerToggleFlightEvent implements Listener
 {
@@ -20,13 +20,15 @@ public class PvPPlayerToggleFlightEvent implements Listener
         if(e.getPlayer() == null)
             return;
 
-        if(!InGameManager.instance.isPlayerIngame(e.getPlayer()))
+        if(!InGameManager.instance.isPlayerIngame(e.getPlayer()) && !InGameManager.instance.isPlayerSpectating(e.getPlayer()))
             return;
 
-        if(!PvP.getInstance().getConfig().getBoolean("ingame.player.allow-fly", false))
+        if(InGameManager.instance.isPlayerIngame(e.getPlayer()) && !PvP.getInstance().getConfig().getBoolean("ingame.player.allow-fly", false) ||
+                InGameManager.instance.isPlayerSpectating(e.getPlayer()) && !PvP.getInstance().getConfig().getBoolean("ingame.spectating.allow-fly", false))
         {
             e.setCancelled(true);
             e.getPlayer().setFlying(false);
+            e.getPlayer().setAllowFlight(false);
         }
     }
 
