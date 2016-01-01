@@ -130,3 +130,6 @@ ingame:
    no-arena: "This arena does not exists!"
    spectating: "You are now spectating in %1"
    already-spectating: "You are already spectating!"
+   afk:
+      marked: "You are marked as AFK now!"
+      damager-notify: "%1 is AFK, you can't damage him"

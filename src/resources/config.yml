@@ -7,6 +7,7 @@ ingame:
   enable-invites: true
   enable-parties: true
   enable-spectating: true
+  enable-afk: true
   block:
     break: false
     place: false
@@ -39,6 +40,13 @@ ingame:
   spectating:
     gamemode: SPECTATOR
     allow-fly: true
+  afk:
+    idle-period: 60
+    notify-damager: true
+    indicators:
+      move: true
+      interact: true
+      chat: false
 gadgets:
   grenades:
     enable: true

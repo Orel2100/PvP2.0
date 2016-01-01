@@ -2,8 +2,10 @@ package at.lukasberger.bukkit.pvp.commands.admin;
 
 import at.lukasberger.bukkit.pvp.PvP;
 import at.lukasberger.bukkit.pvp.commands.AbstractSubCommand;
+import at.lukasberger.bukkit.pvp.commands.SubCommandManager;
 import at.lukasberger.bukkit.pvp.core.*;
 import org.bukkit.command.CommandSender;
+import org.bukkit.event.HandlerList;
 
 import java.util.Arrays;
 import java.util.List;
@@ -24,28 +26,41 @@ public class FullReloadCommand extends AbstractSubCommand
             PvP.getInstance().getLogger().warning("Kicking all players from arena...");
             InGameManager.instance.leaveArenaAll();
 
-            PvP.getInstance().getLogger().info("Reloading PvP-Configuration...");
-            PvP.getInstance().reloadConfig();
-
-            PvP.getInstance().getLogger().info("Unloading loaded arenas...");
+            PvP.getInstance().getLogger().warning("Unloading loaded arenas...");
             ArenaManager.instance.unloadAllArenas();
 
-            PvP.getInstance().getLogger().info("Unloading loaded players...");
+            PvP.getInstance().getLogger().warning("Unloading loaded players...");
             PlayerManager.instance.unloadAllPlayers();
 
-            PvP.getInstance().getLogger().info("Removing invites...");
+            PvP.getInstance().getLogger().warning("Stopping AFK-Task...");
+            AfkManager.instance.stopTasks();
+
+            PvP.getInstance().getLogger().warning("Removing invites...");
             InviteManager.instance.removeAll();
 
-            PvP.getInstance().getLogger().info("Removing parties...");
+            PvP.getInstance().getLogger().warning("Removing parties...");
             PartyManager.instance.removeAll();
 
-            PvP.getInstance().getLogger().info("Reloading language...");
+            PvP.getInstance().getLogger().warning("Unregister subcommands...");
+            SubCommandManager.instance.unregisterAllSubCommands();
+
+            PvP.getInstance().getLogger().warning("Unregister events...");
+            HandlerList.unregisterAll(PvP.getInstance());
+
+            PvP.getInstance().getLogger().fine("Reloading PvP-Configuration...");
+            PvP.getInstance().reloadConfig();
+
+            PvP.getInstance().getLogger().fine("Reloading commands...");
+            PvP.getInstance().loadSubCommands();
+
+            PvP.getInstance().getLogger().fine("Reloading default language...");
             MessageManager.instance.loadLanguage(PvP.getInstance().getConfig().getString("language"));
 
             sender.sendMessage(PvP.successPrefix + "PvP successfully reloaded!");
         }
         catch (Exception e)
         {
+            sender.sendMessage(PvP.errorPrefix + e.getMessage());
             sender.sendMessage(PvP.errorPrefix + "Error while reloading PvP, view console for more details...");
             e.printStackTrace();
         }

@@ -44,6 +44,9 @@ public class MessageManager
         else
             lang = PvP.getInstance().getConfig().getString("language");
 
+        if(!messagesFiles.containsKey(lang))
+            this.loadLanguage(lang);
+
         Config messagesFile = messagesFiles.get(lang);
 
         if(!messagesFile.config.contains(name))

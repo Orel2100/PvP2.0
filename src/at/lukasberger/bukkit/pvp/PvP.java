@@ -3,16 +3,14 @@ package at.lukasberger.bukkit.pvp;
 import at.lukasberger.bukkit.pvp.commands.SubCommandManager;
 import at.lukasberger.bukkit.pvp.commands.admin.*;
 import at.lukasberger.bukkit.pvp.commands.player.*;
-import at.lukasberger.bukkit.pvp.core.InGameManager;
-import at.lukasberger.bukkit.pvp.core.MessageManager;
+import at.lukasberger.bukkit.pvp.core.*;
 import at.lukasberger.bukkit.pvp.core.objects.Config;
 import at.lukasberger.bukkit.pvp.events.inventory.*;
 import at.lukasberger.bukkit.pvp.events.player.*;
+import at.lukasberger.bukkit.pvp.events.player.afk.*;
 import at.lukasberger.bukkit.pvp.events.player.items.*;
 import at.lukasberger.bukkit.pvp.events.player.party.*;
-import at.lukasberger.bukkit.pvp.events.player.spectator.PvPSpectatorDamageEvent;
-import at.lukasberger.bukkit.pvp.events.player.spectator.PvPSpectatorGameModeChangeEvent;
-import at.lukasberger.bukkit.pvp.events.player.spectator.PvPSpectatorMoveEvent;
+import at.lukasberger.bukkit.pvp.events.player.spectator.*;
 import at.lukasberger.bukkit.pvp.events.world.*;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import net.milkbowl.vault.economy.Economy;
@@ -20,6 +18,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -106,7 +105,34 @@ public class PvP extends JavaPlugin
         }
 
         this.getLogger().info("Loading sub-commands...");
+        this.loadSubCommands();
 
+        this.getLogger().info("Registering events...");
+        this.registerEvents();
+
+        if(this.getConfig().getBoolean("ingame.enable-afk"))
+        {
+            this.getLogger().info("Starting synchronous AFK-Task...");
+            AfkManager.instance.startTasks();
+        }
+
+        this.getLogger().info("Finished loading of PvP2.0 v" + getDescription().getVersion() + ", waiting for loading languages...");
+
+        this.getServer().getScheduler().runTaskLater(this, new Runnable() {
+
+            @Override
+            public void run()
+            {
+                getLogger().info("Loading language...");
+                MessageManager.instance.loadLanguage(getConfig().getString("language"));
+                getLogger().info("Language loaded!");
+            }
+
+        }, 0L);
+    }
+
+    public void loadSubCommands()
+    {
         // Player-Commands
         SubCommandManager.instance.registerSubCommand(new JoinCommand(), "join", "j");
         SubCommandManager.instance.registerSubCommand(new LeaveCommand(), "leave", "l");
@@ -133,9 +159,10 @@ public class PvP extends JavaPlugin
         SubCommandManager.instance.registerSubCommand(new LanguageCommand(), "langa", "languagea");
         SubCommandManager.instance.registerSubCommand(new ReloadCommand(), "reload");
         SubCommandManager.instance.registerSubCommand(new FullReloadCommand(), "fullreload");
+    }
 
-        this.getLogger().info("Registering events...");
-
+    public void registerEvents()
+    {
         // inventory
         this.getServer().getPluginManager().registerEvents(new PvPInventoryDragEvent(), this);
         this.getServer().getPluginManager().registerEvents(new PvPInventoryMoveItemEvent(), this);
@@ -144,19 +171,23 @@ public class PvP extends JavaPlugin
         this.getServer().getPluginManager().registerEvents(new PvPItemPickupEvent(), this);
 
         // player
+        this.getServer().getPluginManager().registerEvents(new PvPPlayerCommandPreprocessEvent(), this);
         this.getServer().getPluginManager().registerEvents(new PvPPlayerDamageEvent(), this);
         this.getServer().getPluginManager().registerEvents(new PvPPlayerDeathEvent(), this);
         this.getServer().getPluginManager().registerEvents(new PvPPlayerFallDamage(), this);
         this.getServer().getPluginManager().registerEvents(new PvPPlayerGameModeChangeEvent(), this);
         this.getServer().getPluginManager().registerEvents(new PvPPlayerMoveEvent(), this);
+        this.getServer().getPluginManager().registerEvents(new PvPPlayerQuitEvent(), this);
         this.getServer().getPluginManager().registerEvents(new PvPPlayerTeleportEvent(), this);
         this.getServer().getPluginManager().registerEvents(new PvPPlayerToggleFlightEvent(), this);
-        this.getServer().getPluginManager().registerEvents(new PvPPlayerQuitEvent(), this);
-        this.getServer().getPluginManager().registerEvents(new PvPPlayerCommandPreprocessEvent(), this);
         // party
         this.getServer().getPluginManager().registerEvents(new PvPPartyPlayerQuitEvent(), this);
         // items
         this.getServer().getPluginManager().registerEvents(new PvPPlayerGrenadeEvents(), this);
+        // afk
+        this.getServer().getPluginManager().registerEvents(new PvPPlayerAfkChatEvent(), this);
+        this.getServer().getPluginManager().registerEvents(new PvPPlayerAfkInteractEvent(), this);
+        this.getServer().getPluginManager().registerEvents(new PvPPlayerAfkMoveEvent(), this);
         // spectating
         this.getServer().getPluginManager().registerEvents(new PvPSpectatorDamageEvent(), this);
         this.getServer().getPluginManager().registerEvents(new PvPSpectatorGameModeChangeEvent(), this);
@@ -165,27 +196,34 @@ public class PvP extends JavaPlugin
         // world
         this.getServer().getPluginManager().registerEvents(new PvPBlockBreakEvent(), this);
         this.getServer().getPluginManager().registerEvents(new PvPBlockPlaceEvent(), this);
-
-        this.getLogger().info("Finished loading of PvP2.0 v" + getDescription().getVersion() + ", waiting for loading languages...");
-
-        this.getServer().getScheduler().runTaskLater(this, new Runnable() {
-
-            @Override
-            public void run()
-            {
-                getLogger().info("Loading language...");
-                MessageManager.instance.loadLanguage(getConfig().getString("language"));
-                getLogger().info("Language loaded!");
-            }
-
-        }, 0L);
     }
 
     @Override
     public void onDisable()
     {
-        SubCommandManager.instance.unregisterAllSubCommands();
+        PvP.getInstance().getLogger().warning("Kicking all players from arena...");
         InGameManager.instance.leaveArenaAll();
+
+        PvP.getInstance().getLogger().warning("Unloading loaded arenas...");
+        ArenaManager.instance.unloadAllArenas();
+
+        PvP.getInstance().getLogger().warning("Unloading loaded players...");
+        PlayerManager.instance.unloadAllPlayers();
+
+        PvP.getInstance().getLogger().warning("Stopping AFK-Task...");
+        AfkManager.instance.stopTasks();
+
+        PvP.getInstance().getLogger().warning("Removing invites...");
+        InviteManager.instance.removeAll();
+
+        PvP.getInstance().getLogger().warning("Removing parties...");
+        PartyManager.instance.removeAll();
+
+        PvP.getInstance().getLogger().warning("Unregister subcommands...");
+        SubCommandManager.instance.unregisterAllSubCommands();
+
+        PvP.getInstance().getLogger().warning("Unregister events...");
+        HandlerList.unregisterAll(PvP.getInstance());
     }
 
     @Override
@@ -200,9 +238,7 @@ public class PvP extends JavaPlugin
             else
             {
                 if(!SubCommandManager.instance.executeSubCommand(sender, args))
-                {
                     sender.sendMessage(errorPrefix + MessageManager.instance.get(sender, "commands.error.subcommand"));
-                }
             }
             return true;
         }
