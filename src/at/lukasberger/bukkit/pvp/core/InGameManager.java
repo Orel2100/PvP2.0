@@ -45,11 +45,7 @@ public class InGameManager
     {
         if(!PlayerManager.instance.isPlayerLoaded(p.getUniqueId().toString()))
             PlayerManager.instance.loadPlayer(
-                    p,
-                    currentPlayerArena.get(p.getName()),
-                    playerInventoryBeforeJoin.get(p.getUniqueId().toString() + "-inv"),
-                    playerInventoryBeforeJoin.get(p.getUniqueId().toString() + "-armor"),
-                    playerLocationBeforeJoin.get(p.getUniqueId().toString())
+                    p
             );
 
         // return the player
@@ -87,19 +83,37 @@ public class InGameManager
         // if player already is in arena, do not join
         if(currentPlayerArena.containsKey(p.getUniqueId().toString()))
         {
-            p.sendMessage(PvP.successPrefix + MessageManager.instance.get(p, "ingame.already-ingame", arenaName));
+            p.sendMessage(PvP.warningPrefix + MessageManager.instance.get(p, "ingame.already-ingame", arenaName));
             return false;
         }
+
+        // Load arena configuration and teleport player
+        Arena arena = ArenaManager.instance.getArena(arenaName);
+        Integer joinResult = arena.addPlayer(p, PartyManager.instance.getPartyID(p));
+
+        // run some arena-specific checks
+        if(joinResult == -1)
+            p.sendMessage(PvP.errorPrefix + MessageManager.instance.get(p, "ingame.error.arena-full", arenaName));
+        else if(joinResult == -2)
+            p.sendMessage(PvP.errorPrefix + MessageManager.instance.get(p, "ingame.error.parties-only", arenaName));
+        else if(joinResult == -3)
+            p.sendMessage(PvP.errorPrefix + MessageManager.instance.get(p, "ingame.error.party-leader-only", arenaName));
+        else if(joinResult == -4)
+            p.sendMessage(PvP.errorPrefix + MessageManager.instance.get(p, "ingame.error.party-too-large", arenaName));
+        else if(joinResult == -5)
+            p.sendMessage(PvP.errorPrefix + MessageManager.instance.get(p, "ingame.error.party-too-small", arenaName));
+
+        if(joinResult != 0)
+            return false;
 
         // check if parties enabled
         if(PvP.getInstance().getConfig().getBoolean("ingame.enable-parties"))
         {
             if(PartyManager.instance.isPartyLeader(p)) // teleport party-members to arena if leader joined
                 PartyManager.instance.memberMassJoin(p, arenaName);
+            else
+                p.sendMessage(PvP.errorPrefix + MessageManager.instance.get(p, "ingame.error.party-leader-only", arenaName));
         }
-
-        // Load arena configuration and teleport player
-        Arena arena = ArenaManager.instance.getArena(arenaName);
 
         if(arena.doesArenaExists())
         {
@@ -113,7 +127,6 @@ public class InGameManager
             p.getInventory().clear();
             p.setGameMode(GameMode.SURVIVAL);
 
-            arena.addPlayer(p);
             arena.teleportPlayer(p);
             getPlayer(p).giveCurrentKit();
 

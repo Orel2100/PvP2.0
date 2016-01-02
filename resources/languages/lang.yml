@@ -122,6 +122,12 @@ action:
 
 ingame:
    joined: "You joined the arena %1"
+   error:
+      arena-full: "The arena %1 is full, you cannot join it"
+      parties-only: "The arena %1 is for parties only!"
+      party-leader-only: "Only your party-leader can join arenas!"
+      party-too-large: "Your party is too large, you need %1 members to join %2"
+      party-too-small: "Your party is too small, you need %1 members to join %2"
    left: "You left the arena!"
    not-ingame: "You are not ingame!"
    not-spectating: "You are not spectating!"

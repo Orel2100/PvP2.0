@@ -4,10 +4,12 @@ import at.lukasberger.bukkit.pvp.PvP;
 import at.lukasberger.bukkit.pvp.core.ArenaManager;
 import at.lukasberger.bukkit.pvp.core.InGameManager;
 import at.lukasberger.bukkit.pvp.core.MessageManager;
+import at.lukasberger.bukkit.pvp.core.PartyManager;
 import com.sk89q.worldedit.bukkit.selections.Selection;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -48,9 +50,10 @@ public class Arena
         newArenaConfig.config.set("arena.world", weSelection.getWorld().getName());
 
         // set default settings
-        newArenaConfig.config.set("game.maxplayers", -1);
-        newArenaConfig.config.set("game.party-damage", true);
-        newArenaConfig.config.set("game.allow-block-breaking", false);
+        newArenaConfig.config.set("game.max-players", -1);
+        newArenaConfig.config.set("game.party.only", false);
+        newArenaConfig.config.set("game.party.size", -1);
+        newArenaConfig.config.set("game.party.damage", true);
         newArenaConfig.config.set("game.on-kill.firework", true);
         newArenaConfig.config.set("game.on-kill.sounds", true);
         newArenaConfig.config.set("game.on-kill.thunder", true);
@@ -107,6 +110,15 @@ public class Arena
     public void changeConfig(String name, Object value)
     {
         arenaConfig.config.set(name, value);
+    }
+
+    /**
+     * Returns the configuration for the game-settings
+     * @return Configuration for the game-settings
+     */
+    public ConfigurationSection getGameConfiguration()
+    {
+        return arenaConfig.config.getConfigurationSection("game");
     }
 
     /**
@@ -179,13 +191,44 @@ public class Arena
     }
 
     /**
-     * Adds the player to the player-list of the arena
+     * Adds the player to the player-list of the arena if the arena is not full
      * @param p The player
+     * @return If the player can join the arena
      */
-    public void addPlayer(Player p)
+    public Integer addPlayer(Player p, Long partyID)
     {
+        if(playerList.contains(p.getUniqueId().toString())) // player is already in list, e.g. party-join
+            return 0;
+
+        if(playerList.size() == getGameConfiguration().getInt("max-players"))
+            return -1;
+
+
+        if(getGameConfiguration().getBoolean("party.only"))
+        {
+            if(partyID == -1)
+                return -2;
+            else if(!PartyManager.instance.isPartyLeader(p))
+                return -3;
+            else if(getGameConfiguration().getInt("party.size") != -1)
+            {
+                Integer count = PartyManager.instance.getPartyMembers(p).size() + 1; // count of members + leader
+
+                if(count < getGameConfiguration().getInt("party.size"))
+                    return -4;
+                else if(count > getGameConfiguration().getInt("party.size"))
+                    return -5;
+            }
+
+            // here the party should be OK
+            for(String member : PartyManager.instance.getPartyMembers(p))
+                this.playerList.add(p.getUniqueId().toString());
+        }
+
         if(!playerList.contains(p.getUniqueId().toString()))
             this.playerList.add(p.getUniqueId().toString());
+
+        return 0;
     }
 
     /**

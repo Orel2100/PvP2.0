@@ -398,6 +398,42 @@ public class PartyManager
     }
 
     /**
+     * Returns a list with all members of a party except the leader
+     * @param leader The leader of the party
+     * @return List with members of the party
+     */
+    public List<String> getPartyMembers(Player leader)
+    {
+        // get party-id
+        Long partyID = getPartyID(leader);
+
+        // check if the player is in a party
+        if(partyID == -1)
+        {
+            leader.sendMessage(PvP.errorPrefix + MessageManager.instance.get(leader, "action.party.error.not-in-party"));
+            return null;
+        }
+
+        // check if the player is the leader
+        if(!isPartyLeader(leader))
+        {
+            leader.sendMessage(PvP.errorPrefix + MessageManager.instance.get(leader, "action.party.error.not-leader"));
+            return null;
+        }
+
+        List<String> members = new ArrayList<>();
+
+        for (Map.Entry<String, Long> memberEntry : membersToParty.entrySet())
+        {
+            // check if the player is in this party
+            if(memberEntry.getValue() == partyID)
+                members.add(memberEntry.getKey());
+        }
+
+        return members;
+    }
+
+    /**
      * Indicates if the player is the leader of his party
      * @param p The player
      * @return If the player is the leader of his party to not
