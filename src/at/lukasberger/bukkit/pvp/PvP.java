@@ -126,6 +126,7 @@ public class PvP extends JavaPlugin
             {
                 getLogger().info("Saving included languages...");
                 new Config("langs/de").saveDefaultConfig("lang_de");
+                new Config("langs/at").saveDefaultConfig("lang_at");
 
                 getLogger().info("Loading default language...");
                 MessageManager.instance.loadLanguage(getConfig().getString("language"));

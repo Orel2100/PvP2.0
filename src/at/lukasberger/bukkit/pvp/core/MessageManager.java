@@ -28,7 +28,6 @@ public class MessageManager
     public void loadLanguage(String langName)
     {
         Config tmp = new Config("langs/" + langName);
-        tmp.saveDefaultConfig("lang");
 
         Config defaultMessages = new Config("langs/default");
         defaultMessages.saveDefaultConfig("lang", true);

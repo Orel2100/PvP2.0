@@ -8,7 +8,7 @@ commands:
          create: "Erstellt eine Arena mit dem angegebenen Namen"
          delete: "L\u00F6scht die Arena mit dem Namen"
          addspawn: "F\u00FCgt einen Spawn-Punkt an der Position zur Arena hinzu"
-         delspawn: "L\u00F6scht den zuletzt erstellen Spawnpunkt"
+         delspawn: "L\u00F6scht den zuletzt erstellen Spawn-Punkt"
       kit:
          create: "Erstellt ein Kit mit dem angegebenen Namen"
          additem: "F\u00FCgt das aktuelle Item in der Hand zum Kit in den angegeben Slot hinzu"
@@ -50,7 +50,7 @@ action:
       create: "Erstelle Kit..."
       created: "Kit %1 erstellt, fahre mit den folgenen Befehlen fort"
       deleted: "Kit %1 gel\u00F6scht!"
-      cost-changed: Die Kosten von Kit %1 wurden zu %2 ver\u00E4ndert"
+      cost-changed: "Die Kosten von Kit %1 wurden zu %2 ver\u00E4ndert"
       item-added: "Das Item in deiner Hand wurde zu Kit %1 in Slot %2 hinzugef\u00FCgt"
       item-deleted: "Das Item in Slot %2 wurde von Kit %1 entfernt"
       not-existing: "Das Kit %1 existiert nicht."
@@ -122,6 +122,12 @@ action:
 
 ingame:
    joined: "Du hast die Arena %1 betreten"
+   error:
+      arena-full: "Die Arena %1 ist voll, du kannst sie nicht betreten"
+      parties-only: "Die Arena %1 ist nur für Parties!"
+      party-leader-only: "Nur der Party-Anf\u00FChrer kann eine Arena betreten!"
+      party-too-large: "Deine Party ist zu gro\u00DF, du brauchst %1 Mitglieder um %2 zu betreten"
+      party-too-small: "Deine Party ist zu klein, du brauchst %1 Mitglieder um %2 zu betreten"
    left: "Du hast die Arena verlassen!"
    not-ingame: "Du bist nicht In-Game!"
    not-spectating: "Du bist nicht beim Beobachten!"

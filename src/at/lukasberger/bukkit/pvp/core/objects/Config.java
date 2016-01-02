@@ -1,6 +1,7 @@
 package at.lukasberger.bukkit.pvp.core.objects;
 
 import at.lukasberger.bukkit.pvp.PvP;
+import org.apache.commons.io.IOUtils;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -100,6 +101,7 @@ public class Config
 
         if (!this.configFile.exists() || force)
         {
+            PvP.getInstance().getLogger().info("Writing default \"" + resourceName + "\" to " + this.configFile.getAbsolutePath());
             Reader defConfigStream = new InputStreamReader(PvP.getInstance().getResource(resourceName + ".yml"), Charset.forName("UTF-8"));
             OutputStream defConfigOutStream;
 
@@ -107,21 +109,15 @@ public class Config
             {
                 defConfigOutStream = new FileOutputStream(this.configFile);
 
-                int data = defConfigStream.read();
-                while(data != -1)
-                {
-                    defConfigOutStream.write(data);
-                    data = defConfigStream.read();
-                }
+                IOUtils.copy(defConfigStream, defConfigOutStream);
+                defConfigOutStream.flush();
+
+                defConfigStream.close();
+                defConfigOutStream.close();
             }
             catch (IOException ex)
             {
                 PvP.getInstance().getLogger().severe(ex.getMessage());
-            }
-            finally
-            {
-                defConfigStream = null;
-                defConfigOutStream = null;
             }
         }
 

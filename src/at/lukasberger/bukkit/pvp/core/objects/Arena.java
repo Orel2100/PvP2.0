@@ -229,9 +229,9 @@ public class Arena
             {
                 Integer count = PartyManager.instance.getPartyMembers(p).size() + 1; // count of members + leader
 
-                if(count < getGameConfiguration().getInt("party.size"))
+                if(count > getGameConfiguration().getInt("party.size"))
                     return -4;
-                else if(count > getGameConfiguration().getInt("party.size"))
+                else if(count < getGameConfiguration().getInt("party.size"))
                     return -5;
             }
 

@@ -107,9 +107,9 @@ public class InGameManager
         else if(joinResult == -3)
             p.sendMessage(PvP.errorPrefix + MessageManager.instance.get(p, "ingame.error.party-leader-only", arenaName));
         else if(joinResult == -4)
-            p.sendMessage(PvP.errorPrefix + MessageManager.instance.get(p, "ingame.error.party-too-large", arenaName));
+            p.sendMessage(PvP.errorPrefix + MessageManager.instance.get(p, "ingame.error.party-too-large", arena.getGameConfiguration().getInt("party.size"), arenaName));
         else if(joinResult == -5)
-            p.sendMessage(PvP.errorPrefix + MessageManager.instance.get(p, "ingame.error.party-too-small", arenaName));
+            p.sendMessage(PvP.errorPrefix + MessageManager.instance.get(p, "ingame.error.party-too-small", arena.getGameConfiguration().getInt("party.size"), arenaName));
 
         if(joinResult != 0)
             return false;
