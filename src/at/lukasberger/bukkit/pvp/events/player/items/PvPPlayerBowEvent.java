@@ -26,8 +26,6 @@ public class PvPPlayerBowEvent implements Listener
         if(!(e.getEntity().getShooter() instanceof Player))
             return;
 
-        PvP.getInstance().getLogger().info("Type: " + e.getEntityType());
-
         // check if it is arrow
         if(e.getEntity().getType() != EntityType.ARROW)
             return;

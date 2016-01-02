@@ -83,6 +83,21 @@ public class Arena
     {
         arenaConfig = new Config("arenas/" + name);
         this.arenaName = name;
+
+        if(!arenaConfig.exists())
+            return;
+
+        arenaConfig.config.addDefault("game.max-players", -1);
+        arenaConfig.config.addDefault("game.party.only", false);
+        arenaConfig.config.addDefault("game.party.size", -1);
+        arenaConfig.config.addDefault("game.party.damage", true);
+        arenaConfig.config.addDefault("game.on-kill.firework", true);
+        arenaConfig.config.addDefault("game.on-kill.sounds", true);
+        arenaConfig.config.addDefault("game.on-kill.thunder", true);
+        arenaConfig.config.addDefault("game.on-join.firework", false);
+        arenaConfig.config.addDefault("game.on-join.sounds", true);
+        arenaConfig.config.addDefault("game.on-join.thunder", false);
+        arenaConfig.saveConfig();
     }
 
     /**

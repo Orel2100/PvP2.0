@@ -84,7 +84,6 @@ public class PvPPlayer
     // updates the scoreboard with newest stats
     public PvPPlayer updateScoreboard()
     {
-        PvP.getInstance().getLogger().info("Updaing scoreboard for " + player.getName() + "...");
         List<String> scoreboardLines = PvP.getInstance().getConfig().getStringList("ingame.scoreboard.lines");
 
         Scoreboard scoreboard = PvP.getInstance().getServer().getScoreboardManager().getNewScoreboard();

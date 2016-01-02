@@ -89,6 +89,14 @@ public class InGameManager
 
         // Load arena configuration and teleport player
         Arena arena = ArenaManager.instance.getArena(arenaName);
+
+        // check if arena exists
+        if(!arena.doesArenaExists())
+        {
+            p.sendMessage(PvP.errorPrefix + MessageManager.instance.get(p, "ingame.no-arena", arenaName));
+            return false;
+        }
+
         Integer joinResult = arena.addPlayer(p, PartyManager.instance.getPartyID(p));
 
         // run some arena-specific checks
@@ -111,40 +119,32 @@ public class InGameManager
         {
             if(PartyManager.instance.isPartyLeader(p)) // teleport party-members to arena if leader joined
                 PartyManager.instance.memberMassJoin(p, arenaName);
-            else
+            else if(PartyManager.instance.getPartyID(p) != -1)
                 p.sendMessage(PvP.errorPrefix + MessageManager.instance.get(p, "ingame.error.party-leader-only", arenaName));
         }
 
-        if(arena.doesArenaExists())
-        {
-            // Put player to lists
-            currentPlayerArena.put(p.getUniqueId().toString(), arenaName);
-            playerInventoryBeforeJoin.put(p.getUniqueId().toString() + "-inv", p.getInventory().getContents());
-            playerInventoryBeforeJoin.put(p.getUniqueId().toString() + "-armor", p.getInventory().getArmorContents());
-            playerLocationBeforeJoin.put(p.getUniqueId().toString(), p.getLocation());
-            playerGamemodeBeforeJoin.put(p.getUniqueId().toString(), p.getGameMode().toString());
+        // Put player to lists
+        currentPlayerArena.put(p.getUniqueId().toString(), arenaName);
+        playerInventoryBeforeJoin.put(p.getUniqueId().toString() + "-inv", p.getInventory().getContents());
+        playerInventoryBeforeJoin.put(p.getUniqueId().toString() + "-armor", p.getInventory().getArmorContents());
+        playerLocationBeforeJoin.put(p.getUniqueId().toString(), p.getLocation());
+        playerGamemodeBeforeJoin.put(p.getUniqueId().toString(), p.getGameMode().toString());
 
-            p.getInventory().clear();
-            p.setGameMode(GameMode.SURVIVAL);
+        p.getInventory().clear();
+        p.setGameMode(GameMode.SURVIVAL);
 
-            arena.teleportPlayer(p);
-            getPlayer(p).giveCurrentKit();
+        arena.teleportPlayer(p);
+        getPlayer(p).giveCurrentKit();
 
-            p.sendMessage(PvP.successPrefix + MessageManager.instance.get(p, "ingame.joined", arenaName));
+        p.sendMessage(PvP.successPrefix + MessageManager.instance.get(p, "ingame.joined", arenaName));
 
-            // update the scoreboard
-            getPlayer(p).updateScoreboard();
+        // update the scoreboard
+        getPlayer(p).updateScoreboard();
 
-            // set player afk at joining
-            AfkManager.instance.afk(p);
+        // set player afk at joining
+        AfkManager.instance.afk(p);
 
-            return true;
-        }
-        else
-        {
-            p.sendMessage(PvP.successPrefix + MessageManager.instance.get(p, "ingame.no-arena", arenaName));
-            return false;
-        }
+        return true;
     }
 
     /**
@@ -189,7 +189,7 @@ public class InGameManager
         }
         else
         {
-            p.sendMessage(PvP.successPrefix + MessageManager.instance.get(p, "ingame.no-arena", arenaName));
+            p.sendMessage(PvP.errorPrefix + MessageManager.instance.get(p, "ingame.no-arena", arenaName));
             return false;
         }
     }
@@ -285,12 +285,12 @@ public class InGameManager
         String gamemode = playerGamemodeBeforeJoin.get(p.getUniqueId().toString());
 
         // remove from lists
+        getArena(p).removePlayer(p);
         currentPlayerArena.remove(p.getUniqueId().toString());
         playerInventoryBeforeJoin.remove(p.getUniqueId().toString());
         playerLocationBeforeJoin.remove(p.getUniqueId().toString());
         playerGamemodeBeforeJoin.remove(p.getUniqueId().toString());
         AfkManager.instance.unafk(p);
-        getPlayer(p).getArena().removePlayer(p);
 
         // Restore player settings
         p.setGameMode(GameMode.valueOf(gamemode));
