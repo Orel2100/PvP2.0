@@ -39,12 +39,13 @@ public class PvPPlayerDamageEvent implements Listener
         {
             if(!PvP.getInstance().getConfig().getBoolean("ingame.show-death-screen")) // rejoin player without death-screen
             {
+                e.setDamage(0.0);
                 e.setCancelled(true);
-                InGameManager.instance.joinArenaOnDeath(damaged); // teleport player to arena
-
                 ((Player) e.getEntity()).setHealth(20.0);
-                InGameManager.instance.getPlayer(damaged).addDeath(); // add death to killed player
-                InGameManager.instance.getPlayer(damager).addKill(); // add kill to "winning" player
+
+                InGameManager.instance.joinArenaOnDeath(damaged); // teleport player to arena
+                InGameManager.instance.getPlayer(damaged).addDeath().updateScoreboard(); // add death to killed player
+                InGameManager.instance.getPlayer(damager).addKill().updateScoreboard(); // add kill to "winning" player
             }
         }
     }

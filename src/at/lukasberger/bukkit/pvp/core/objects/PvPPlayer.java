@@ -47,7 +47,10 @@ public class PvPPlayer
         this.save();
     }
 
-    // returns the player's language (fallback is the default language)
+    /**
+     * Returns the own language of the player
+     * @return The personal language of the player
+     */
     public String getLanguage()
     {
         if(playerConfig.config.contains("language"))
@@ -56,14 +59,22 @@ public class PvPPlayer
             return PvP.getInstance().getConfig().getString("language");
     }
 
-    // updates player's language
-    public void setLanguage(String newLang)
+    /**
+     * Changes player's own language
+     * @return This instance
+     */
+    public PvPPlayer setLanguage(String newLang)
     {
         playerConfig.config.set("language", newLang);
         this.save();
+
+        return this;
     }
 
-    // adds a kill to the statistics
+    /**
+     * Add a kill to player's stats
+     * @return This instance
+     */
     public PvPPlayer addKill()
     {
         playerConfig.config.set("stats.kills", playerConfig.config.getInt("stats.kills") + 1);
@@ -72,7 +83,10 @@ public class PvPPlayer
         return this;
     }
 
-    // adds a death to the statistics
+    /**
+     * Add a death to player's stats
+     * @return This instance
+     */
     public PvPPlayer addDeath()
     {
         playerConfig.config.set("stats.deaths", playerConfig.config.getInt("stats.deaths") + 1);
@@ -81,7 +95,10 @@ public class PvPPlayer
         return this;
     }
 
-    // updates the scoreboard with newest stats
+    /**
+     * Updates the scoreboard of the player
+     * @return This instance
+     */
     public PvPPlayer updateScoreboard()
     {
         List<String> scoreboardLines = PvP.getInstance().getConfig().getStringList("ingame.scoreboard.lines");
@@ -118,38 +135,67 @@ public class PvPPlayer
         compiled = compiled.replace("{PVPDEATHS}",  Integer.toString(playerConfig.config.getInt("stats.kills")));
         compiled = compiled.replace("{PVPKILLS}",  Integer.toString(playerConfig.config.getInt("stats.deaths")));
         compiled = compiled.replace("{PVPARENA}", InGameManager.instance.getArena(player).getName());
+        compiled = compiled.replace("{PVPKIT}", playerConfig.config.getString("kits.current", "Default"));
 
         return ChatColor.translateAlternateColorCodes('&', compiled);
     }
 
-    // resets the statistics for the player
+    /**
+     * Overwrites player's statistics, configurations etc.
+     * @return This instance
+     */
     public PvPPlayer delete()
     {
-        playerConfig.saveDefaultConfig("playerStats");
+        playerConfig.saveDefaultConfig("playerStats", true);
         this.save();
 
         return this;
     }
 
-    // reloads the configuration
-    public void reload()
+    /**
+     * Reloads the player's configuration from disk
+     * @return This instance
+     */
+    public PvPPlayer reload()
     {
         playerConfig.reloadConfig();
+        return this;
     }
 
-    // returns the current arena
+    /**
+     * Returns the current arena of the player
+     * @return Arena-object of player's current arena
+     */
     public Arena getArena()
     {
         return InGameManager.instance.getArena(player);
     }
 
-    // returns the player-object
+    /**
+     * Returns the player-object of Bukkit
+     * @return Bukkit-Player
+     */
     public Player getPlayer()
     {
         return player;
     }
 
-    // changes the current kit in the configuration
+    /**
+     * Indicates if player already owns the kit
+     * @param kit Name of the kit
+     * @return If player owns the kit or not
+     */
+    public boolean ownsKit(String kit)
+    {
+        return playerConfig.config.getStringList("kits.bought").contains(kit);
+    }
+
+    /**
+     * Changes player's current kit in configuration and add it to list of
+     * bought kits if it's not there already
+     * @param newKit Name of the kit
+     * @return This instance
+     */
     public PvPPlayer changeKit(String newKit)
     {
         playerConfig.config.set("kits.current", newKit);
@@ -165,6 +211,10 @@ public class PvPPlayer
         return this;
     }
 
+    /**
+     * Give's the current kit to the player
+     * @return This instance
+     */
     public PvPPlayer giveCurrentKit()
     {
         String kit = playerConfig.config.getString("kits.current", "default");
@@ -185,6 +235,10 @@ public class PvPPlayer
         return this;
     }
 
+    /**
+     * Give's the kit with the defined name to the player
+     * @return This instance
+     */
     public PvPPlayer giveKit(String kit)
     {
         List<String> rawItems = PvP.getInstance().getConfig().getStringList("kits." + kit + ".items");
@@ -271,10 +325,14 @@ public class PvPPlayer
         return this;
     }
 
-    // saves the configuration, is called in every function
-    public void save()
+    /**
+     * Saves the configuration of the player
+     * @return This instance
+     */
+    public PvPPlayer save()
     {
         playerConfig.saveConfig();
+        return this;
     }
 
 }

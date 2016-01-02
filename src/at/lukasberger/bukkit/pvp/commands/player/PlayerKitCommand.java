@@ -56,9 +56,10 @@ public class PlayerKitCommand extends AbstractSubCommand
                 double costs = kitConfig.getDouble("costs");
                 String currenyName = (costs == 1) ? PvP.economy.currencyNameSingular() : PvP.economy.currencyNamePlural();
 
-                boolean transactionSuccessfully = false;
+                // check if player already owns the kit, do no transaction if so
+                boolean transactionSuccessfully = InGameManager.instance.getPlayer((Player)sender).ownsKit(kit);
 
-                if(costs < 0) // negative amounts: give player money
+                if(!transactionSuccessfully && costs < 0) // negative amounts: give player money
                 {
                     if(!PvP.economy.hasAccount(p))
                     {
@@ -71,7 +72,7 @@ public class PlayerKitCommand extends AbstractSubCommand
                     sender.sendMessage(PvP.warningPrefix + MessageManager.instance.get(sender, "action.kit.player.economy.money-give", costs, currenyName, kit));
                     transactionSuccessfully = true;
                 }
-                else if(costs > 0) // postive amounts: take money from player
+                else if(!transactionSuccessfully && costs > 0) // postive amounts: take money from player
                 {
                     if(!PvP.economy.hasAccount(p))
                     {
