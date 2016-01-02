@@ -21,7 +21,10 @@ public class MessageManager
 
     private MessageManager() { }
 
-    // set the given language as standard
+    /**
+     * Loads the given language into memory and adds missing variables
+     * @param langName The name of the language
+     */
     public void loadLanguage(String langName)
     {
         Config tmp = new Config("langs/" + langName);
@@ -47,6 +50,13 @@ public class MessageManager
         messagesFiles.put(langName, tmp);
     }
 
+    /**
+     * Returns the given text in players language and replaces placeholders
+     * @param p The player
+     * @param name Name of the language-variable
+     * @param params Values of the placeholders
+     * @return The translated and replaced text
+     */
     public String get(CommandSender p, String name, Object... params)
     {
         String value = "";

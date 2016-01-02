@@ -75,8 +75,8 @@ public class ArenaCommand extends AbstractSubCommand
             else if(args[1].equalsIgnoreCase("spec"))
             {
                 Location loc = ((Player)sender).getLocation();
-                int id = ArenaManager.instance.getArena(args[0]).addSpawn(loc);
-                sender.sendMessage(PvP.successPrefix + MessageManager.instance.get(sender, "action.arena.spawn.added", id, loc.getBlockX(), loc.getBlockY(), loc.getBlockZ()));
+                ArenaManager.instance.getArena(args[0]).setSpecSpawn(loc);
+                sender.sendMessage(PvP.successPrefix + MessageManager.instance.get(sender, "action.arena.spec-set", loc.getBlockX(), loc.getBlockY(), loc.getBlockZ()));
             }
             else
             {

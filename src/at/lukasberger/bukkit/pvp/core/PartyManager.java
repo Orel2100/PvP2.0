@@ -31,6 +31,10 @@ public class PartyManager
     // disallow creation of other instances
     private PartyManager() { }
 
+    /**
+     * Create a party
+     * @param leader The new leader
+     */
     public void create(Player leader)
     {
         // fill lists
@@ -48,7 +52,10 @@ public class PartyManager
         staticCounter++;
     }
 
-    // deletes the party of the given player
+    /**
+     * Deletes the party
+     * @param leader Leader of the party
+     */
     public void delete(Player leader)
     {
         // get the id of the party
@@ -91,7 +98,11 @@ public class PartyManager
         leader.sendMessage(PvP.successPrefix + MessageManager.instance.get(leader, "action.party.deleted-leader"));
     }
 
-    // changes the leader of the party of the given player
+    /**
+     * Change the leader of a party
+     * @param currLeader The old leader
+     * @param newLeaderName The new leader
+     */
     public void changeLeader(Player currLeader, String newLeaderName)
     {
         Player newLeader = PvP.getInstance().getServer().getPlayer(newLeaderName);
@@ -142,7 +153,11 @@ public class PartyManager
         newLeader.sendMessage(ChatColor.GREEN + MessageManager.instance.get(newLeader, "action.party.created-help-leader"));
     }
 
-    // invites the given player to the party of the leader
+    /**
+     * Send an invitation to party
+     * @param inviter The inviter/party-leader
+     * @param invitedName The name of the invited player
+     */
     public void invite(Player inviter, String invitedName)
     {
         MapTupleUtils<String, String> tupleUtils = new MapTupleUtils<>();
@@ -195,7 +210,11 @@ public class PartyManager
         invites.add(new MapTuple<String, String>(inviter.getUniqueId().toString(), invited.getUniqueId().toString()));
     }
 
-    // accepts a invitation to a party
+    /**
+     * Accept a sent invitation to a party
+     * @param invited The invited player
+     * @param inviterName The name of the inviter/party-leader
+     */
     public void accept(Player invited, String inviterName)
     {
         MapTupleUtils<String, String> tupleUtils = new MapTupleUtils<>();
@@ -232,7 +251,11 @@ public class PartyManager
         tupleUtils.removeTuple(invites, inviter.getUniqueId().toString(), invited.getUniqueId().toString());
     }
 
-    // denies a invitation to a party
+    /**
+     * Deny a sent invitation to a party
+     * @param invited The invited player
+     * @param inviterName The name of the inviter/party-leader
+     */
     public void deny(Player invited, String inviterName)
     {
         MapTupleUtils<String, String> tupleUtils = new MapTupleUtils<>();
@@ -252,7 +275,10 @@ public class PartyManager
         tupleUtils.removeTuple(invites, inviter.getUniqueId().toString(), invited.getUniqueId().toString());
     }
 
-    // leaves the party
+    /**
+     * Leave the party
+     * @param member The player who want to leave
+     */
     public void leave(Player member)
     {
         // get party-id
@@ -278,7 +304,11 @@ public class PartyManager
         membersToParty.remove(member.getUniqueId().toString());
     }
 
-    // teleports all members of a party to the given arena
+    /**
+     * Send all party-members to the PvP-Arena
+     * @param leader Leader of the party
+     * @param arena The name of the arena
+     */
     public void memberMassJoin(Player leader, String arena)
     {
         // get party-id
@@ -313,7 +343,10 @@ public class PartyManager
         }
     }
 
-    // throws all members of a party from the PvP-arena
+    /**
+     * Removes all party-members from the current PvP-Arena
+     * @param leader Leader of the party
+     */
     public void memberMassLeave(Player leader)
     {
         // get party-id
@@ -348,7 +381,11 @@ public class PartyManager
         }
     }
 
-    // returns the ID of a player's party, -1 if player is not in a party
+    /**
+     * Returns the party-ID of the player
+     * @param p The Player
+     * @return Party-ID of player's party or -1 if not in any party
+     */
     public Long getPartyID(Player p)
     {
         if(!isPlayerInAnyParty(p) && !isPartyLeader(p))
@@ -360,25 +397,40 @@ public class PartyManager
             return membersToParty.get(p.getUniqueId().toString());
     }
 
-    // indicates if the player is the leader of his current party
+    /**
+     * Indicates if the player is the leader of his party
+     * @param p The player
+     * @return If the player is the leader of his party to not
+     */
     public boolean isPartyLeader(Player p)
     {
         return leaderToParty.containsKey(p.getUniqueId().toString());
     }
 
-    // indicates if the player is in any parts
+    /**
+     * Indicates if the player is in any party
+     * @param p The player
+     * @return If the player is in any party or not
+     */
     public boolean isPlayerInAnyParty(Player p)
     {
         return membersToParty.containsKey(p.getUniqueId().toString());
     }
 
-    // indicates if the player is in the given party
+    /**
+     * Indicates if the player is in the given party
+     * @param p The player
+     * @param id ID of the party
+     * @return If the player is in the given party or not
+     */
     public boolean isPlayerInParty(Player p, Long id)
     {
         return membersToParty.containsKey(p.getUniqueId().toString()) && membersToParty.get(p.getUniqueId().toString()) == id;
     }
 
-    // removes all parties, invites etc.
+    /**
+     * Removes all parties
+     */
     public void removeAll()
     {
         for(String playerName : membersToParty.keySet())

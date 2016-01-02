@@ -10,6 +10,7 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -20,7 +21,14 @@ public class Arena
 
     private Config arenaConfig;
     private String arenaName;
+    private List<String> playerList = new ArrayList<>();
 
+    /**
+     * Creates an new arena with default settings
+     * @param weSelection The WorldEdit-Selection of the arena
+     * @param name The name of the arena
+     * @return The instance of the new arena-object
+     */
     public static Arena createArena(Selection weSelection, String name)
     {
         Config newArenaConfig = new Config("arenas/" + name);
@@ -41,6 +49,7 @@ public class Arena
 
         // set default settings
         newArenaConfig.config.set("game.maxplayers", -1);
+        newArenaConfig.config.set("game.party-damage", true);
         newArenaConfig.config.set("game.allow-block-breaking", false);
         newArenaConfig.config.set("game.on-kill.firework", true);
         newArenaConfig.config.set("game.on-kill.sounds", true);
@@ -63,31 +72,47 @@ public class Arena
         return arena;
     }
 
-    // creates a new instance of an arena
+    /**
+     * Creates an instance of an already exisiting arena
+     * @param name Name of the arena
+     */
     public Arena(String name)
     {
         arenaConfig = new Config("arenas/" + name);
         this.arenaName = name;
     }
 
-    // completly removes the arena
+    /**
+     * Completely deletes the arena
+     */
     public void delete()
     {
         arenaConfig.configFile.delete();
     }
 
-    // checks if the arena exists
+    /**
+     * Indicates if the arena exists
+     * @return If the arena exists or not
+     */
     public boolean doesArenaExists()
     {
         return arenaConfig.exists();
     }
 
-    // short version for change a setting
+    /**
+     * Changes a setting of the arena
+     * @param name Path of the setting
+     * @param value The new value
+     */
     public void changeConfig(String name, Object value)
     {
         arenaConfig.config.set(name, value);
     }
 
+    /**
+     * Changes the selection of the arena
+     * @param weSelection The new WorldEdit-Selection
+     */
     public void changeSelection(Selection weSelection)
     {
         // set the first point of the arena
@@ -106,6 +131,11 @@ public class Arena
         arenaConfig.saveConfig();
     }
 
+    /**
+     * Adds an new arena-spawn at the current location
+     * @param loc The location of the new spawn
+     * @return The number of the spawn
+     */
     public int addSpawn(Location loc)
     {
         List<String> spawns = arenaConfig.config.getStringList("spawns");
@@ -117,6 +147,10 @@ public class Arena
         return spawns.size();
     }
 
+    /**
+     * Removes the last spawn
+     * @return The number of the removed spawn
+     */
     public int removeLastSpawn()
     {
         List<String> spawns = arenaConfig.config.getStringList("spawns");
@@ -132,7 +166,10 @@ public class Arena
         return spawns.size() + 1;
     }
 
-    // set a new spawn for spectators
+    /**
+     * Sets a new spawn for the spectators
+     * @param loc The location
+     */
     public void setSpecSpawn(Location loc)
     {
         arenaConfig.config.set("arena.spectator.x", loc.getX());
@@ -141,6 +178,30 @@ public class Arena
         arenaConfig.saveConfig();
     }
 
+    /**
+     * Adds the player to the player-list of the arena
+     * @param p The player
+     */
+    public void addPlayer(Player p)
+    {
+        if(!playerList.contains(p.getUniqueId().toString()))
+            this.playerList.add(p.getUniqueId().toString());
+    }
+
+    /**
+     * Removes the player from the player-list of the arena
+     * @param p The player
+     */
+    public void removePlayer(Player p)
+    {
+        if(playerList.contains(p.getUniqueId().toString()))
+            this.playerList.remove(p.getUniqueId().toString());
+    }
+
+    /**
+     * Gets the random spawn-point and teleports the player
+     * @param p The player
+     */
     public void teleportPlayer(Player p)
     {
         // Load world
@@ -202,7 +263,10 @@ public class Arena
         }
     }
 
-    // returns the lower location
+    /**
+     * Returns the lower location of the selection
+     * @return The lower location
+     */
     public Location getMinLocation()
     {
         World arenaworld = Bukkit.getServer().getWorld(arenaConfig.config.getString("arena.world"));
@@ -214,7 +278,10 @@ public class Arena
                 arenaConfig.config.getDouble("arena.min.y"), arenaConfig.config.getDouble("arena.min.z"));
     }
 
-    // returns the higher location
+    /**
+     * Returns the higher location of the selection
+     * @return The higher location
+     */
     public Location getMaxLocation()
     {
         World arenaworld = Bukkit.getServer().getWorld(arenaConfig.config.getString("arena.world"));
@@ -226,7 +293,19 @@ public class Arena
                 arenaConfig.config.getDouble("arena.max.y"), arenaConfig.config.getDouble("arena.max.z"));
     }
 
-    // spectate in the arena
+    /**
+     * The name of the arena
+     * @return Name of arena
+     */
+    public String getName()
+    {
+        return this.arenaName;
+    }
+
+    /**
+     * Gets the random spawn-point and teleports the player
+     * @param p The player
+     */
     public void spectate(Player p)
     {
         World arenaworld = Bukkit.getServer().getWorld(arenaConfig.config.getString("arena.world"));

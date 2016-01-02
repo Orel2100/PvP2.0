@@ -22,31 +22,48 @@ public class PlayerManager
     // disallow creation of other instances
     private PlayerManager() { }
 
-    // loads the player into the list
-    public void loadPlayer(Player p, String arena, ItemStack[] lastInv, ItemStack[] lastArmor, Location lastLoc)
+    /**
+     * Loads the player with PvP-Informations into memory
+     * @param p The Player
+     */
+    public void loadPlayer(Player p)
     {
-        players.put(p.getUniqueId().toString(), new PvPPlayer(p, arena, lastInv, lastArmor, lastLoc));
+        players.put(p.getUniqueId().toString(), new PvPPlayer(p));
     }
 
-    // returns the player-object
-    public PvPPlayer getPlayer(String pl)
+
+    /**
+     * Returns the PvPPlayer-object using the player's UUID
+     * @param uuid The UUID of the player
+     * @return The PvPPlayer-Object
+     */
+    public PvPPlayer getPlayer(String uuid)
     {
-        return players.get(pl);
+        return players.get(uuid);
     }
 
-    // returns the player-object
+    /**
+     * Returns the PvPPlayer-object
+     * @param pl The player
+     * @return The PvPPlayer-Object
+     */
     public PvPPlayer getPlayer(Player pl)
     {
         return getPlayer(pl.getUniqueId().toString());
     }
 
-    // unloads the player from the list
-    public void unloadPlayer(String pl)
+    /**
+     * Removes the player from internal lists using the player's UUID
+     * @param uuid The UUID of the player
+     */
+    public void unloadPlayer(String uuid)
     {
-        players.remove(pl);
+        players.remove(uuid);
     }
 
-    // removes all players from list
+    /**
+     * Removes all players from internal lists
+     */
     public void unloadAllPlayers()
     {
         for(String key : players.keySet())
@@ -56,7 +73,10 @@ public class PlayerManager
         }
     }
 
-    // completely deletes the player(-statistics)
+    /**
+     * Completley deletes player's statistics, configurations etc.
+     * @param pl The Player
+     */
     public void deletePlayer(String pl)
     {
         PvPPlayer a = players.get(pl);
@@ -64,6 +84,11 @@ public class PlayerManager
         players.remove(pl);
     }
 
+    /**
+     * Indicates if the player was loaded to internal lists
+     * @param pl The Player
+     * @return If the player was loaded to lists or not
+     */
     public boolean isPlayerLoaded(String pl)
     {
         return players.containsKey(pl);

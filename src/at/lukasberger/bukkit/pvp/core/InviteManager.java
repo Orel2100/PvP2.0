@@ -121,7 +121,7 @@ public class InviteManager
         }
 
         // teleport invited to arena
-        String arena = InGameManager.instance.getArena(inviter);
+        String arena = InGameManager.instance.getArena(inviter).getName();
         InGameManager.instance.joinArena(invited, arena);
 
         // remove invitation from invites-list

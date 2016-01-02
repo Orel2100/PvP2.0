@@ -80,6 +80,7 @@ public class PvP extends JavaPlugin
         {
             this.getServer().getLogger().severe("FAILED TO LOAD VAULT-ECONOMY, DISABLING PLUGIN...!");
             this.getPluginLoader().disablePlugin(this);
+            return;
         }
 
         // they need to be fix
@@ -188,6 +189,7 @@ public class PvP extends JavaPlugin
         this.getServer().getPluginManager().registerEvents(new PvPPartyPlayerQuitEvent(), this);
         // items
         this.getServer().getPluginManager().registerEvents(new PvPPlayerGrenadeEvents(), this);
+        this.getServer().getPluginManager().registerEvents(new PvPPlayerBowEvent(), this);
         // afk
         this.getServer().getPluginManager().registerEvents(new PvPPlayerAfkChatEvent(), this);
         this.getServer().getPluginManager().registerEvents(new PvPPlayerAfkInteractEvent(), this);

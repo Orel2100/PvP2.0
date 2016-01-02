@@ -41,6 +41,7 @@ action:
       created-help-randspawn: "If no spawnpoint is defined, a random spawnpoint will be calculated"
       changed: "The selection of arena %1 was changed!"
       deleted: "The Arena %1 was successfully deleted!"
+      spec-set: "The spectator-spawn was successfully set at %1;%2;%3"
       spawn:
          added: "The spawn #%1 at %2;%3;%4; was successfully added"
          no-spawn-delete: "There is no spawn left to delete..."

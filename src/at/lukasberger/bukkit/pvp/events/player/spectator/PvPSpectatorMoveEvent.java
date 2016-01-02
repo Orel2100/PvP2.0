@@ -32,7 +32,7 @@ public class PvPSpectatorMoveEvent implements Listener
         // check if player is ingame
         if(!InGameManager.instance.isPlayerSpectating(e.getPlayer()))
             return;
-        Arena a = ArenaManager.instance.getArena(InGameManager.instance.getArena(e.getPlayer()));
+        Arena a = ArenaManager.instance.getArena(InGameManager.instance.getArena(e.getPlayer()).getName());
 
         Location loc = e.getTo();
         Location v1 = a.getMinLocation();

@@ -28,7 +28,9 @@ public class AfkManager
     // disallow creation of other instances
     private AfkManager() { }
 
-    // starts the tasks
+    /**
+     * Stops all required tasks for the AFK-System
+     */
     public void startTasks()
     {
         notifyTask = PvP.getInstance().getServer().getScheduler().scheduleSyncRepeatingTask(PvP.getInstance(), new Runnable() {
@@ -49,7 +51,9 @@ public class AfkManager
         }, 0L, 20L);
     }
 
-    // stops the tasks
+    /**
+     * Stops all tasks of the AFK-System
+     */
     public void stopTasks()
     {
         if(checkTask != Integer.MIN_VALUE)
@@ -59,24 +63,41 @@ public class AfkManager
             PvP.getInstance().getServer().getScheduler().cancelTask(notifyTask);
     }
 
+    /**
+     * Indicates if the player has gone AFK right now
+     * @param uuid The UUID of the player
+     * @return If the player has gone AFK right now
+     */
     public boolean hasPlayerGoneAfkNow(String uuid)
     {
         return ChronoUnit.SECONDS.between(afk.get(uuid), LocalDateTime.now()) == PvP.getInstance().getConfig().getInt("ingame.afk.idle-period");
     }
 
+    /**
+     * Indicates if the player is AFK
+     * @param p The player
+     * @return If the player is AFK or not
+     */
     public boolean isPlayerAfk(Player p)
     {
         return ChronoUnit.SECONDS.between(afk.get(p.getUniqueId().toString()), LocalDateTime.now()) > PvP.getInstance().getConfig().getInt("ingame.afk.idle-period");
     }
 
-    // marks a player as AFK
+
+    /**
+     * Marks the player as afk
+     * @param p The player
+     */
     public void afk(Player p)
     {
         if(!afk.containsKey(p.getUniqueId().toString()))
             afk.put(p.getUniqueId().toString(), LocalDateTime.now());
     }
 
-    // marks a player as active/un-AFK
+    /**
+     * Marks the player as not afk
+     * @param p The player
+     */
     public void unafk(Player p)
     {
         if(isPlayerAfk(p))
@@ -86,7 +107,10 @@ public class AfkManager
             afk.remove(p.getUniqueId().toString());
     }
 
-    // updates the last afk-timestamp
+    /**
+     * Updates the AFK-Timestamp of the player in the lists
+     * @param p The player
+     */
     public void updateAfk(Player p)
     {
         unafk(p);

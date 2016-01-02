@@ -41,6 +41,7 @@ action:
       created-help-randspawn: "Wenn kein Spawn-Punkt definiert ist, wir ein zuf\u00E4lliger errechnet"
       changed: "Die Auswahl von Arena %1 wurde ge\u00E4ndert!"
       deleted: "Die Arena %1 wurde erfolgreich gel\u00F6scht!"
+      spec-set: "Der Spectator-Spawn wurde erfolgreich bei %1;%2;%3 gesetzt"
       spawn:
          added: "Der Spawn-Punkt #%1 at %2;%3;%4; wurde hinzugef\u00FCgt!"
          no-spawn-delete: "Es gibt keinen Spawn-Punkt zum L\u00F6schen..."

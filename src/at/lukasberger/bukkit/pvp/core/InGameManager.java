@@ -36,7 +36,11 @@ public class InGameManager
     // disallow creation of other instances
     private InGameManager() { }
 
-    // returns a instance of a
+    /**
+     * Loads and returns the instance of a PvP-Player
+     * @param p The "Bukkit"-Player
+     * @return Instance of the Player as PvP-Player
+     */
     public PvPPlayer getPlayer(Player p)
     {
         if(!PlayerManager.instance.isPlayerLoaded(p.getUniqueId().toString()))
@@ -52,19 +56,32 @@ public class InGameManager
         return PlayerManager.instance.getPlayer(p);
     }
 
-    // checks if a player is ingame
+    /**
+     * Indicates if the player is ingame
+     * @param p The Player
+     * @return If the player is ingame or not
+     */
     public boolean isPlayerIngame(Player p)
     {
         return currentPlayerArena.containsKey(p.getUniqueId().toString());
     }
 
-    // checks if a player is spectating
+    /**
+     * Indicates if the player is spectating
+     * @param p The Player
+     * @return If the player is spectating or not
+     */
     public boolean isPlayerSpectating(Player p)
     {
         return currentSpectatorArena.containsKey(p.getUniqueId().toString());
     }
 
-    // join the arena
+    /**
+     * Sends the player to the arena
+     * @param p The Player
+     * @param arenaName The name of the arena
+     * @return If joining was successful or not
+     */
     public boolean joinArena(Player p, String arenaName)
     {
         // if player already is in arena, do not join
@@ -96,6 +113,7 @@ public class InGameManager
             p.getInventory().clear();
             p.setGameMode(GameMode.SURVIVAL);
 
+            arena.addPlayer(p);
             arena.teleportPlayer(p);
             getPlayer(p).giveCurrentKit();
 
@@ -116,7 +134,12 @@ public class InGameManager
         }
     }
 
-    // join the arena in spectate-mode
+    /**
+     * Sends the player to the arena as a spectator
+     * @param p The Player
+     * @param arenaName The name of the arena
+     * @return If joining was successful or not
+     */
     public boolean joinArenaSpectating(Player p, String arenaName)
     {
         // if player already is in arena, do not join
@@ -158,7 +181,10 @@ public class InGameManager
         }
     }
 
-    // rejoins the arena if the player died
+    /**
+     * Resends the death player to his last arena
+     * @param p The Player
+     */
     public void joinArenaOnDeath(Player p)
     {
         // get the arena of the player
@@ -177,7 +203,11 @@ public class InGameManager
         getPlayer(p).updateScoreboard();
     }
 
-    // set the status of teleport-allowing to the given status
+    /**
+     * Changes the teleport-permission for the player
+     * @param p The player
+     * @param status The new teleport-status
+     */
     public void changeTeleportStatus(Player p, boolean status)
     {
         if(status)
@@ -186,22 +216,35 @@ public class InGameManager
             playerTeleportStatus.remove(p.getUniqueId().toString());
     }
 
+    /**
+     * Indicates if the player is allowed to be teleported by plugin
+     * @param p The player
+     * @return If he is allowed to be teleported or not
+     */
     public boolean canTeleport(Player p)
     {
         return playerTeleportStatus.contains(p.getUniqueId().toString());
     }
 
-    public String getArena(Player p)
+    /**
+     * Returns the current arena of the given player (ingame/spectating)
+     * @param p The player
+     * @return The current arena of the player, null if not ingame/spectating
+     */
+    public Arena getArena(Player p)
     {
         if(isPlayerIngame(p))
-            return currentPlayerArena.get(p.getUniqueId().toString());
+            return ArenaManager.instance.getArena(currentPlayerArena.get(p.getUniqueId().toString()));
         else if(isPlayerSpectating(p))
-            return currentSpectatorArena.get(p.getUniqueId().toString());
+            return ArenaManager.instance.getArena(currentSpectatorArena.get(p.getUniqueId().toString()));
         else
             return null;
     }
 
-    // removes the player from the arena and restores inventory/location
+    /**
+     * Removes player from internal lists, restores inventory, last position etc.
+     * @param p The player
+     */
     public void leaveArena(Player p)
     {
         // check if player is null
@@ -234,6 +277,7 @@ public class InGameManager
         playerLocationBeforeJoin.remove(p.getUniqueId().toString());
         playerGamemodeBeforeJoin.remove(p.getUniqueId().toString());
         AfkManager.instance.unafk(p);
+        getPlayer(p).getArena().removePlayer(p);
 
         // Restore player settings
         p.setGameMode(GameMode.valueOf(gamemode));
@@ -253,7 +297,10 @@ public class InGameManager
         p.sendMessage(PvP.successPrefix + MessageManager.instance.get(p, "ingame.left"));
     }
 
-    // removes the player from the arena and restores inventory/location
+    /**
+     * Removes player from internal lists, restores inventory, last position etc.
+     * @param p The player
+     */
     public void leaveArenaSpectating(Player p)
     {
         // check if player is null
@@ -297,7 +344,9 @@ public class InGameManager
         p.sendMessage(PvP.successPrefix + MessageManager.instance.get(p, "ingame.left"));
     }
 
-    // throws out all player from all arenas (reload etc.)
+    /**
+     * Removes all players from the game
+     */
     public void leaveArenaAll()
     {
         for(String pl : currentPlayerArena.keySet())

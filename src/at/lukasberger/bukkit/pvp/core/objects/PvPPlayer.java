@@ -1,6 +1,7 @@
 package at.lukasberger.bukkit.pvp.core.objects;
 
 import at.lukasberger.bukkit.pvp.PvP;
+import at.lukasberger.bukkit.pvp.core.ArenaManager;
 import at.lukasberger.bukkit.pvp.core.InGameManager;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -27,23 +28,15 @@ public class PvPPlayer
 
     // values
     private Player player;
-    private String arena;
-    private ItemStack[] lastInventory;
-    private ItemStack[] lastArmor;
-    private Location lastLocation;
 
-    public PvPPlayer(Player p, String _arena, ItemStack[] _lastInv, ItemStack[] _lastArmor, Location _lastLoc)
+    public PvPPlayer(Player p)
     {
         // load configuration
         playerConfig = new Config("players/" + p.getUniqueId().toString());
         playerConfig.saveDefaultConfig("playerStats");
 
-        // set values
+        // set variables
         this.player = p;
-        this.arena = _arena;
-        this.lastInventory = _lastInv;
-        this.lastArmor = _lastArmor;
-        this.lastLocation = _lastLoc;
 
         // update last known name
         playerConfig.config.set("lastName", p.getName());
@@ -125,7 +118,7 @@ public class PvPPlayer
         // pvp stats
         compiled = compiled.replace("{PVPDEATHS}",  Integer.toString(playerConfig.config.getInt("stats.kills")));
         compiled = compiled.replace("{PVPKILLS}",  Integer.toString(playerConfig.config.getInt("stats.deaths")));
-        compiled = compiled.replace("{PVPARENA}", InGameManager.instance.getArena(player));
+        compiled = compiled.replace("{PVPARENA}", InGameManager.instance.getArena(player).getName());
 
         return ChatColor.translateAlternateColorCodes('&', compiled);
     }
@@ -146,41 +139,11 @@ public class PvPPlayer
     }
 
     // returns the current arena
-    public String getArena()
+    public Arena getArena()
     {
-        return this.arena;
+        return InGameManager.instance.getArena(player);
     }
 
-    // returns the current inventory
-    public Inventory getCurrentInventory()
-    {
-        return player.getInventory();
-    }
-
-    // returns the inventory of the player before he joined,, read-only
-    public ItemStack[] getInventoryBeforeJoin()
-    {
-        return lastInventory;
-    }
-
-    // returns the inventory of the player before he joined,, read-only
-    public ItemStack[] getArmorBeforeJoin()
-    {
-        return lastArmor;
-    }
-
-    // returns the current location
-    public Location getCurrentLocation()
-    {
-        return player.getLocation();
-    }
-
-    // returns the location of the player before he joined, read-only
-    public Location getLocationBeforeJoin()
-    {
-        return lastLocation;
-    }
-    
     // returns the player-object
     public Player getPlayer()
     {
