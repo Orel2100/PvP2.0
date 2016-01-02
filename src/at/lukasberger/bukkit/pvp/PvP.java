@@ -126,7 +126,6 @@ public class PvP extends JavaPlugin
             {
                 getLogger().info("Saving included languages...");
                 new Config("langs/de").saveDefaultConfig("lang_de");
-                new Config("langs/at").saveDefaultConfig("lang_at");
 
                 getLogger().info("Loading default language...");
                 MessageManager.instance.loadLanguage(getConfig().getString("language"));
@@ -158,6 +157,8 @@ public class PvP extends JavaPlugin
 
         if(this.getConfig().getBoolean("player-language"))
             SubCommandManager.instance.registerSubCommand(new PlayerLanguageCommand(), "lang", "language");
+
+        SubCommandManager.instance.registerSubCommand(new PlayerKitCommand(), "kit", "k");
 
         // Admins-Commands
         SubCommandManager.instance.registerSubCommand(new ArenaCommand(), "arena");

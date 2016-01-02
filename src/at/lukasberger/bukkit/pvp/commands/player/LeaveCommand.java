@@ -3,6 +3,8 @@ package at.lukasberger.bukkit.pvp.commands.player;
 import at.lukasberger.bukkit.pvp.PvP;
 import at.lukasberger.bukkit.pvp.commands.AbstractSubCommand;
 import at.lukasberger.bukkit.pvp.core.InGameManager;
+import at.lukasberger.bukkit.pvp.core.MessageManager;
+import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -31,6 +33,15 @@ public class LeaveCommand extends AbstractSubCommand
             InGameManager.instance.leaveArena(p);
         else if(InGameManager.instance.isPlayerSpectating(p))
             InGameManager.instance.leaveArenaSpectating(p);
+    }
+
+    @Override
+    public List<String> getHelp(CommandSender sender)
+    {
+        return Arrays.asList(
+                ChatColor.GRAY + "/pvp leave/l {Arena}\n" +
+                        "    \u00BB\u00BB " + ChatColor.GREEN + MessageManager.instance.get(sender, "commands.help.leave")
+        );
     }
 
     @Override

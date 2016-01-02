@@ -117,7 +117,16 @@ public class PlayerKitCommand extends AbstractSubCommand
     private void printHelp(CommandSender sender)
     {
         sender.sendMessage(ChatColor.AQUA + "~~~ PvP-Admin: Kits ~~~");
-        sender.sendMessage(ChatColor.GRAY + "/pvp kit {Name}\n" + ChatColor.GREEN + MessageManager.instance.get(sender, "commands.help.kit.buy"));
+        sender.sendMessage(ChatColor.GRAY + "/pvp kit/k {Name}\n" + ChatColor.GREEN + MessageManager.instance.get(sender, "commands.help.kit.buy"));
+    }
+
+    @Override
+    public List<String> getHelp(CommandSender sender)
+    {
+        return Arrays.asList(
+                ChatColor.GRAY + "/pvp kit {Name}\n" +
+                        "    \u00BB\u00BB " + ChatColor.GREEN + MessageManager.instance.get(sender, "commands.help.kit.buy")
+        );
     }
 
     @Override

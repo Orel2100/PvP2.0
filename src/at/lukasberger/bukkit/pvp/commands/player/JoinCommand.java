@@ -38,6 +38,15 @@ public class JoinCommand extends AbstractSubCommand
     }
 
     @Override
+    public List<String> getHelp(CommandSender sender)
+    {
+        return Arrays.asList(
+                ChatColor.GRAY + "/pvp join/j {Arena}\n" +
+                        "    \u00BB\u00BB " + ChatColor.GREEN + MessageManager.instance.get(sender, "commands.help.join")
+        );
+    }
+
+    @Override
     public List<String> getPermissions()
     {
         return Arrays.asList("pvp.player", "pvp.*");

@@ -2,6 +2,7 @@ package at.lukasberger.bukkit.pvp.commands;
 
 import at.lukasberger.bukkit.pvp.PvP;
 import at.lukasberger.bukkit.pvp.core.MessageManager;
+import net.md_5.bungee.api.ChatColor;
 import org.bukkit.command.CommandSender;
 
 import java.util.*;
@@ -47,6 +48,61 @@ public class SubCommandManager
 
         String subCmdString = tmpArgs.get(0);
         tmpArgs.remove(0);
+
+        if(subCmdString.equalsIgnoreCase("help"))
+        {
+            Integer baseIndex = 1;
+
+            try
+            {
+                baseIndex = Integer.parseInt(args[1]);
+            }
+            catch (Exception e)
+            {
+                baseIndex = 1;
+            }
+
+            Integer startIndex = (baseIndex * 4) - 4;
+            Integer currIndex = 0;
+
+            List<String> help = new ArrayList<>();
+
+            for(Map.Entry<String, AbstractSubCommand> subcmd : subCommands.entrySet())
+            {
+                boolean hasPerm = false;
+
+                for(String perm : subcmd.getValue().getPermissions())
+                    if(sender.hasPermission(perm))
+                        hasPerm = true;
+
+                if(hasPerm)
+                {
+                    for(String line : subcmd.getValue().getHelp(sender))
+                        if(!help.contains(line))
+                            help.add(line);
+                }
+            }
+
+            for(String helpLine : help)
+            {
+                if(currIndex < startIndex)
+                {
+                    currIndex++;
+                    continue;
+                }
+
+                sender.sendMessage(helpLine);
+
+                currIndex++;
+                if(currIndex == (baseIndex * 4))
+                    break;
+            }
+
+            if(subCommands.size() > currIndex - 4)
+                sender.sendMessage(PvP.prefix + ChatColor.GRAY + MessageManager.instance.get(sender, "commands.help.help-next", baseIndex + 1));
+
+            return true;
+        }
 
         for(Map.Entry<String, AbstractSubCommand> subcmd : subCommands.entrySet())
         {

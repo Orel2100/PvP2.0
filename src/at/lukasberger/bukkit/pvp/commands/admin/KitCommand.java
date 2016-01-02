@@ -128,7 +128,8 @@ public class KitCommand extends AbstractSubCommand
                 for(Map.Entry<Enchantment, Integer> ench : selectedItem.getEnchantments().entrySet())
                     serializedEnchantments += ench.getKey().getName().toUpperCase() + ":" + ench.getValue() + ",";
 
-                serializedEnchantments = serializedEnchantments.substring(0, serializedEnchantments.length() - 1);
+                if(serializedEnchantments.endsWith(","))
+                    serializedEnchantments = serializedEnchantments.substring(0, serializedEnchantments.length() - 1);
 
                 serializedItem += serializedEnchantments;
 
@@ -190,6 +191,23 @@ public class KitCommand extends AbstractSubCommand
         sender.sendMessage(ChatColor.GRAY + "/pvp kita {Name} del\n" + ChatColor.GREEN + MessageManager.instance.get(sender, "commands.help.kit.delitem"));
         sender.sendMessage(ChatColor.GRAY + "/pvp kita {Name} delete\n" + ChatColor.GREEN + MessageManager.instance.get(sender, "commands.help.kit.delete"));
         sender.sendMessage(ChatColor.GRAY + "/pvp kita {Name} costs\n" + ChatColor.GREEN + MessageManager.instance.get(sender, "commands.help.kit.costs"));
+    }
+
+    @Override
+    public List<String> getHelp(CommandSender sender)
+    {
+        return Arrays.asList(
+                ChatColor.GRAY + "/pvp kita {Name} create\n" +
+                        "    \u00BB\u00BB " + ChatColor.GREEN + MessageManager.instance.get(sender, "commands.help.kit.create"),
+                ChatColor.GRAY + "/pvp kita {Name} add\n" +
+                        "    \u00BB\u00BB " + ChatColor.GREEN + MessageManager.instance.get(sender, "commands.help.kit.additem"),
+                ChatColor.GRAY + "/pvp kita {Name} del\n" +
+                        "    \u00BB\u00BB " + ChatColor.GREEN + MessageManager.instance.get(sender, "commands.help.kit.delitem"),
+                ChatColor.GRAY + "/pvp kita {Name} delete\n" +
+                        "    \u00BB\u00BB " + ChatColor.GREEN + MessageManager.instance.get(sender, "commands.help.kit.delete"),
+                ChatColor.GRAY + "/pvp kita {Name} costs\n" +
+                        "    \u00BB\u00BB " + ChatColor.GREEN + MessageManager.instance.get(sender, "commands.help.kit.costs")
+        );
     }
 
     @Override

@@ -38,6 +38,15 @@ public class SpectateCommand extends AbstractSubCommand
     }
 
     @Override
+    public List<String> getHelp(CommandSender sender)
+    {
+        return Arrays.asList(
+                ChatColor.GRAY + "/pvp spec/s {Arena}\n" +
+                        "    \u00BB\u00BB " + ChatColor.GREEN + MessageManager.instance.get(sender, "commands.help.spectate")
+        );
+    }
+
+    @Override
     public List<String> getPermissions()
     {
         return Arrays.asList("pvp.player.spectate", "pvp.player", "pvp.player.*", "pvp.*");

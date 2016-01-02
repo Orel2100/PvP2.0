@@ -28,9 +28,11 @@ commands:
          player: "\u00C4nder deine eigene Sprache f\u00FCr PvP"
       join: "Die angegebene Arena betreten"
       leave: "Die aktuelle Arena verlassen"
+      spectate: "Beobachte in der angegebenen Arena"
       invite: "Lade den Spieler zu deiner Arena ein"
       accept: "Akzeptiere die Einladung des Spielers"
       deny: "Lehne die Einladung des Spielers ab"
+      help-next: "Benutze &7/pvp help %1&r um die n\u00E4chste Seite zu sehen"
 
 action:
    arena:

@@ -86,6 +86,25 @@ public class PartyCommand extends AbstractSubCommand
     }
 
     @Override
+    public List<String> getHelp(CommandSender sender)
+    {
+        return Arrays.asList(
+                ChatColor.GRAY + "/pvp party/p create\n" +
+                        "    \u00BB\u00BB " + ChatColor.GREEN + MessageManager.instance.get(sender, "commands.help.party.create"),
+                ChatColor.GRAY + "/pvp party/p delete\n" +
+                        "    \u00BB\u00BB " + ChatColor.GREEN + MessageManager.instance.get(sender, "commands.help.party.delete"),
+                ChatColor.GRAY + "/pvp party/p invite [Player]\n" +
+                        "    \u00BB\u00BB " + ChatColor.GREEN + MessageManager.instance.get(sender, "commands.help.party.invite"),
+                ChatColor.GRAY + "/pvp party/p accept [Player]\n" +
+                        "    \u00BB\u00BB " + ChatColor.GREEN + MessageManager.instance.get(sender, "commands.help.party.accept"),
+                ChatColor.GRAY + "/pvp party/p deny [Player]\n" +
+                        "    \u00BB\u00BB " + ChatColor.GREEN + MessageManager.instance.get(sender, "commands.help.party.deny"),
+                ChatColor.GRAY + "/pvp party/p leader [Player]\n" +
+                        "    \u00BB\u00BB " + ChatColor.GREEN + MessageManager.instance.get(sender, "commands.help.party.leader")
+        );
+    }
+
+    @Override
     public List<String> getPermissions()
     {
         return Arrays.asList("pvp.player.party", "pvp.player", "pvp.player.*", "pvp.*");

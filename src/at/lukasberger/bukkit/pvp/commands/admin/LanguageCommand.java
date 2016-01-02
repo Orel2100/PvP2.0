@@ -61,6 +61,15 @@ public class LanguageCommand extends AbstractSubCommand
     }
 
     @Override
+    public List<String> getHelp(CommandSender sender)
+    {
+        return Arrays.asList(
+                ChatColor.GRAY + "/pvp langa set {Name}\n" +
+                        "    \u00BB\u00BB " + ChatColor.GREEN + MessageManager.instance.get(sender, "commands.help.language.set")
+        );
+    }
+
+    @Override
     public List<String> getPermissions()
     {
         return Arrays.asList("pvp.admin.lang", "pvp.admin", "pvp.*");

@@ -12,6 +12,8 @@ public abstract class AbstractSubCommand
 
     public abstract void execute(CommandSender sender, String[] args);
 
+    public abstract List<String> getHelp(CommandSender sender);
+
     public abstract List<String> getPermissions();
 
 }

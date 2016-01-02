@@ -41,6 +41,15 @@ public class InviteDenyCommand extends AbstractSubCommand
     }
 
     @Override
+    public List<String> getHelp(CommandSender sender)
+    {
+        return Arrays.asList(
+            ChatColor.GRAY + "/pvp deny/d {Name}\n" +
+                    "    \u00BB\u00BB " + ChatColor.GREEN + MessageManager.instance.get(sender, "commands.help.deny")
+        );
+    }
+
+    @Override
     public List<String> getPermissions()
     {
         return Arrays.asList("pvp.player.invite", "pvp.player", "pvp.player.*", "pvp.*");

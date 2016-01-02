@@ -5,6 +5,7 @@ import at.lukasberger.bukkit.pvp.commands.AbstractSubCommand;
 import at.lukasberger.bukkit.pvp.core.ArenaManager;
 import at.lukasberger.bukkit.pvp.core.InGameManager;
 import at.lukasberger.bukkit.pvp.core.PlayerManager;
+import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
 import java.util.Arrays;
@@ -34,6 +35,15 @@ public class ReloadCommand extends AbstractSubCommand
             sender.sendMessage(PvP.errorPrefix + "Error while reloading PvP, view console for more details...");
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public List<String> getHelp(CommandSender sender)
+    {
+        return Arrays.asList(
+                ChatColor.GRAY + "/pvp fullreload\n" + ChatColor.GREEN +
+                        "    \u00BB\u00BB Reloads configuration only"
+        );
     }
 
     @Override

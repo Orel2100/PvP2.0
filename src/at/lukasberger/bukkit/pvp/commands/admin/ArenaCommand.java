@@ -96,7 +96,22 @@ public class ArenaCommand extends AbstractSubCommand
         sender.sendMessage(ChatColor.GRAY + "/pvp arena {Name} delete\n" + ChatColor.GREEN + MessageManager.instance.get(sender, "commands.help.arena.delete"));
         sender.sendMessage(ChatColor.GRAY + "/pvp arena {Name} addspawn\n" + ChatColor.GREEN + MessageManager.instance.get(sender, "commands.help.arena.addspawn"));
         sender.sendMessage(ChatColor.GRAY + "/pvp arena {Name} delspawn\n" + ChatColor.GREEN + MessageManager.instance.get(sender, "commands.help.arena.delspawn"));
-}
+    }
+
+    @Override
+    public List<String> getHelp(CommandSender sender)
+    {
+        return Arrays.asList(
+                ChatColor.GRAY + "/pvp arena {Name} create\n" +
+                        "    \u00BB\u00BB " + ChatColor.GREEN + MessageManager.instance.get(sender, "commands.help.arena.create"),
+                ChatColor.GRAY + "/pvp arena {Name} delete\n" +
+                        "    \u00BB\u00BB " + ChatColor.GREEN + MessageManager.instance.get(sender, "commands.help.arena.delete"),
+                ChatColor.GRAY + "/pvp arena {Name} addspawn\n" +
+                        "    \u00BB\u00BB " + ChatColor.GREEN + MessageManager.instance.get(sender, "commands.help.arena.addspawn"),
+                ChatColor.GRAY + "/pvp arena {Name} delspawn\n" +
+                        "    \u00BB\u00BB " + ChatColor.GREEN + MessageManager.instance.get(sender, "commands.help.arena.delspawn")
+        );
+    }
 
     @Override
     public List<String> getPermissions()
