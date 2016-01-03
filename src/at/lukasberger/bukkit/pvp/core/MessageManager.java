@@ -23,30 +23,31 @@ public class MessageManager
 
     /**
      * Loads the given language into memory and adds missing variables
-     * @param langName The name of the language
+     * @param lang The name of the language
      */
-    public void loadLanguage(String langName)
+    public void loadLanguage(String lang)
     {
-        Config tmp = new Config("langs/" + langName);
+        Config tmp = new Config("langs/" + lang);
 
         Config defaultMessages = new Config("langs/default");
         defaultMessages.saveDefaultConfig("lang", true);
 
         // updating variables from language which should be loaded
-        Set<String> keys = defaultMessages.config.getKeys(true);
+        Set<String> keys = defaultMessages.config.getConfigurationSection("en").getKeys(true);
         for(String key : keys)
         {
-            if (!tmp.config.getKeys(true).contains(key))
+            if (!tmp.config.getKeys(true).contains(lang + "." + key))
             {
-                PvP.getInstance().getLogger().info("[Language][" + langName.toUpperCase() + "] Updating \"" + key + "\" to value \"" + defaultMessages.config.get(key).toString() + "\"");
-                tmp.config.set(key, defaultMessages.config.get(key));
+                PvP.getInstance().getLogger().info("[Language] Updating \"" + lang + "." + key +
+                        "\" to value \"" + defaultMessages.config.get("en." + key).toString() + "\"");
+                tmp.config.set(lang + key, defaultMessages.config.get("en." + key));
             }
         }
 
         defaultMessages.delete();
         tmp.saveConfig();
 
-        messagesFiles.put(langName, tmp);
+        messagesFiles.put(lang, tmp);
     }
 
     /**
@@ -70,7 +71,7 @@ public class MessageManager
             this.loadLanguage(lang);
 
         Config messagesFile = messagesFiles.get(lang);
-        value = messagesFile.config.getString(messagesFile.config.getKeys(false).toArray()[0] + "." + name);
+        value = messagesFile.config.getString(lang + "." + name);
 
         if(params == null || params.length == 0)
             return ChatColor.translateAlternateColorCodes('&', value);
