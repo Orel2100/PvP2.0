@@ -3,12 +3,11 @@
     <output-path>$PROJECT_DIR$/../#Test-Server/Spigot/plugins</output-path>
     <root id="archive" name="PvP.jar">
       <element id="module-output" name="at.lukasberger.bukkit.pvp" />
-      <element id="file-copy" path="$PROJECT_DIR$/resources/languages/lang.yml" />
-      <element id="file-copy" path="$PROJECT_DIR$/resources/languages/lang_de.yml" />
-      <element id="file-copy" path="$PROJECT_DIR$/resources/empty.yml" />
       <element id="file-copy" path="$PROJECT_DIR$/resources/config.yml" />
+      <element id="file-copy" path="$PROJECT_DIR$/resources/empty.yml" />
       <element id="file-copy" path="$PROJECT_DIR$/resources/playerStats.yml" />
       <element id="file-copy" path="$PROJECT_DIR$/resources/plugin.yml" />
+      <element id="dir-copy" path="$PROJECT_DIR$/resources/languages" />
     </root>
   </artifact>
 </component>
