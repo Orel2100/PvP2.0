@@ -4,7 +4,8 @@
     <root id="archive" name="PvP.jar">
       <element id="module-output" name="at.lukasberger.bukkit.pvp" />
       <element id="dir-copy" path="$PROJECT_DIR$/resources" />
-      <element id="dir-copy" path="$PROJECT_DIR$/resources/languages" />
+      <element id="file-copy" path="$PROJECT_DIR$/resources/languages/lang.yml" />
+      <element id="file-copy" path="$PROJECT_DIR$/resources/languages/lang_de.yml" />
     </root>
   </artifact>
 </component>

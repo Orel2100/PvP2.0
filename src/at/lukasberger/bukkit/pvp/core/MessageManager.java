@@ -70,7 +70,7 @@ public class MessageManager
             this.loadLanguage(lang);
 
         Config messagesFile = messagesFiles.get(lang);
-        value = messagesFile.config.getString(name);
+        value = messagesFile.config.getString(messagesFile.config.getKeys(false).toArray()[0] + "." + name);
 
         if(params == null || params.length == 0)
             return ChatColor.translateAlternateColorCodes('&', value);
