@@ -1,7 +1,6 @@
 package at.lukasberger.bukkit.pvp.core.objects;
 
 import at.lukasberger.bukkit.pvp.PvP;
-import org.apache.commons.io.IOUtils;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
