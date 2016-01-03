@@ -213,7 +213,7 @@ public class KitCommand extends AbstractSubCommand
     @Override
     public List<String> getPermissions()
     {
-        return Arrays.asList("pvp.admin.kit", "pvp.admin", "pvp.*");
+        return Arrays.asList("pvp.admin.kit", "pvp.admin.*", "pvp.*");
     }
 
 }

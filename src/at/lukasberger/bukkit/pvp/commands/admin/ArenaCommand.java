@@ -116,7 +116,7 @@ public class ArenaCommand extends AbstractSubCommand
     @Override
     public List<String> getPermissions()
     {
-        return Arrays.asList("pvp.admin.arena", "pvp.admin", "pvp.*");
+        return Arrays.asList("pvp.admin.arena", "pvp.admin.*", "pvp.*");
     }
 
 }

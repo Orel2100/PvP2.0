@@ -132,7 +132,7 @@ public class PlayerKitCommand extends AbstractSubCommand
     @Override
     public List<String> getPermissions()
     {
-        return Arrays.asList("pvp.player.kit", "pvp.player", "pvp.player.*", "pvp.*");
+        return Arrays.asList("pvp.player.kit", "pvp.player.*", "pvp.*");
     }
 
 }

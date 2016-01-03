@@ -52,7 +52,7 @@ public class InviteDenyCommand extends AbstractSubCommand
     @Override
     public List<String> getPermissions()
     {
-        return Arrays.asList("pvp.player.invite", "pvp.player", "pvp.player.*", "pvp.*");
+        return Arrays.asList("pvp.player.invite", "pvp.player.*", "pvp.*");
     }
 
 }

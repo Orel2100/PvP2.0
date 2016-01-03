@@ -72,7 +72,7 @@ public class LanguageCommand extends AbstractSubCommand
     @Override
     public List<String> getPermissions()
     {
-        return Arrays.asList("pvp.admin.lang", "pvp.admin", "pvp.*");
+        return Arrays.asList("pvp.admin.lang", "pvp.admin.*", "pvp.*");
     }
 
 }

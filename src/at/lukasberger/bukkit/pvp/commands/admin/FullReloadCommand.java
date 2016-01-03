@@ -85,7 +85,7 @@ public class FullReloadCommand extends AbstractSubCommand
     @Override
     public List<String> getPermissions()
     {
-        return Arrays.asList("pvp.admin.fullreload", "pvp.admin", "pvp.*");
+        return Arrays.asList("pvp.admin.fullreload", "pvp.admin.*", "pvp.*");
     }
 
 }

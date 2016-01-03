@@ -107,7 +107,7 @@ public class PartyCommand extends AbstractSubCommand
     @Override
     public List<String> getPermissions()
     {
-        return Arrays.asList("pvp.player.party", "pvp.player", "pvp.player.*", "pvp.*");
+        return Arrays.asList("pvp.player.party", "pvp.player.*", "pvp.*");
     }
 
 }

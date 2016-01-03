@@ -49,7 +49,7 @@ public class SpectateCommand extends AbstractSubCommand
     @Override
     public List<String> getPermissions()
     {
-        return Arrays.asList("pvp.player.spectate", "pvp.player", "pvp.player.*", "pvp.*");
+        return Arrays.asList("pvp.player.spectate", "pvp.player.*", "pvp.*");
     }
 
 }

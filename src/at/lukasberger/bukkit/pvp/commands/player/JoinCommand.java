@@ -49,7 +49,7 @@ public class JoinCommand extends AbstractSubCommand
     @Override
     public List<String> getPermissions()
     {
-        return Arrays.asList("pvp.player", "pvp.*");
+        return Arrays.asList("pvp.player", "pvp.player.*", "pvp.*");
     }
 
 }
