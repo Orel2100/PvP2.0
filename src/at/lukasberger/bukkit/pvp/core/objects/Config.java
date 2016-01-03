@@ -102,17 +102,22 @@ public class Config
         if (!this.configFile.exists() || force)
         {
             PvP.getInstance().getLogger().info("Writing default \"" + resourceName + "\" to " + this.configFile.getAbsolutePath());
-            Reader defConfigStream = new InputStreamReader(PvP.getInstance().getResource(resourceName + ".yml"), Charset.forName("UTF-8"));
-            OutputStream defConfigOutStream;
+            InputStreamReader defConfigStream = new InputStreamReader(PvP.getInstance().getResource(resourceName + ".yml"), Charset.forName("UTF-8"));
+            FileOutputStream defConfigOutStream;
 
             try
             {
                 defConfigOutStream = new FileOutputStream(this.configFile);
 
-                IOUtils.copy(defConfigStream, defConfigOutStream);
-                defConfigOutStream.flush();
+                int data = defConfigStream.read();
+                while(data != -1)
+                {
+                    defConfigOutStream.write(data);
+                    data = defConfigStream.read();
+                }
 
                 defConfigStream.close();
+                defConfigOutStream.flush();
                 defConfigOutStream.close();
             }
             catch (IOException ex)
