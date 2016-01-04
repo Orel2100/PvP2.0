@@ -15,6 +15,10 @@ It's recommended to download stable-build only!
 **I do not give	proper support to development-build**
 
 
+## Translating
+You can help translating PvP at [https://www.transifex.com/lukas0610/pvp-2-0/](https://www.transifex.com/lukas0610/pvp-2-0/)
+
+
 ## License
 PvP2.0 is licensed unser the _GNU General Public License version 3_
 You _can_ sell PvP2.0, but respect the license and leave a backlink.
