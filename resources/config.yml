@@ -21,7 +21,7 @@ ingame:
   scoreboard:
     title: "&bPvP&7 - Stats"
     update:
-      on-walk-this-is-not-recommended: true
+      on-walk-this-is-not-recommended: false
       on-afk: true
     lines:
       - ' '
