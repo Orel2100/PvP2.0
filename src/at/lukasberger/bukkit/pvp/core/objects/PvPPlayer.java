@@ -131,7 +131,7 @@ public class PvPPlayer
      */
     public Integer getElo()
     {
-        return playerConfig.config.getInt("stats.elo");
+        return playerConfig.config.getInt("stats.elo", Integer.MIN_VALUE);
     }
 
     /**

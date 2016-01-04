@@ -34,6 +34,7 @@ en:
            accept: "Accept the invite from the given player"
            deny: "Deny the invite from the given player"
            help-next: "Use &7/pvp help %1&r to see next page"
+           elo: "See your own ELO or the one from a other player"
    action:
        arena:
            create: "Creating arena..."
@@ -121,6 +122,12 @@ en:
                already-in-party: "The player is already in a party!"
                sent: "You successfully invited %1!"
                invited: "The player %1 invited you to his PvP-Party! Accept with /pvp party a %1, deny with /pvp party d %1"
+       elo:
+           not-online: "The player is not online"
+           no-personal-elo: "You don't have an ELO"
+           no-other-elo: "This player does not have an ELO"
+           personal-elo: "Your ELO is &6%1&r"
+           other-elo: "The ELO of &6%1&r is &6%2&r"
    ingame:
        joined: "You joined the arena %1"
        error:
@@ -149,5 +156,5 @@ en:
            queue-notify: "The match starts in %1 seconds"
            queue-not-enough-players: "There are not enough players in the queue..."
            match-selected: "The players were selected: &6%1 &7(&b%2&7) &7versus&6 %3 &7(&b%4&7)"
-           lost: "&cYou lost the battle against %2 &7(&bELO: &e%1)"
-           won: "&cYou won the battle against %2 &7(&bELO: &e%1)"
+           lost: "&cYou lost the battle against %2 &7(&bYour ELO: &e%1)"
+           won: "&cYou won the battle against %2 &7(&bYour ELO: &e%1)"

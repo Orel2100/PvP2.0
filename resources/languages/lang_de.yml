@@ -34,6 +34,7 @@ de:
            accept: "Akzeptiere die Einladung des Spielers"
            deny: "Lehne die Einladung des Spielers ab"
            help-next: "Benutze &7/pvp help %1&r um die n\u00E4chste Seite zu sehen"
+           elo: "Siehe deinge eigene ELO oder die eines anderen Spielers"
    action:
        arena:
            create: "Erstelle Arena..."
@@ -121,6 +122,12 @@ de:
                already-in-party: "Der Spieler ist bereits in einer Party!"
                sent: "Du hast %1 erfolgreich in deine Party eingeladen!"
                invited: "Der Spieler %1 hat dich zu seiner PvP-Party eingeladen! Nimm an mit /pvp party a %1, lehne ab mit /pvp party d %1"
+       elo:
+           not-online: "Dieser Spieler ist nicht online"
+           no-personal-elo: "Du hast keine ELO"
+           no-other-elo: "Dieser Spieler hat keine ELO"
+           personal-elo: "Deine ELO ist &6%1&r"
+           other-elo: "Die ELO von &6%1&r ist &6%2&r"
    ingame:
        joined: "Du hast die Arena %1 betreten"
        error:
@@ -143,3 +150,11 @@ de:
            damager-notify: "%1 ist AFK, du kannst ihn nicht angreiffen..."
        teleport:
            denied: "Du darfst dich nicht teleportieren. Benutze &7/pvp l&b um die Arena zu verlassen"
+       ranking:
+           match-running: "In %1 l\u00E4uft bereits ein Match"
+           queue-joined: "Du bist der Warteschlange von %1 beigetreten"
+           queue-notify: "Das Match startet in %1 Sekunden"
+           queue-not-enough-players: "Es sind nicht genug Spieler in der Warteschlange..."
+           match-selected: "Die folgenden Spieler wurden ausgew\u00E4hlt: &6%1 &7(&b%2&7) &7gegen&6 %3 &7(&b%4&7)"
+           lost: "&cDu hast den Kampf gegen %2 verloren &7(&bDeine ELO: &e%1)"
+           won: "&cDu hast den Kampf gegen %2 gewonnen &7(&bDeine ELO: &e%1)"

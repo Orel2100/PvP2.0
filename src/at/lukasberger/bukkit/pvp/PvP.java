@@ -160,6 +160,7 @@ public class PvP extends JavaPlugin
             SubCommandManager.instance.registerSubCommand(new PlayerLanguageCommand(), "lang", "language");
 
         SubCommandManager.instance.registerSubCommand(new PlayerKitCommand(), "kit", "k");
+        SubCommandManager.instance.registerSubCommand(new EloCommand(), "elo");
 
         // Admins-Commands
         SubCommandManager.instance.registerSubCommand(new ArenaCommand(), "arena");
