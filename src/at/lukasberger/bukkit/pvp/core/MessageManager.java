@@ -40,7 +40,7 @@ public class MessageManager
             {
                 PvP.getInstance().getLogger().info("[Language] Updating \"" + lang + "." + key +
                         "\" to value \"" + defaultMessages.config.get("en." + key).toString() + "\"");
-                tmp.config.set(lang + key, defaultMessages.config.get("en." + key));
+                tmp.config.set(lang + "." + key, defaultMessages.config.get("en." + key));
             }
         }
 

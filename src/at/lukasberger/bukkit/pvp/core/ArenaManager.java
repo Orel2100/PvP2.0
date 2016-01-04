@@ -3,6 +3,8 @@ package at.lukasberger.bukkit.pvp.core;
 import at.lukasberger.bukkit.pvp.core.objects.Arena;
 
 import java.util.HashMap;
+import java.util.Set;
+import java.util.TreeSet;
 
 /**
  * PvP 2.0, Copyright (c) 2015-2016 Lukas Berger, licensed under GPLv3
@@ -68,7 +70,10 @@ public class ArenaManager
      */
     public void unloadAllArenas()
     {
-        for(String key : arenas.keySet())
+        Set<String> tmp = new TreeSet<>();
+        tmp.addAll(arenas.keySet());
+
+        for(String key : tmp)
             arenas.remove(key);
     }
 

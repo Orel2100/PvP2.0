@@ -73,6 +73,10 @@ public class PvP extends JavaPlugin
 
         currentConfig.delete();
 
+        // they need to be fix
+        this.getConfig().set("gadgets.grenades.item", "EGG");
+        this.saveConfig();
+
         // vault
         RegisteredServiceProvider<Economy> economyProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.economy.Economy.class);
         if (economyProvider != null)
@@ -84,12 +88,6 @@ public class PvP extends JavaPlugin
             this.getPluginLoader().disablePlugin(this);
             return;
         }
-
-        // they need to be fix
-        this.getConfig().set("gadgets.grenades.item", "EGG");
-        this.getConfig().set("gadgets.machinegun.item", "SNOWBALL");
-
-        this.saveConfig();
 
         if(!getConfig().contains("kits.default"))
         {
@@ -197,6 +195,7 @@ public class PvP extends JavaPlugin
         this.getServer().getPluginManager().registerEvents(new PvPPlayerBowEvent(), this);
         // afk
         this.getServer().getPluginManager().registerEvents(new PvPPlayerAfkChatEvent(), this);
+        this.getServer().getPluginManager().registerEvents(new PvPPlayerAfkDamageEvent(), this);
         this.getServer().getPluginManager().registerEvents(new PvPPlayerAfkInteractEvent(), this);
         this.getServer().getPluginManager().registerEvents(new PvPPlayerAfkMoveEvent(), this);
         // spectating

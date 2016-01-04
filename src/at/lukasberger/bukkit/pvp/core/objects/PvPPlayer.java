@@ -35,7 +35,7 @@ public class PvPPlayer
     {
         // load configuration
         playerConfig = new Config("players/" + p.getUniqueId().toString());
-        playerConfig.saveDefaultConfig("playerStats");
+        playerConfig.saveDefaultConfig("player");
 
         // set variables
         this.player = p;
@@ -44,7 +44,19 @@ public class PvPPlayer
         playerConfig.config.set("lastName", p.getName());
 
         // update last join timestamp
-        playerConfig.config.set("lastPvPJoin", System.currentTimeMillis() / 1000);
+        playerConfig.config.set("lastSeen", System.currentTimeMillis() / 1000);
+
+        if(!playerConfig.config.contains("language"))
+            playerConfig.config.set("language", PvP.getInstance().getConfig().getString("language"));
+        if(!playerConfig.config.contains("kit.current"))
+            playerConfig.config.set("kit.current", "default");
+
+        if(!playerConfig.config.contains("stats.kills"))
+            playerConfig.config.set("stats.kills", 0);
+        if(!playerConfig.config.contains("stats.deaths"))
+            playerConfig.config.set("stats.deaths", 0);
+        if(!playerConfig.config.contains("stats.elo"))
+            playerConfig.config.set("stats.elo", 1500);
 
         this.save();
     }
@@ -106,9 +118,9 @@ public class PvPPlayer
         Integer personalElo = this.getElo();
 
         double expectElo = MathUtils.round(1.0 / (1.0 + Math.pow(10.0, (enemyElo - personalElo) / 400.0)), 3);
-        int newElo = (int)MathUtils.round(expectElo + (20.0 * ((winner ? 1.0 : 0.0) - personalElo)), 0);
+        double newElo = MathUtils.round(personalElo + (20.0 * ((winner ? 1.0 : 0.0) - expectElo)), 0);
 
-        this.playerConfig.config.set("stats.elo", newElo);
+        this.playerConfig.config.set("stats.elo", (int)newElo);
         this.save();
         return this;
     }
@@ -142,20 +154,9 @@ public class PvPPlayer
         Scoreboard scoreboard;
         Objective objective;
 
-        if(player.getScoreboard() == null)
-            scoreboard = PvP.getInstance().getServer().getScoreboardManager().getNewScoreboard();
-        else
-            scoreboard = player.getScoreboard();
-
-        if(scoreboard.getObjective(DisplaySlot.SIDEBAR) == null)
-            objective = scoreboard.registerNewObjective("pvp", "dummy");
-        else
-        {
-            objective = scoreboard.getObjective(DisplaySlot.SIDEBAR);
-            objective.unregister();
-        }
-
+        scoreboard = PvP.getInstance().getServer().getScoreboardManager().getNewScoreboard();
         objective = scoreboard.registerNewObjective("pvp", "dummy");
+
         objective.setDisplaySlot(DisplaySlot.SIDEBAR);
         objective.setDisplayName(ChatColor.translateAlternateColorCodes('&', PvP.getInstance().getConfig().getString("ingame.scoreboard.title")));
 
@@ -190,8 +191,8 @@ public class PvPPlayer
         compiled = compiled.replace("{loc_z}", Integer.toString(loc.getBlockZ()));
 
         // pvp stats
-        compiled = compiled.replace("{pvp_deaths}",  Integer.toString(playerConfig.config.getInt("stats.kills")));
-        compiled = compiled.replace("{pvp_kills}",  Integer.toString(playerConfig.config.getInt("stats.deaths")));
+        compiled = compiled.replace("{pvp_deaths}",  Integer.toString(playerConfig.config.getInt("stats.deaths")));
+        compiled = compiled.replace("{pvp_kills}",  Integer.toString(playerConfig.config.getInt("stats.kills")));
         compiled = compiled.replace("{pvp_elo}",  Integer.toString(playerConfig.config.getInt("stats.elo")));
 
         // current pvp-settings

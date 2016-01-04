@@ -55,7 +55,6 @@ public class PvPPartyPlayerDamageEvent implements Listener
         if(damageParty != damagerParty)
             return;
 
-        e.setDamage(0.0);
         e.setCancelled(true);
     }
 

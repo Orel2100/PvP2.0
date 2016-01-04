@@ -149,3 +149,5 @@ en:
            queue-notify: "The match starts in %1 seconds"
            queue-not-enough-players: "There are not enough players in the queue..."
            match-selected: "The players were selected: &6%1 &7(&b%2&7) &7versus&6 %3 &7(&b%4&7)"
+           lost: "&cYou lost the battle against %2 &7(&bELO: &e%1)"
+           won: "&cYou won the battle against %2 &7(&bELO: &e%1)"

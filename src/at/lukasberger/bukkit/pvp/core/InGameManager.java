@@ -10,10 +10,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * PvP 2.0, Copyright (c) 2015-2016 Lukas Berger, licensed under GPLv3
@@ -103,19 +100,21 @@ public class InGameManager
         if(joinResult == -1)
             p.sendMessage(PvP.errorPrefix + MessageManager.instance.get(p, "ingame.error.arena-full", arenaName));
         else if(joinResult == -2)
-            p.sendMessage(PvP.errorPrefix + MessageManager.instance.get(p, "ingame.error.parties-only", arenaName));
+            p.sendMessage(PvP.warningPrefix + MessageManager.instance.get(p, "ingame.error.parties-only", arenaName));
         else if(joinResult == -3)
-            p.sendMessage(PvP.errorPrefix + MessageManager.instance.get(p, "ingame.error.party-leader-only", arenaName));
+            p.sendMessage(PvP.warningPrefix + MessageManager.instance.get(p, "ingame.error.party-leader-only", arenaName));
         else if(joinResult == -4)
-            p.sendMessage(PvP.errorPrefix + MessageManager.instance.get(p, "ingame.error.party-too-large", arena.getGameConfiguration().getInt("party.size"), arenaName));
+            p.sendMessage(PvP.warningPrefix + MessageManager.instance.get(p, "ingame.error.party-too-large", arena.getGameConfiguration().getInt("party.size"), arenaName));
         else if(joinResult == -5)
-            p.sendMessage(PvP.errorPrefix + MessageManager.instance.get(p, "ingame.error.party-too-small", arena.getGameConfiguration().getInt("party.size"), arenaName));
+            p.sendMessage(PvP.warningPrefix + MessageManager.instance.get(p, "ingame.error.party-too-small", arena.getGameConfiguration().getInt("party.size"), arenaName));
         else if(joinResult == -10)
-            p.sendMessage(PvP.errorPrefix + MessageManager.instance.get(p, "ingame.ranked.match-running", arenaName));
+            p.sendMessage(PvP.errorPrefix + MessageManager.instance.get(p, "ingame.ranking.match-running", arenaName));
         else if(joinResult == 1)
-            p.sendMessage(PvP.errorPrefix + MessageManager.instance.get(p, "ingame.ranked.queue-joined", arenaName));
+            p.sendMessage(PvP.successPrefix + MessageManager.instance.get(p, "ingame.ranking.queue-joined", arenaName));
 
-        if(joinResult < 0)
+        if(joinResult == 1)
+            return true; // joined queue
+        else if(joinResult < 0)
             return false;
 
         // check if parties enabled
@@ -366,10 +365,16 @@ public class InGameManager
      */
     public void leaveArenaAll()
     {
-        for(String pl : currentPlayerArena.keySet())
+        Set<String> tmpPlayers = new TreeSet<>();
+        Set<String> tmpSpectators = new TreeSet<>();
+
+        tmpPlayers.addAll(currentPlayerArena.keySet());
+        tmpSpectators.addAll(currentSpectatorArena.keySet());
+
+        for(String pl : tmpPlayers)
             leaveArena(Bukkit.getPlayer(UUID.fromString(pl)));
 
-        for(String pl : currentSpectatorArena.keySet())
+        for(String pl : tmpSpectators)
             leaveArenaSpectating(Bukkit.getPlayer(UUID.fromString(pl)));
     }
 

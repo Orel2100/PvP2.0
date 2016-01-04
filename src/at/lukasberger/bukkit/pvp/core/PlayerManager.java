@@ -6,6 +6,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.HashMap;
+import java.util.Set;
+import java.util.TreeSet;
 
 /**
  * PvP 2.0, Copyright (c) 2015-2016 Lukas Berger, licensed under GPLv3
@@ -66,7 +68,10 @@ public class PlayerManager
      */
     public void unloadAllPlayers()
     {
-        for(String key : players.keySet())
+        Set<String> tmp = new TreeSet<>();
+        tmp.addAll(players.keySet());
+
+        for(String key : tmp)
         {
             getPlayer(key).save();
             players.remove(key);

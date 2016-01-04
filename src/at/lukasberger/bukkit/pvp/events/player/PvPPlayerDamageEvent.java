@@ -2,7 +2,9 @@ package at.lukasberger.bukkit.pvp.events.player;
 
 import at.lukasberger.bukkit.pvp.PvP;
 import at.lukasberger.bukkit.pvp.core.InGameManager;
+import at.lukasberger.bukkit.pvp.core.MessageManager;
 import at.lukasberger.bukkit.pvp.core.objects.Arena;
+import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -28,11 +30,16 @@ public class PvPPlayerDamageEvent implements Listener
             return;
 
         // check if damaged AND damager are players
-        if(!(e.getEntity() instanceof Player) || !(e.getDamager() instanceof Player))
+        if(!(e.getEntity() instanceof Player) || (!(e.getDamager() instanceof Player) && !(e.getDamager() instanceof Arrow)))
             return;
 
         Player damaged = (Player)e.getEntity();
-        Player damager = (Player)e.getDamager();
+        Player damager = null;
+
+        if(e.getDamager() instanceof Arrow)
+            damager = (Player)((Arrow) e.getDamager()).getShooter();
+        else
+            damager = (Player)e.getDamager();
 
         // check if damaged AND damager are ingame
         if(!InGameManager.instance.isPlayerIngame(damaged) || !InGameManager.instance.isPlayerIngame(damager))
@@ -46,16 +53,18 @@ public class PvPPlayerDamageEvent implements Listener
             if(!PvP.getInstance().getConfig().getBoolean("ingame.show-death-screen")) // rejoin player without death-screen
             {
                 Arena a = InGameManager.instance.getArena(damaged);
-                if(PvP.getInstance().getConfig().getBoolean("ingame.enable-elo") && a.isRankedArena())
+                if(PvP.getInstance().getConfig().getBoolean("ingame.enable-elo") || a.isRankedArena())
                 {
                     Integer damaged_elo = InGameManager.instance.getPlayer(damaged).getElo();
                     Integer damager_elo = InGameManager.instance.getPlayer(damager).getElo();
 
                     InGameManager.instance.getPlayer(damaged).updateElo(damager_elo, false);
                     InGameManager.instance.getPlayer(damager).updateElo(damaged_elo, true);
+
+                    damaged.sendMessage(PvP.prefix + MessageManager.instance.get(damaged, "ingame.ranking.lost", InGameManager.instance.getPlayer(damaged).getElo(), damager.getName()));
+                    damager.sendMessage(PvP.prefix + MessageManager.instance.get(damaged, "ingame.ranking.won", InGameManager.instance.getPlayer(damager).getElo(), damaged.getName()));
                 }
 
-                e.setDamage(0.0);
                 e.setCancelled(true);
                 ((Player) e.getEntity()).setHealth(20.0);
 

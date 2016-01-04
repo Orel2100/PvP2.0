@@ -2,6 +2,7 @@ package at.lukasberger.bukkit.pvp.events.player;
 
 import at.lukasberger.bukkit.pvp.PvP;
 import at.lukasberger.bukkit.pvp.core.InGameManager;
+import at.lukasberger.bukkit.pvp.core.MessageManager;
 import at.lukasberger.bukkit.pvp.core.objects.Arena;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -34,13 +35,16 @@ public class PvPPlayerDeathEvent implements Listener
             return;
 
         Arena a = InGameManager.instance.getArena(killed);
-        if(PvP.getInstance().getConfig().getBoolean("ingame.enable-elo") && a.isRankedArena())
+        if(PvP.getInstance().getConfig().getBoolean("ingame.enable-elo") || a.isRankedArena())
         {
             Integer damaged_elo = InGameManager.instance.getPlayer(killed).getElo();
             Integer damager_elo = InGameManager.instance.getPlayer(killer).getElo();
 
             InGameManager.instance.getPlayer(killed).updateElo(damager_elo, false);
             InGameManager.instance.getPlayer(killer).updateElo(damaged_elo, true);
+
+            killed.sendMessage(PvP.prefix + MessageManager.instance.get(killed, "ingame.ranking.lost", InGameManager.instance.getPlayer(killed).getElo(), killer.getName()));
+            killer.sendMessage(PvP.prefix + MessageManager.instance.get(killer, "ingame.ranking.won", InGameManager.instance.getPlayer(killer).getElo(), killed.getName()));
         }
 
         InGameManager.instance.getPlayer(killed).addDeath();

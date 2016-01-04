@@ -5,6 +5,7 @@ lastPvPJoin: 0
 stats:
   kills: 0
   deaths: 0
+  elo: 1500
 
 kits:
   current: ""

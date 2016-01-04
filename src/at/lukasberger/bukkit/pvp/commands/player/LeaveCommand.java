@@ -33,6 +33,8 @@ public class LeaveCommand extends AbstractSubCommand
             InGameManager.instance.leaveArena(p);
         else if(InGameManager.instance.isPlayerSpectating(p))
             InGameManager.instance.leaveArenaSpectating(p);
+        else if(InGameManager.instance.getArena(p).isPlayerInQueue(p))
+            InGameManager.instance.getArena(p).leaveFromQueue(p);
     }
 
     @Override

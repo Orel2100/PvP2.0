@@ -5,9 +5,9 @@
       <element id="module-output" name="at.lukasberger.bukkit.pvp" />
       <element id="file-copy" path="$PROJECT_DIR$/resources/config.yml" />
       <element id="file-copy" path="$PROJECT_DIR$/resources/empty.yml" />
-      <element id="file-copy" path="$PROJECT_DIR$/resources/playerStats.yml" />
       <element id="file-copy" path="$PROJECT_DIR$/resources/plugin.yml" />
       <element id="dir-copy" path="$PROJECT_DIR$/resources/languages" />
+      <element id="file-copy" path="$PROJECT_DIR$/resources/player.yml" />
     </root>
   </artifact>
 </component>

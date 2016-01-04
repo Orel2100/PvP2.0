@@ -67,14 +67,14 @@ ingame:
             chat: false
 gadgets:
     grenades:
-    enable: true
-    item: EGG
-    settings:
-          throw-multiplier: 3.0
-          infinity: true
-          power: 10.0
-          fire: false
-          block-destroy: false
+        enable: true
+        item: EGG
+        settings:
+            throw-multiplier: 3.0
+            infinity: true
+            power: 10.0
+            fire: false
+            block-destroy: false
     bow:
         disable-gravity: true
         salvos: 5
