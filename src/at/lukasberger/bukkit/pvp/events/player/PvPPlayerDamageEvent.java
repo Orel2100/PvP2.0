@@ -53,7 +53,7 @@ public class PvPPlayerDamageEvent implements Listener
             if(!PvP.getInstance().getConfig().getBoolean("ingame.show-death-screen")) // rejoin player without death-screen
             {
                 Arena a = InGameManager.instance.getArena(damaged);
-                if(PvP.getInstance().getConfig().getBoolean("ingame.enable-elo") || a.isRankedArena())
+                if(a.isRankedArena())
                 {
                     Integer damaged_elo = InGameManager.instance.getPlayer(damaged).getElo();
                     Integer damager_elo = InGameManager.instance.getPlayer(damager).getElo();

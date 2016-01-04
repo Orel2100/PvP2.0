@@ -35,7 +35,7 @@ public class PvPPlayerDeathEvent implements Listener
             return;
 
         Arena a = InGameManager.instance.getArena(killed);
-        if(PvP.getInstance().getConfig().getBoolean("ingame.enable-elo") || a.isRankedArena())
+        if(a.isRankedArena())
         {
             Integer damaged_elo = InGameManager.instance.getPlayer(killed).getElo();
             Integer damager_elo = InGameManager.instance.getPlayer(killer).getElo();
