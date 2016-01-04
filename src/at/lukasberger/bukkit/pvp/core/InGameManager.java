@@ -133,7 +133,7 @@ public class InGameManager
         p.getInventory().clear();
         p.setGameMode(GameMode.SURVIVAL);
 
-        arena.teleportPlayer(p);
+        arena.teleportPlayer(p, false);
         getPlayer(p).giveCurrentKit();
 
         p.sendMessage(PvP.successPrefix + MessageManager.instance.get(p, "ingame.joined", arenaName));
@@ -209,7 +209,7 @@ public class InGameManager
 
         // teleport the player
         Arena arena = ArenaManager.instance.getArena(arenaName);
-        arena.teleportPlayer(p);
+        arena.teleportPlayer(p, true);
         getPlayer(p).giveCurrentKit();
 
         // update the scoreboard

@@ -98,12 +98,14 @@ public class Arena
         arenaConfig.config.addDefault("game.party.size", -1);
         arenaConfig.config.addDefault("game.party.damage", true);
 
-        arenaConfig.config.addDefault("game.firework.death", true);
+        arenaConfig.config.addDefault("game.firework.death", false);
         arenaConfig.config.addDefault("game.firework.join", true);
+        arenaConfig.config.addDefault("game.firework.leave", false);
         arenaConfig.config.addDefault("game.firework.count", 4);
 
         arenaConfig.config.addDefault("game.lightning.death", true);
         arenaConfig.config.addDefault("game.lightning.join", false);
+        arenaConfig.config.addDefault("game.lightning.leave", true);
         arenaConfig.config.addDefault("game.lightning.count", 2);
 
         arenaConfig.saveConfig();
@@ -260,6 +262,9 @@ public class Arena
      */
     public void removePlayer(Player p)
     {
+        // run death-actions
+        runAction("death", p.getLocation());
+
         if(playerList.contains(p.getUniqueId().toString()))
             this.playerList.remove(p.getUniqueId().toString());
     }
@@ -268,7 +273,7 @@ public class Arena
      * Gets the random spawn-point and teleports the player
      * @param p The player
      */
-    public void teleportPlayer(Player p)
+    public void teleportPlayer(Player p, boolean deathTp)
     {
         // Load world
         World arenaworld = Bukkit.getServer().getWorld(arenaConfig.config.getString("arena.world"));
@@ -289,7 +294,8 @@ public class Arena
                 String[] locationParts = locations.get(randLoc).split(";");
 
                 // do death-actions if any is enabled
-                runAction("death", p.getLocation());
+                if(deathTp)
+                    runAction("death", p.getLocation());
 
                 // activaing teleportation for player
                 InGameManager.instance.changeTeleportStatus(p, true);
@@ -319,7 +325,8 @@ public class Arena
                 int y = arenaworld.getHighestBlockYAt((int)x, (int)z);
 
                 // do death-actions if any is enabled
-                runAction("death", p.getLocation());
+                if(deathTp)
+                    runAction("death", p.getLocation());
 
                 // activaing teleportation for player
                 InGameManager.instance.changeTeleportStatus(p, true);
@@ -343,7 +350,7 @@ public class Arena
 
     private void runAction(String mode, Location loc)
     {
-        if(getGameConfiguration().getBoolean("firework." + mode))
+        if(getGameConfiguration().getBoolean("firework." + mode) && !PvP.isDisabling)
         {
             PvP.getInstance().getServer().getScheduler().scheduleSyncDelayedTask(PvP.getInstance(), new Runnable() {
 
@@ -356,7 +363,7 @@ public class Arena
             }, 5L);
         }
 
-        if(getGameConfiguration().getBoolean("lightning." + mode))
+        if(getGameConfiguration().getBoolean("lightning." + mode) && !PvP.isDisabling)
         {
             PvP.getInstance().getServer().getScheduler().scheduleSyncDelayedTask(PvP.getInstance(), new Runnable() {
 
@@ -364,7 +371,7 @@ public class Arena
                 public void run()
                 {
                     for(int i = 0; i < getGameConfiguration().getInt("lightning.count"); i++)
-                        loc.getWorld().strikeLightning(loc);
+                        loc.getWorld().strikeLightningEffect(loc);
                 }
 
             }, 5L);

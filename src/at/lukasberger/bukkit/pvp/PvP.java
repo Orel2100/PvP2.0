@@ -48,6 +48,8 @@ public class PvP extends JavaPlugin
     public static WorldEditPlugin worldEdit = (WorldEditPlugin)Bukkit.getPluginManager().getPlugin("WorldEdit");
     public static Economy economy = null;
 
+    public static boolean isDisabling = false;
+
     @Override
     public void onEnable()
     {
@@ -210,6 +212,8 @@ public class PvP extends JavaPlugin
     @Override
     public void onDisable()
     {
+        isDisabling = true;
+
         PvP.getInstance().getLogger().warning("Kicking all players from arena...");
         InGameManager.instance.leaveArenaAll();
 

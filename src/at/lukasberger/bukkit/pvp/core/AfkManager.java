@@ -45,6 +45,9 @@ public class AfkManager
 
                     Player p = PvP.getInstance().getServer().getPlayer(UUID.fromString(uuid));
                     p.sendMessage(PvP.warningPrefix + MessageManager.instance.get(p, "ingame.afk.marked"));
+
+                    PvP.getInstance().getLogger().info("ingame.scoreboard.update.on-afk: " + PvP.getInstance().getConfig().getBoolean("ingame.scoreboard.update.on-afk"));
+                    InGameManager.instance.getPlayer(p).updateScoreboard();
                 }
             }
 
@@ -70,6 +73,9 @@ public class AfkManager
      */
     public boolean hasPlayerGoneAfkNow(String uuid)
     {
+        if(!afk.containsKey(uuid))
+            return false;
+
         return ChronoUnit.SECONDS.between(afk.get(uuid), LocalDateTime.now()) == PvP.getInstance().getConfig().getInt("ingame.afk.idle-period");
     }
 
@@ -80,7 +86,10 @@ public class AfkManager
      */
     public boolean isPlayerAfk(Player p)
     {
-        return ChronoUnit.SECONDS.between(afk.get(p.getUniqueId().toString()), LocalDateTime.now()) > PvP.getInstance().getConfig().getInt("ingame.afk.idle-period");
+        if(!afk.containsKey(p.getUniqueId().toString()))
+            return false;
+
+        return ChronoUnit.SECONDS.between(afk.get(p.getUniqueId().toString()), LocalDateTime.now()) >= PvP.getInstance().getConfig().getInt("ingame.afk.idle-period");
     }
 
 

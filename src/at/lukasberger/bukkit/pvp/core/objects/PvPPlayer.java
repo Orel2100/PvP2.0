@@ -1,6 +1,7 @@
 package at.lukasberger.bukkit.pvp.core.objects;
 
 import at.lukasberger.bukkit.pvp.PvP;
+import at.lukasberger.bukkit.pvp.core.AfkManager;
 import at.lukasberger.bukkit.pvp.core.ArenaManager;
 import at.lukasberger.bukkit.pvp.core.InGameManager;
 import org.bukkit.ChatColor;
@@ -101,18 +102,46 @@ public class PvPPlayer
      */
     public PvPPlayer updateScoreboard()
     {
+        return updateScoreboard(player.getLocation());
+    }
+
+    /**
+     * Updates the scoreboard of the player
+     * @param loc The current location of the player
+     * @return This instance
+     */
+    public PvPPlayer updateScoreboard(Location loc)
+    {
         List<String> scoreboardLines = PvP.getInstance().getConfig().getStringList("ingame.scoreboard.lines");
+        Scoreboard scoreboard;
+        Objective objective;
 
-        Scoreboard scoreboard = PvP.getInstance().getServer().getScoreboardManager().getNewScoreboard();
-        Objective objective = scoreboard.registerNewObjective("pvp", "dummy");
+        if(player.getScoreboard() == null)
+            scoreboard = PvP.getInstance().getServer().getScoreboardManager().getNewScoreboard();
+        else
+            scoreboard = player.getScoreboard();
 
+        if(scoreboard.getObjective(DisplaySlot.SIDEBAR) == null)
+            objective = scoreboard.registerNewObjective("pvp", "dummy");
+        else
+        {
+            objective = scoreboard.getObjective(DisplaySlot.SIDEBAR);
+            objective.unregister();
+        }
+
+        objective = scoreboard.registerNewObjective("pvp", "dummy");
         objective.setDisplaySlot(DisplaySlot.SIDEBAR);
         objective.setDisplayName(ChatColor.translateAlternateColorCodes('&', PvP.getInstance().getConfig().getString("ingame.scoreboard.title")));
 
         for(int i = 0; i < scoreboardLines.size(); i++)
         {
             int index = scoreboardLines.size() - i; // the index on the scoreboard
-            Score score = objective.getScore(parseScoreboardLine(scoreboardLines.get(i)));
+            String indexAppend = "";
+
+            for(int j = 0; j < index; j++)
+                indexAppend += ChatColor.RESET.toString();
+
+            Score score = objective.getScore(parseScoreboardLine(scoreboardLines.get(i), loc) + indexAppend);
             score.setScore(index);
         }
 
@@ -122,20 +151,27 @@ public class PvPPlayer
     }
 
     // replaces placeholders with values
-    private String parseScoreboardLine(String s)
+    private String parseScoreboardLine(String s, Location loc)
     {
         // player informations
-        String compiled = s.replace("{NAME}", player.getName());
-        compiled = compiled.replace("{DISPLAYNAME}", player.getDisplayName());
+        String compiled = s.replace("{name}", player.getName());
+        compiled = compiled.replace("{display_name}", player.getDisplayName());
 
         // player's location infos
-        compiled = compiled.replace("{WORLD}", player.getWorld().getName());
+        compiled = compiled.replace("{world}", player.getWorld().getName());
+        compiled = compiled.replace("{loc_x}", Integer.toString(loc.getBlockX()));
+        compiled = compiled.replace("{loc_y}", Integer.toString(loc.getBlockY()));
+        compiled = compiled.replace("{loc_z}", Integer.toString(loc.getBlockZ()));
 
         // pvp stats
-        compiled = compiled.replace("{PVPDEATHS}",  Integer.toString(playerConfig.config.getInt("stats.kills")));
-        compiled = compiled.replace("{PVPKILLS}",  Integer.toString(playerConfig.config.getInt("stats.deaths")));
-        compiled = compiled.replace("{PVPARENA}", InGameManager.instance.getArena(player).getName());
-        compiled = compiled.replace("{PVPKIT}", playerConfig.config.getString("kits.current", "Default"));
+        compiled = compiled.replace("{pvp_deaths}",  Integer.toString(playerConfig.config.getInt("stats.kills")));
+        compiled = compiled.replace("{pvp_kills}",  Integer.toString(playerConfig.config.getInt("stats.deaths")));
+
+        // current pvp-settings
+        compiled = compiled.replace("{pvp_arena}", InGameManager.instance.getArena(player).getName());
+        compiled = compiled.replace("{pvp_lang}", InGameManager.instance.getPlayer(player).getLanguage());
+        compiled = compiled.replace("{pvp_kit}", playerConfig.config.getString("kits.current", "Default"));
+        compiled = compiled.replace("{pvp_afk}", AfkManager.instance.isPlayerAfk(player) ? ChatColor.RED + "\u2B24 AFK" : ChatColor.GREEN + "\u2B24 In-Game");
 
         return ChatColor.translateAlternateColorCodes('&', compiled);
     }
@@ -220,13 +256,14 @@ public class PvPPlayer
         String kit = playerConfig.config.getString("kits.current", "default");
 
         if(kit.equalsIgnoreCase(""))
-            kit = "default";
+        {
+            changeKit("default"); // set kit to default
+            return giveCurrentKit();
+        }
 
         if(!PvP.getInstance().getConfig().contains("kits." + kit))
         {
             changeKit("default"); // set kit to default
-            this.save();
-
             return giveCurrentKit();
         }
         else

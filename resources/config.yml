@@ -20,15 +20,22 @@ ingame:
     leave-on-tp: true
   scoreboard:
     title: "&bPvP&7 - Stats"
+    update:
+      on-walk-this-is-not-recommended: true
+      on-afk: true
     lines:
       - ' '
-      - '&9{NAME}'
-      - '&7Arena: &8{PVPARENA}'
+      - '&b{name}'
       - ' '
-      - '&7Kills: &a{PVPKILLS}'
-      - '&7Deaths: &c{PVPDEATHS}'
+      - '&7Arena: &b{pvp_arena}'
+      - '&7{world}&7@&b{loc_x},{loc_y},{loc_z}'
       - ' '
-      -
+      - '&7Kit: &b{pvp_kit}'
+      - '&7AFK: {pvp_afk}'
+      - ' '
+      - '&7Kills: &a{pvp_kills}'
+      - '&7Deaths: &c{pvp_deaths}'
+      - ' '
   commands:
     block: true
     override:
