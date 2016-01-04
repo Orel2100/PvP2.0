@@ -46,8 +46,8 @@ public class AfkManager
                     Player p = PvP.getInstance().getServer().getPlayer(UUID.fromString(uuid));
                     p.sendMessage(PvP.warningPrefix + MessageManager.instance.get(p, "ingame.afk.marked"));
 
-                    PvP.getInstance().getLogger().info("ingame.scoreboard.update.on-afk: " + PvP.getInstance().getConfig().getBoolean("ingame.scoreboard.update.on-afk"));
-                    InGameManager.instance.getPlayer(p).updateScoreboard();
+                    if(PvP.getInstance().getConfig().getBoolean("ingame.scoreboard.update.on-afk"))
+                        InGameManager.instance.getPlayer(p).updateScoreboard();
                 }
             }
 
@@ -110,7 +110,11 @@ public class AfkManager
     public void unafk(Player p)
     {
         if(isPlayerAfk(p))
+        {
             p.sendMessage(PvP.warningPrefix + MessageManager.instance.get(p, "ingame.afk.unmarked"));
+            if(PvP.getInstance().getConfig().getBoolean("ingame.scoreboard.update.on-afk"))
+                InGameManager.instance.getPlayer(p).updateScoreboard();
+        }
 
         if(afk.containsKey(p.getUniqueId().toString()))
             afk.remove(p.getUniqueId().toString());
