@@ -55,10 +55,9 @@ public class FullReloadCommand extends AbstractSubCommand
             PvP.getInstance().getLogger().fine("Reloading commands...");
             PvP.getInstance().loadSubCommands();
 
-            PvP.getInstance().getLogger().info("Deleting default language...");
-            Config defaultMessages = new Config("langs/default");
-            if(defaultMessages.exists())
-                defaultMessages.delete();
+            PvP.getInstance().getLogger().info("Saving included languages...");
+            new Config("langs/de").saveDefaultConfig("lang_de");
+            new Config("langs/en").saveDefaultConfig("lang");
 
             PvP.getInstance().getLogger().fine("Reloading default language...");
             MessageManager.instance.loadLanguage(PvP.getInstance().getConfig().getString("language"));

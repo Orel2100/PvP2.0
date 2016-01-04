@@ -5,9 +5,11 @@ import at.lukasberger.bukkit.pvp.core.ArenaManager;
 import at.lukasberger.bukkit.pvp.core.InGameManager;
 import at.lukasberger.bukkit.pvp.core.MessageManager;
 import at.lukasberger.bukkit.pvp.core.PartyManager;
+import at.lukasberger.bukkit.pvp.utils.FireworkUtils;
 import com.sk89q.worldedit.bukkit.selections.Selection;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -51,15 +53,18 @@ public class Arena
 
         // set default settings
         newArenaConfig.config.set("game.max-players", -1);
+
         newArenaConfig.config.set("game.party.only", false);
         newArenaConfig.config.set("game.party.size", -1);
         newArenaConfig.config.set("game.party.damage", true);
-        newArenaConfig.config.set("game.on-kill.firework", true);
-        newArenaConfig.config.set("game.on-kill.sounds", true);
-        newArenaConfig.config.set("game.on-kill.thunder", true);
-        newArenaConfig.config.set("game.on-join.firework", false);
-        newArenaConfig.config.set("game.on-join.sounds", true);
-        newArenaConfig.config.set("game.on-join.thunder", false);
+
+        newArenaConfig.config.set("game.firework.kill", true);
+        newArenaConfig.config.set("game.firework.join", true);
+        newArenaConfig.config.set("game.firework.count", 4);
+
+        newArenaConfig.config.set("game.lightning.kill", true);
+        newArenaConfig.config.set("game.lightning.join", false);
+        newArenaConfig.config.set("game.lightning.count", 2);
 
         // save it
         newArenaConfig.saveConfig();
@@ -88,15 +93,19 @@ public class Arena
             return;
 
         arenaConfig.config.addDefault("game.max-players", -1);
+
         arenaConfig.config.addDefault("game.party.only", false);
         arenaConfig.config.addDefault("game.party.size", -1);
         arenaConfig.config.addDefault("game.party.damage", true);
-        arenaConfig.config.addDefault("game.on-kill.firework", true);
-        arenaConfig.config.addDefault("game.on-kill.sounds", true);
-        arenaConfig.config.addDefault("game.on-kill.thunder", true);
-        arenaConfig.config.addDefault("game.on-join.firework", false);
-        arenaConfig.config.addDefault("game.on-join.sounds", true);
-        arenaConfig.config.addDefault("game.on-join.thunder", false);
+
+        arenaConfig.config.addDefault("game.firework.death", true);
+        arenaConfig.config.addDefault("game.firework.join", true);
+        arenaConfig.config.addDefault("game.firework.count", 4);
+
+        arenaConfig.config.addDefault("game.lightning.death", true);
+        arenaConfig.config.addDefault("game.lightning.join", false);
+        arenaConfig.config.addDefault("game.lightning.count", 2);
+
         arenaConfig.saveConfig();
     }
 
@@ -218,7 +227,6 @@ public class Arena
         if(playerList.size() == getGameConfiguration().getInt("max-players"))
             return -1;
 
-
         if(getGameConfiguration().getBoolean("party.only"))
         {
             if(partyID == -1)
@@ -280,6 +288,9 @@ public class Arena
 
                 String[] locationParts = locations.get(randLoc).split(";");
 
+                // do death-actions if any is enabled
+                runAction("death", p.getLocation());
+
                 // activaing teleportation for player
                 InGameManager.instance.changeTeleportStatus(p, true);
 
@@ -288,6 +299,9 @@ public class Arena
 
                 // deactivaing teleportation for player
                 InGameManager.instance.changeTeleportStatus(p, false);
+
+                // do join-actions if any is enabled
+                runAction("join", new Location(arenaworld, Double.parseDouble(locationParts[0]), Double.parseDouble(locationParts[1]), Double.parseDouble(locationParts[2])));
             }
             else
             {
@@ -304,6 +318,9 @@ public class Arena
                 double z = Math.min(minZ, maxZ) + (double)Math.round(-0.5f + (1 + Math.abs(minZ - maxZ)) * Math.random());
                 int y = arenaworld.getHighestBlockYAt((int)x, (int)z);
 
+                // do death-actions if any is enabled
+                runAction("death", p.getLocation());
+
                 // activaing teleportation for player
                 InGameManager.instance.changeTeleportStatus(p, true);
 
@@ -312,12 +329,45 @@ public class Arena
 
                 // deactivaing teleportation for player
                 InGameManager.instance.changeTeleportStatus(p, false);
+
+                // do join-actions if any is enabled
+                runAction("join", new Location(arenaworld, x, y, z));
             }
         }
         else
         {
             // world does not exists
             p.sendMessage(PvP.errorPrefix + MessageManager.instance.get(p, "commands.error.no-world", arenaConfig.config.getString("arena.world")));
+        }
+    }
+
+    private void runAction(String mode, Location loc)
+    {
+        if(getGameConfiguration().getBoolean("firework." + mode))
+        {
+            PvP.getInstance().getServer().getScheduler().scheduleSyncDelayedTask(PvP.getInstance(), new Runnable() {
+
+                @Override
+                public void run()
+                {
+                    FireworkUtils.launchRandomFirework(loc, getGameConfiguration().getInt("firework.count"));
+                }
+
+            }, 5L);
+        }
+
+        if(getGameConfiguration().getBoolean("lightning." + mode))
+        {
+            PvP.getInstance().getServer().getScheduler().scheduleSyncDelayedTask(PvP.getInstance(), new Runnable() {
+
+                @Override
+                public void run()
+                {
+                    for(int i = 0; i < getGameConfiguration().getInt("lightning.count"); i++)
+                        loc.getWorld().strikeLightning(loc);
+                }
+
+            }, 5L);
         }
     }
 
