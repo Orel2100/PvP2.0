@@ -2,86 +2,92 @@ language: 'en'
 player-language: true
 
 ingame:
-  show-death-screen: false
-  fall-damage: false
-  enable-invites: true
-  enable-parties: true
-  enable-spectating: true
-  enable-afk: true
-  block:
-    break: false
-    place: false
-  player:
-    allow-gm: false
-    allow-fly: false
-    allow-hunger: false
-  teleport:
-    allow: false
-    leave-on-tp: true
-  scoreboard:
-    title: "&bPvP&7 - Stats"
-    update:
-      on-walk-this-is-not-recommended: false
-      on-afk: true
-    lines:
-      - ' '
-      - '&b{name}'
-      - ' '
-      - '&7Arena: &b{pvp_arena}'
-      - '&7{world}&7@&b{loc_x},{loc_y},{loc_z}'
-      - ' '
-      - '&7Kit: &b{pvp_kit}'
-      - '&7AFK: {pvp_afk}'
-      - ' '
-      - '&7Kills: &a{pvp_kills}'
-      - '&7Deaths: &c{pvp_deaths}'
-      - ' '
-  commands:
-    block: true
-    override:
-      op: true
-      perm: true
-    whitelist:
-      - 'pvp'
-      - 'help'
-      - 'msg'
-      - 'w*'
-      - 'tell'
-      - 'hub'
-      - 'spawn'
-  spectating:
-    gamemode: SPECTATOR
-    allow-fly: true
-  afk:
-    idle-period: 60
-    notify-damager: true
-    indicators:
-      move: true
-      interact: true
-      chat: false
+    show-death-screen: false
+    fall-damage: false
+    enable-invites: true
+    enable-parties: true
+    enable-spectating: true
+    enable-afk: true
+    enable-elo: false
+    ranking:
+        notify: true
+        notify-timings: [ 120, 90, 60, 30, 20 ]
+        selection-timing: 10
+        queue-duration: 120
+    block:
+        break: false
+        place: false
+    player:
+        allow-gm: false
+        allow-fly: false
+        allow-hunger: false
+    teleport:
+        allow: false
+        leave-on-tp: true
+    scoreboard:
+        title: "&bPvP&7 - Stats"
+        update:
+            on-walk-this-is-not-recommended: false
+            on-afk: true
+        lines:
+          - ' '
+          - '&b{name}'
+          - ' '
+          - '&7Arena: &b{pvp_arena}'
+          - '&7{world}&7@&b{loc_x},{loc_y},{loc_z}'
+          - ' '
+          - '&7Kit: &b{pvp_kit}'
+          - '&7AFK: {pvp_afk}'
+          - ' '
+          - '&7Kills: &a{pvp_kills}'
+          - '&7Deaths: &c{pvp_deaths}'
+          - ' '
+    commands:
+        block: true
+        override:
+            op: true
+            perm: true
+        whitelist:
+          - 'pvp'
+          - 'help'
+          - 'msg'
+          - 'w*'
+          - 'tell'
+          - 'hub'
+          - 'spawn'
+    spectating:
+        gamemode: SPECTATOR
+        allow-fly: true
+    afk:
+        idle-period: 60
+        notify-damager: true
+        indicators:
+            move: true
+            interact: true
+            chat: false
 gadgets:
-  grenades:
+    grenades:
     enable: true
     item: EGG
     settings:
-      throw-multiplier: 3.0
-      infinity: true
-      power: 10.0
-      fire: false
-      block-destroy: false
-  bow:
-    disable-gravity: true
-    salvos: 5
+          throw-multiplier: 3.0
+          infinity: true
+          power: 10.0
+          fire: false
+          block-destroy: false
+    bow:
+        disable-gravity: true
+        salvos: 5
 kits:
-   default:
-      cost: 0
-      items:
-         - "0;diamond_sword;1;&bPvP&7-Sword;DAMAGE_ALL:2,DURABILITY:3"
-         - "1;bow;1;&bPvP&7-Bow;ARROW_INFINITE:1,DURABILITY:3"
-         - "2;fishing_rod;1;;DURABILITY:3"
-         - "4;golden_apple;3"
-         - "9;arrow"
-         - "helmet;diamond_helmet;1;;DURABILITY:3"
-         - "plate;diamond_chestplate;1;;DURABILITY:3"
-         - "leggings;diamond_leggings;1;;DURABILITY:3"
-         - "boots;diamond_boots;1;;DURABILITY:3"
+    default:
+        cost: 0
+        items:
+          - "0;diamond_sword;1;&bPvP&7-Sword;DAMAGE_ALL:2,DURABILITY:3"
+          - "1;bow;1;&bPvP&7-Bow;ARROW_INFINITE:1,DURABILITY:3"
+          - "2;fishing_rod;1;;DURABILITY:3"
+          - "4;golden_apple;3"
+          - "9;arrow"
+          - "helmet;diamond_helmet;1;;DURABILITY:3"
+          - "plate;diamond_chestplate;1;;DURABILITY:3"
+          - "leggings;diamond_leggings;1;;DURABILITY:3"
+          - "boots;diamond_boots;1;;DURABILITY:3"

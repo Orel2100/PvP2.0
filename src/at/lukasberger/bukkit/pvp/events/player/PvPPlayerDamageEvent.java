@@ -2,11 +2,17 @@ package at.lukasberger.bukkit.pvp.events.player;
 
 import at.lukasberger.bukkit.pvp.PvP;
 import at.lukasberger.bukkit.pvp.core.InGameManager;
+import at.lukasberger.bukkit.pvp.core.objects.Arena;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+
+import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 
 /**
  * PvP 2.0, Copyright (c) 2015-2016 Lukas Berger, licensed under GPLv3
@@ -39,6 +45,16 @@ public class PvPPlayerDamageEvent implements Listener
         {
             if(!PvP.getInstance().getConfig().getBoolean("ingame.show-death-screen")) // rejoin player without death-screen
             {
+                Arena a = InGameManager.instance.getArena(damaged);
+                if(PvP.getInstance().getConfig().getBoolean("ingame.enable-elo") && a.isRankedArena())
+                {
+                    Integer damaged_elo = InGameManager.instance.getPlayer(damaged).getElo();
+                    Integer damager_elo = InGameManager.instance.getPlayer(damager).getElo();
+
+                    InGameManager.instance.getPlayer(damaged).updateElo(damager_elo, false);
+                    InGameManager.instance.getPlayer(damager).updateElo(damaged_elo, true);
+                }
+
                 e.setDamage(0.0);
                 e.setCancelled(true);
                 ((Player) e.getEntity()).setHealth(20.0);
@@ -49,5 +65,6 @@ public class PvPPlayerDamageEvent implements Listener
             }
         }
     }
+
 
 }

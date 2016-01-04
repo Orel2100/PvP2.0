@@ -110,8 +110,12 @@ public class InGameManager
             p.sendMessage(PvP.errorPrefix + MessageManager.instance.get(p, "ingame.error.party-too-large", arena.getGameConfiguration().getInt("party.size"), arenaName));
         else if(joinResult == -5)
             p.sendMessage(PvP.errorPrefix + MessageManager.instance.get(p, "ingame.error.party-too-small", arena.getGameConfiguration().getInt("party.size"), arenaName));
+        else if(joinResult == -10)
+            p.sendMessage(PvP.errorPrefix + MessageManager.instance.get(p, "ingame.ranked.match-running", arenaName));
+        else if(joinResult == 1)
+            p.sendMessage(PvP.errorPrefix + MessageManager.instance.get(p, "ingame.ranked.queue-joined", arenaName));
 
-        if(joinResult != 0)
+        if(joinResult < 0)
             return false;
 
         // check if parties enabled

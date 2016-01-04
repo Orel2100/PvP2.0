@@ -14,8 +14,7 @@ import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * PvP 2.0, Copyright (c) 2015-2016 Lukas Berger, licensed under GPLv3
@@ -23,9 +22,15 @@ import java.util.List;
 public class Arena
 {
 
+    private Random rand = new Random();
     private Config arenaConfig;
     private String arenaName;
     private List<String> playerList = new ArrayList<>();
+
+    private Boolean rankedMatchRunning = false;
+    private Integer queueTaskId = -1;
+    private Integer queueCounter = 0;
+    private List<String> queuePlayerList = new ArrayList<>();
 
     /**
      * Creates an new arena with default settings
@@ -53,6 +58,7 @@ public class Arena
 
         // set default settings
         newArenaConfig.config.set("game.max-players", -1);
+        newArenaConfig.config.set("game.is-ranked", false);
 
         newArenaConfig.config.set("game.party.only", false);
         newArenaConfig.config.set("game.party.size", -1);
@@ -93,6 +99,7 @@ public class Arena
             return;
 
         arenaConfig.config.addDefault("game.max-players", -1);
+        arenaConfig.config.addDefault("game.is-ranked", false);
 
         arenaConfig.config.addDefault("game.party.only", false);
         arenaConfig.config.addDefault("game.party.size", -1);
@@ -223,6 +230,17 @@ public class Arena
      */
     public Integer addPlayer(Player p, Long partyID)
     {
+        if(isRankedArena())
+        {
+            if(rankedMatchRunning)
+                return -10;
+            else
+            {
+                queuePlayerList.add(p.getUniqueId().toString());
+                return 1;
+            }
+        }
+
         if(playerList.contains(p.getUniqueId().toString())) // player is already in list, e.g. party-join
             return 0;
 
@@ -267,6 +285,9 @@ public class Arena
 
         if(playerList.contains(p.getUniqueId().toString()))
             this.playerList.remove(p.getUniqueId().toString());
+
+        if(playerList.size() == 0 && isRankedArena())
+            startQueue();
     }
 
     /**
@@ -348,33 +369,124 @@ public class Arena
         }
     }
 
-    private void runAction(String mode, Location loc)
+    /**
+     * Indicates if the arena is for ELO-Ranking
+     * @return If arena is for ELO-Ranking
+     */
+    public boolean isRankedArena()
     {
-        if(getGameConfiguration().getBoolean("firework." + mode) && !PvP.isDisabling)
-        {
-            PvP.getInstance().getServer().getScheduler().scheduleSyncDelayedTask(PvP.getInstance(), new Runnable() {
+        return getGameConfiguration().getInt("max-players") == 2 && getGameConfiguration().getBoolean("is-ranked");
+    }
 
-                @Override
-                public void run()
+    /**
+     * Returns a list with all players in the arena
+     * @return List with players
+     */
+    public List<String> getPlayerList()
+    {
+        return Collections.unmodifiableList(this.playerList);
+    }
+
+    /**
+     * Returns a list with all players in the arena-queue
+     * @return List with queued players
+     */
+    public List<String> getQueuedPlayerList()
+    {
+        return Collections.unmodifiableList(this.queuePlayerList);
+    }
+
+    /**
+     * Starts the task for queue-working
+     */
+    public void startQueue()
+    {
+        queueCounter = PvP.getInstance().getConfig().getInt("ingame.ranking.queue-duration");
+        queueTaskId = PvP.getInstance().getServer().getScheduler().scheduleSyncRepeatingTask(PvP.getInstance(), new Runnable() {
+
+            @Override
+            public void run()
+            {
+                queueCounter--;
+
+                if(PvP.getInstance().getConfig().getBoolean("ingame.ranking.notify") &&
+                        PvP.getInstance().getConfig().getIntegerList("ingame.ranking.notify-timings").contains(queueCounter))
+                    notifyQueuedPlayers("ingame.ranking.queue-notify", queueCounter);
+
+                if(PvP.getInstance().getConfig().getInt("ingame.ranking.selection-timing") == queueCounter)
                 {
-                    FireworkUtils.launchRandomFirework(loc, getGameConfiguration().getInt("firework.count"));
+                    Integer randomPlayer = rand.nextInt(queuePlayerList.size());
+
+                    Player p1 = PvP.getInstance().getServer().getPlayer(UUID.fromString(queuePlayerList.get(randomPlayer)));
+                    Player p2 = null;
+
+                    Integer p1_elo = InGameManager.instance.getPlayer(p1).getElo();
+                    Integer p2_elo = 0;
+
+                    Integer selectionDiff = 0;
+
+                    for(int i = 0; i < queuePlayerList.size(); i++)
+                    {
+                        p2 = PvP.getInstance().getServer().getPlayer(UUID.fromString(queuePlayerList.get(i)));
+                        p2_elo = InGameManager.instance.getPlayer(p2).getElo();
+                        Integer tmpDiff = 0;
+
+                        if(p2_elo < p1_elo)
+                            tmpDiff = p1_elo - p2_elo;
+                        else if(p2_elo > p1_elo)
+                            tmpDiff = p2_elo - p1_elo;
+                        else
+                            tmpDiff = 0;
+
+                        if(tmpDiff < selectionDiff)
+                            selectionDiff = tmpDiff;
+                    }
+
+                    for(int i = 0; i < queuePlayerList.size(); i++)
+                    {
+                        p2 = PvP.getInstance().getServer().getPlayer(UUID.fromString(queuePlayerList.get(i)));
+                        p2_elo = InGameManager.instance.getPlayer(p2).getElo();
+
+                        if(p2_elo == selectionDiff) // player selected
+                            break;
+                    }
+
+                    notifyQueuedPlayers("ingame.ranking.match-selected", p1.getName(), p1_elo, p2.getName(), p2_elo);
+
+                    queuePlayerList.remove(p1.getUniqueId().toString());
+                    queuePlayerList.remove(p2.getUniqueId().toString());
+
+                    playerList.clear();
+                    playerList.add(p1.getUniqueId().toString());
+                    playerList.add(p2.getUniqueId().toString());
                 }
 
-            }, 5L);
-        }
-
-        if(getGameConfiguration().getBoolean("lightning." + mode) && !PvP.isDisabling)
-        {
-            PvP.getInstance().getServer().getScheduler().scheduleSyncDelayedTask(PvP.getInstance(), new Runnable() {
-
-                @Override
-                public void run()
+                if(queueCounter == 0)
+                    PvP.getInstance().getServer().getScheduler().cancelTask(queueTaskId);
+                else
                 {
-                    for(int i = 0; i < getGameConfiguration().getInt("lightning.count"); i++)
-                        loc.getWorld().strikeLightningEffect(loc);
+                    if(queuePlayerList.size() < 2)
+                        notifyQueuedPlayers("ingame.ranking.queue-not-enough-players");
+                    else
+                    {
+                        for(String uuid : playerList)
+                        {
+                            Player p = PvP.getInstance().getServer().getPlayer(UUID.fromString(uuid));
+                            InGameManager.instance.joinArena(p, getName());
+                        }
+                    }
                 }
+            }
 
-            }, 5L);
+        }, 0L, 20L);
+    }
+
+    private void notifyQueuedPlayers(String msg, Object... args)
+    {
+        for(String uuid : queuePlayerList)
+        {
+            Player p = PvP.getInstance().getServer().getPlayer(UUID.fromString(uuid));
+            p.sendMessage(PvP.prefix + MessageManager.instance.get(p, msg, args));
         }
     }
 
@@ -480,6 +592,36 @@ public class Arena
                 // deactivating teleportation for player
                 InGameManager.instance.changeTeleportStatus(p, false);
             }
+        }
+    }
+
+    private void runAction(String mode, Location loc)
+    {
+        if(getGameConfiguration().getBoolean("firework." + mode) && !PvP.isDisabling)
+        {
+            PvP.getInstance().getServer().getScheduler().scheduleSyncDelayedTask(PvP.getInstance(), new Runnable() {
+
+                @Override
+                public void run()
+                {
+                    FireworkUtils.launchRandomFirework(loc, getGameConfiguration().getInt("firework.count"));
+                }
+
+            }, 5L);
+        }
+
+        if(getGameConfiguration().getBoolean("lightning." + mode) && !PvP.isDisabling)
+        {
+            PvP.getInstance().getServer().getScheduler().scheduleSyncDelayedTask(PvP.getInstance(), new Runnable() {
+
+                @Override
+                public void run()
+                {
+                    for(int i = 0; i < getGameConfiguration().getInt("lightning.count"); i++)
+                        loc.getWorld().strikeLightningEffect(loc);
+                }
+
+            }, 5L);
         }
     }
 

@@ -4,6 +4,7 @@ import at.lukasberger.bukkit.pvp.PvP;
 import at.lukasberger.bukkit.pvp.core.AfkManager;
 import at.lukasberger.bukkit.pvp.core.ArenaManager;
 import at.lukasberger.bukkit.pvp.core.InGameManager;
+import at.lukasberger.bukkit.pvp.utils.MathUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -97,6 +98,31 @@ public class PvPPlayer
     }
 
     /**
+     * Updtes the player's ELO
+     * @return This instance
+     */
+    public PvPPlayer updateElo(int enemyElo, boolean winner)
+    {
+        Integer personalElo = this.getElo();
+
+        double expectElo = MathUtils.round(1.0 / (1.0 + Math.pow(10.0, (enemyElo - personalElo) / 400.0)), 3);
+        int newElo = (int)MathUtils.round(expectElo + (20.0 * ((winner ? 1.0 : 0.0) - personalElo)), 0);
+
+        this.playerConfig.config.set("stats.elo", newElo);
+        this.save();
+        return this;
+    }
+
+    /**
+     * Return the player's ELO
+     * @return This instance
+     */
+    public Integer getElo()
+    {
+        return playerConfig.config.getInt("stats.elo");
+    }
+
+    /**
      * Updates the scoreboard of the player
      * @return This instance
      */
@@ -166,6 +192,7 @@ public class PvPPlayer
         // pvp stats
         compiled = compiled.replace("{pvp_deaths}",  Integer.toString(playerConfig.config.getInt("stats.kills")));
         compiled = compiled.replace("{pvp_kills}",  Integer.toString(playerConfig.config.getInt("stats.deaths")));
+        compiled = compiled.replace("{pvp_elo}",  Integer.toString(playerConfig.config.getInt("stats.elo")));
 
         // current pvp-settings
         compiled = compiled.replace("{pvp_arena}", InGameManager.instance.getArena(player).getName());

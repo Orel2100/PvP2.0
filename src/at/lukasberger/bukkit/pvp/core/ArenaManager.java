@@ -19,7 +19,6 @@ public class ArenaManager
     // disallow creation of other instances
     private ArenaManager() { }
 
-
     /**
      * Loads the given arena into memory
      * @param arena The arena
@@ -36,6 +35,9 @@ public class ArenaManager
      */
     public void loadArena(String name, Arena arena)
     {
+        if(arena.isRankedArena())
+            arena.startQueue();
+
         arenas.put(name, arena);
     }
 

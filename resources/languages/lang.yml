@@ -143,3 +143,9 @@ en:
            damager-notify: "%1 is AFK, you can't damage him"
        teleport:
            denied: "You are not allowed to teleport. Use /pvp l to leave the arena"
+       ranking:
+           match-running: "A match in %1 is already running"
+           queue-joined: "You joined the queue of %1"
+           queue-notify: "The match starts in %1 seconds"
+           queue-not-enough-players: "There are not enough players in the queue..."
+           match-selected: "The players were selected: &6%1 &7(&b%2&7) &7versus&6 %3 &7(&b%4&7)"

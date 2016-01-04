@@ -2,6 +2,7 @@ package at.lukasberger.bukkit.pvp.events.player;
 
 import at.lukasberger.bukkit.pvp.PvP;
 import at.lukasberger.bukkit.pvp.core.InGameManager;
+import at.lukasberger.bukkit.pvp.core.objects.Arena;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -31,6 +32,16 @@ public class PvPPlayerDeathEvent implements Listener
         // check if killed AND killer are ingame
         if(!InGameManager.instance.isPlayerIngame(killed) || !InGameManager.instance.isPlayerIngame(killer))
             return;
+
+        Arena a = InGameManager.instance.getArena(killed);
+        if(PvP.getInstance().getConfig().getBoolean("ingame.enable-elo") && a.isRankedArena())
+        {
+            Integer damaged_elo = InGameManager.instance.getPlayer(killed).getElo();
+            Integer damager_elo = InGameManager.instance.getPlayer(killer).getElo();
+
+            InGameManager.instance.getPlayer(killed).updateElo(damager_elo, false);
+            InGameManager.instance.getPlayer(killer).updateElo(damaged_elo, true);
+        }
 
         InGameManager.instance.getPlayer(killed).addDeath();
         InGameManager.instance.getPlayer(killer).addKill();
