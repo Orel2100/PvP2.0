@@ -17,14 +17,14 @@ public class PvPInventoryDragEvent implements Listener
     private void onInventoryDrag(InventoryDragEvent e)
     {
         // only apply actions to players
-        if(e.getInventory().getHolder() instanceof Player)
-        {
-            // check if player is ingame
-            if(InGameManager.instance.isPlayerIngame((Player)e.getInventory().getHolder()))
-            {
-                e.setCancelled(true);
-            }
-        }
+        if(!(e.getInventory().getHolder() instanceof Player))
+            return;
+
+        // check if player is ingame
+        if(InGameManager.instance.isPlayerIngame((Player)e.getInventory().getHolder()))
+            return;
+
+        e.setCancelled(true);
     }
 
 }

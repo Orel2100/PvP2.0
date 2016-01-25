@@ -1,6 +1,7 @@
 package at.lukasberger.bukkit.pvp.events.inventory;
 
 import at.lukasberger.bukkit.pvp.core.InGameManager;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -16,14 +17,14 @@ public class PvPItemDropEvent implements Listener
     private void onPlayerDropItem(PlayerDropItemEvent e)
     {
         // check if player is null
-        if(e.getPlayer() != null)
-        {
-            // check if player is ingame
-            if(InGameManager.instance.isPlayerIngame(e.getPlayer()))
-            {
-                e.setCancelled(true);
-            }
-        }
+        if(e.getPlayer() == null)
+            return;
+
+        // check if player is ingame
+        if(!InGameManager.instance.isPlayerIngame((Player)e.getPlayer()))
+            return;
+
+        e.setCancelled(true);
     }
 
 }

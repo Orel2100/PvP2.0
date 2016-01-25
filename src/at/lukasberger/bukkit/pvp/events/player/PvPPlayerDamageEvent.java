@@ -30,7 +30,7 @@ public class PvPPlayerDamageEvent implements Listener
             return;
 
         // check if damaged AND damager are players
-        if(!(e.getEntity() instanceof Player) || (!(e.getDamager() instanceof Player) && !(e.getDamager() instanceof Arrow)))
+        if(!(e.getEntity() instanceof Player) || (!(e.getDamager() instanceof Player) && !(e.getDamager() instanceof Arrow)) || !(((Arrow) e.getDamager()).getShooter() instanceof Player))
             return;
 
         Player damaged = (Player)e.getEntity();

@@ -32,6 +32,11 @@ public class SubCommandManager
             throw new IllegalArgumentException("The sub-command " + cmd + " is already registered");
     }
 
+    public HashMap<String, AbstractSubCommand> getLoadedSubCommands()
+    {
+        return this.subCommands;
+    }
+
     public void unregisterSubCommand(String cmd)
     {
         subCommands.remove(cmd);
@@ -75,7 +80,7 @@ public class SubCommandManager
                     if(sender.hasPermission(perm))
                         hasPerm = true;
 
-                if(hasPerm)
+                if(hasPerm && subcmd.getValue().getHelp(sender) != null)
                 {
                     for(String line : subcmd.getValue().getHelp(sender))
                         if(!help.contains(line))

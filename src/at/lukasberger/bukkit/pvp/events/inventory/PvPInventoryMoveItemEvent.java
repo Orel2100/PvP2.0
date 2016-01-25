@@ -17,14 +17,14 @@ public class PvPInventoryMoveItemEvent implements Listener
     private void onInventoryMoveItem(InventoryMoveItemEvent e)
     {
         // only apply actions to players
-        if(e.getInitiator().getHolder() instanceof Player)
-        {
-            // check if player is ingame
-            if(InGameManager.instance.isPlayerIngame((Player)e.getInitiator().getHolder()))
-            {
-                e.setCancelled(true);
-            }
-        }
+        if(!(e.getSource().getHolder() instanceof Player))
+            return;
+
+        // check if player is ingame
+        if(!InGameManager.instance.isPlayerIngame((Player)e.getSource().getHolder()))
+            return;
+
+        e.setCancelled(true);
     }
 
 }

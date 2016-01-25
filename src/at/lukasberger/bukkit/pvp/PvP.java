@@ -19,6 +19,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.event.HandlerList;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -37,6 +38,10 @@ public class PvP extends JavaPlugin
     public static String errorPrefix = basePrefix + ChatColor.RED + " ";
     public static String warningPrefix = basePrefix + ChatColor.YELLOW + " ";
     public static String successPrefix = basePrefix + ChatColor.GREEN + " ";
+
+    // inventory-help
+    public static String inventoryHelpTitle = ChatColor.AQUA + "PvP 2.0" + ChatColor.GRAY + " - " + ChatColor.WHITE + "The new PvP-Plugin";
+    public static Inventory inventoryHelp = null;
 
     // Load instance of PvP
     public static PvP getInstance()
@@ -174,6 +179,7 @@ public class PvP extends JavaPlugin
     {
         // inventory
         this.getServer().getPluginManager().registerEvents(new PvPInventoryDragEvent(), this);
+        this.getServer().getPluginManager().registerEvents(new PvPInventoryHelpEvents(), this);
         this.getServer().getPluginManager().registerEvents(new PvPInventoryMoveItemEvent(), this);
         this.getServer().getPluginManager().registerEvents(new PvPInventoryOpenEvent(), this);
         this.getServer().getPluginManager().registerEvents(new PvPItemDropEvent(), this);
@@ -213,6 +219,7 @@ public class PvP extends JavaPlugin
     public void onDisable()
     {
         isDisabling = true;
+        inventoryHelp = null;
 
         PvP.getInstance().getLogger().warning("Kicking all players from arena...");
         InGameManager.instance.leaveArenaAll();

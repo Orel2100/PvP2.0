@@ -17,15 +17,15 @@ public class PvPInventoryOpenEvent implements Listener
     private void onInventoryOpen(InventoryOpenEvent e)
     {
         // only apply actions to players
-        if(e.getPlayer() instanceof Player)
-        {
-            // check if player is ingame
-            if(InGameManager.instance.isPlayerIngame((Player)e.getPlayer()))
-            {
-                e.getPlayer().closeInventory();
-                e.setCancelled(true);
-            }
-        }
+        if(!(e.getPlayer() instanceof Player))
+            return;
+
+        // check if player is ingame
+        if(!InGameManager.instance.isPlayerIngame((Player)e.getPlayer()))
+            return;
+
+        e.getPlayer().closeInventory();
+        e.setCancelled(true);
     }
 
 }
